@@ -114,6 +114,22 @@
           color: white;
       }
     }
+    .time {
+      margin-right: 2px;
+      margin-left: 2px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      ion-item{
+        border: 1px solid #4C0A0A;
+        padding-right:3px;
+        border-radius: 200px;
+        margin-bottom:2px;
+        width: 50%;
+        height: 70px;
+        
+      }
+    }
    }
    .pack {
      display: flex;
