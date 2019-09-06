@@ -84,6 +84,8 @@
     padding: 7px;
     position: fixed;
     width: 100%;
+    overflow: hidden;
+    overflow: scroll;
     .card{
         display: flex;
         height: 25%;
@@ -92,7 +94,7 @@
         border-radius: 5px;
         margin-bottom: 5px;
         padding-left: 10px;
-        box-shadow: 3px 6px 16px rgba(0,0,0,0.4);
+        box-shadow: 3px 3px 3px 3px rgba(0,0,0,0.4);
         .ava {
             
         }

@@ -96,31 +96,18 @@
 
             <div class="input">
               <p>amount</p>
-                <input type="text" [(ngModel)]="package.amount">
+                <input type="text" formControlName="amount" [(ngModel)]="package.amount">
               </div>
           
               <div class="input">
             <p>Package name</p>
-              <input type="text" [(ngModel)]="package.name">
+              <input type="text" formControlName="name" [(ngModel)]="package.name">
             </div>
 
               <div class="input">
                 <p>number</p>
-                  <input type="text" [(ngModel)]="package.number">
+                  <input type="text" formControlName="number" [(ngModel)]="package.number">
                 </div>
-
-
-
-
-
-                
-                <!-- <div class="donebtn">
-                  <button (click)="createAccount()">
-                      Done
-                  </button>
-              </div> -->
-
-
 
           <ion-item>
             <ion-label position="floating">open time</ion-label>
@@ -147,11 +134,9 @@
           </div>
   
           <div class="dbtn">
-            
-              <!-- <button (click)="createAccount()">
-                  Done
-              </button> -->
-              
+            <button (click)="createAccount()">
+              Done
+          </button>
           </div>
   
         </div>
