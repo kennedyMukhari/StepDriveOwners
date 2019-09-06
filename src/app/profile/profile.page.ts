@@ -117,17 +117,16 @@ export class ProfilePage implements OnInit {
     {type: 'maxlength', message: 'Password must be less than 8 char or less'},
   ],
   'name': [
-    {type: 'required', message: 'name is required.'},
+    {type: 'required', message: 'Name is required.'},
    
   ],
   'number': [
-    {type: 'required', message: 'Password is required.'},
+    {type: 'required', message: 'Number of lesson required.'},
     {type: 'minlength', message: 'password must be atleast 6 char or more.'},
     {type: 'maxlength', message: 'Password must be less than 8 char or less'},
   ],
   'amount': [
-    {type: 'required', message: 'amount is required.'},
-  
+    {type: 'required', message: 'Amount is required.'},
   ]
   }
 

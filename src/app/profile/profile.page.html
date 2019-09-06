@@ -94,20 +94,43 @@
               </h2>
             </div>
 
+
             <div class="input">
               <p>amount</p>
                 <input type="text" formControlName="amount" [(ngModel)]="package.amount">
               </div>
           
+
+              <div class="error" *ngFor="let validate of validation_messages.amount">
+                <div class="messages"
+                *ngIf="loginForm.get('amount').hasError(validate.type) && (loginForm.get('amount').dirty || loginForm.get('amount').touched)">
+                  {{validate.message}}
+                </div>
+              </div>
+
               <div class="input">
-            <p>Package name</p>
-              <input type="text" formControlName="name" [(ngModel)]="package.name">
-            </div>
+                <p>Package name</p>
+                <input type="text" formControlName="name" [(ngModel)]="package.name">
+              </div>
+
+              <div class="error" *ngFor="let validate of validation_messages.name">
+                <div class="messages"
+                *ngIf="loginForm.get('name').hasError(validate.type) && (loginForm.get('name').dirty || loginForm.get('name').touched)">
+                  {{validate.message}}
+                </div>
+              </div>
 
               <div class="input">
                 <p>number</p>
-                  <input type="text" formControlName="number" [(ngModel)]="package.number">
+                <input type="text" formControlName="number" [(ngModel)]="package.number">
+              </div>
+
+              <div class="error" *ngFor="let validate of validation_messages.number">
+                <div class="messages"
+                *ngIf="loginForm.get('number').hasError(validate.type) && (loginForm.get('number').dirty || loginForm.get('number').touched)">
+                  {{validate.message}}
                 </div>
+              </div>
 
           <ion-item>
             <ion-label position="floating">open time</ion-label>
