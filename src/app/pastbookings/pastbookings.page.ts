@@ -16,12 +16,14 @@ export class PastbookingsPage implements OnInit {
   
  Booking= [];
  NewBooking=[];
-user=[];
-Customer : any;
+ user=[];
+ Customer = [];
+
+
+
   constructor(public data : DataSavedService) { 
 
-    this.Customer = this.data.SavedData;
-    console.log("Customers data in past bookings is",this.Customer );
+ 
     //retriving data from booking collection
     // this.db.collection('bookings').onSnapshot(snapshot => {
 
@@ -51,16 +53,30 @@ Customer : any;
 
   
     
-console.log("Data in my New Array is:", this.Booking);
-this.getBooking()
+
+
 
   }
 
- 
+  
+ ionViewDidEnter(){
+  this.Booking = [];
+  this.Customer = this.data.SavedData;
+  console.log("Data in the profile is",this.Customer);
+  console.log("Customers data in past bookings is",this.Customer );
+  this.Customer.forEach(Customers => { 
+    if(Customers.doc.schooluid === firebase.auth().currentUser.uid) {
+      this.Booking.push(Customers)
+    }        
+  
+  })
+ }
 
   ngOnInit() {
-    
+  
   }
+
+
   async getBooking(){
     let data = {
       user: {

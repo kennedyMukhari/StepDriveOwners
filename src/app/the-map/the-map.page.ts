@@ -8,6 +8,8 @@ import { AuthService } from '../../app/user/auth.service';
 import { LoginPage } from '../login/login.page';
 import { Router } from '@angular/router';
 import { DataSavedService } from '../data-saved.service';
+// import undefined = require('firebase/empty-import');
+import { AlertController } from '@ionic/angular';
 
  
 
@@ -39,105 +41,76 @@ export class TheMapPage implements OnInit {
   requests = [];
   NewRequeste = [];
 
-  constructor( private geolocation : Geolocation, public AuthService : AuthService, public data: DataSavedService,  public router:Router, private nativeGeocoder: NativeGeocoder) { 
+  constructor( private geolocation : Geolocation,public alertController: AlertController, public AuthService : AuthService, public data: DataSavedService,  public router:Router, private nativeGeocoder: NativeGeocoder) { 
+
+ 
+
+  }
 
 
-   
-   
+async presentAlert() {
+  const alert = await this.alertController.create({
+    header: 'Added to booking list.',
+    subHeader: '',
+    message: '',
+    buttons: ['OK']
+  });
 
+  await alert.present();
+}
 
-      // this.db.collection("users").where("DSuid", "==", firebase.auth().currentUser.uid)
-      // .get()
-      // .then(function(querySnapshot) {
-      //     querySnapshot.forEach(function(doc) {
-      //         // doc.data() is never undefined for query doc snapshots
-      //         // doc.id, " => ",
-      //         console.log( doc.data());
-      //     });
-      // })
-      // .catch(function(error) {
-      //     console.log("Error getting documents: ", error);
-      // });
+  ngOnInit(){
 
-  
   }
 
   ionViewDidEnter(){
     this.getUserPosition();
-
+    
     this.db.collection('bookings').onSnapshot(snapshot => {
-      snapshot.forEach(doc => {
-
-        this.requests.push(doc.data());
-        
-        this.requests.forEach(Customers => {
-          console.log('Customers in my array', Customers.schooluid);
-          console.log('Owners UID logged in', firebase.auth().currentUser.uid);
-          if(Customers.schooluid === firebase.auth().currentUser.uid){
-            this.NewRequeste  = [];
-             this.NewRequeste.push(doc.data())
+        this.NewRequeste = [];
+        snapshot.forEach(doc => {
+          if(doc.data().schooluid === firebase.auth().currentUser.uid && doc.data().accepted === undefined && doc.data().confirmed === undefined ){
+            this.NewRequeste.push({docid : doc.id, doc : doc.data() });
           }
-        }) 
-      })
-    });
-   
-  
-    let booking = {
-      docid: '',
-      doc: {}
-    }
-    
- 
-      this.db.collection('bookings').onSnapshot(snapshot => {
-
-          snapshot.forEach(doc => {
-          booking.docid = doc.id
-          booking.doc = doc.data()
-          // console.log('The obj is', booking);
-          console.log('The id is',booking.docid);
-          this.users.push(booking);
-          console.log('The obj is', booking);
-          console.log('The array is', this.users);
-          // console.log('The id is',booking.docid);
-        });
-
-
-        this.users.forEach(Customers => {          
-          console.log('Owners UID logged in', firebase.auth().currentUser.uid);
-          if(Customers.doc.schooluid === firebase.auth().currentUser.uid){
-            this.addMarkersOnTheCustomersCurrentLocation(Customers.doc.location.lat, Customers.doc.location.lng);
-          }
-        })
-
-       
       });
-      console.log('My array is ',this.users);
+
+      this.NewRequeste.forEach(Customers => {          
+        console.log('Owners UID logged in', firebase.auth().currentUser.uid);
+        if(Customers.doc.schooluid === firebase.auth().currentUser.uid){
+          this.addMarkersOnTheCustomersCurrentLocation(Customers.doc.location.lat, Customers.doc.location.lng);
+        }
+      })
+
+    });
   
   }
 
-  Array(){
-    console.log('Array Data:', this.users);
-    
+  ll(){
+    console.log('Accepted array',  this.NewRequeste);
   }
 
-
-  Accept(Customer){
-console.log('Customer data', Customer);
-   this.data.SavedData = Customer;
+  Accept(Customer, i, docid){
+      this.db.collection('bookings').doc(docid).set({confirmed: true}, {merge: true});
+      this.data.SavedData.push(Customer);
+      this.NewRequeste.splice(i, 1);
+      console.log('Accepted array',  this.NewRequeste);
+      
+      this.presentAlert();
   }
 
   
-  ngOnInit() {
-    // this.add()
-  }
+  // ngOnInit() {
+  //   // this.add()
+  // }
 
 
-  Decline(doc, docid){
+  Decline(doc, docid, i){
 
-    console.log('Decline method called', doc, docid);
-    let doc_id : string;
-
+    console.log('Accepted array before',  this.NewRequeste);
     this.db.collection('bookings').doc(docid).set({confirmed: false}, {merge: true});
+   
+    this.NewRequeste.splice(i, 1)
+    console.log('Accepted array after',  this.NewRequeste);
     //   //  console.log('Decline method is called', obj);
     //   //  var docRef = firebase.firestore().collection("users").doc(obj.uid);
     //   //  docRef.update({confirmed: false});
@@ -152,11 +125,9 @@ console.log('Customer data', Customer);
 
    Logout() {
       this.users = [];
-      console.log("The user array is empty see?",this.users);
-      
       this.requests = [];
       this.NewRequeste = [];
-      console.log('Your array is :', this.users);
+      console.log('You are logged out');
       firebase.auth().signOut().then(res => {
         this.router.navigateByUrl('/login');
       })
@@ -193,9 +164,9 @@ add(){
      console.log('Request', this.schools);
    console.log('The add method called');
 
-   schools.forEach(Customers => {
-    this.addMarkersOnTheCustomersCurrentLocation(Customers.coords.lat, Customers.coords.lng);
-  })
+  //  schools.forEach(Customers => {
+  //   this.addMarkersOnTheCustomersCurrentLocation(Customers.coords.lat, Customers.coords.lng);
+  // })
 
  }
  

@@ -4,7 +4,7 @@
     <!-- <ion-title>TheMap</ion-title>  -->
     <!-- <button ion-button (click)="addMarkersOnTheCustomersCurrentLocation()"><ion-icon name="add"></ion-icon>Add Marker</button> -->
     <button style="background: transparent" (click)="Logout()" class="Icon"><ion-icon color="light" name="log-out"></ion-icon></button> <br>
-    <!-- <button (click)="add()">Show Data</button> -->
+    <!-- <button (click)="ll()">Show Data</button> -->
     <!-- <button (click)="takeData()">Console Data</button> -->
     <!-- <ion-icon ios="ios-contact" md="md-contact" (click)="goToProfile()" class="Icon"></ion-icon> -->
 
@@ -13,23 +13,25 @@
 
 <ion-content >
     <div #map id="map"></div> 
+
     <!-- <div  padding class="profile">
       <ion-thumbnail (click)="goToProfile()">
         <img src="../../assets/logo.png" alt="profile">
       </ion-thumbnail>
     </div> -->
+
     <div #list  [ngClass]="{'list': display, 'listinactive': !display}">
       <div (click)="swipeUp()" class="toggler">
           <ion-icon *ngIf="display" class="arrow" name="arrow-dropdown"></ion-icon>
           <ion-icon *ngIf="!display" class="arrow" name="arrow-dropup"></ion-icon>
       </div>
       <div class="s-list">
-        <div class="card" *ngFor="let data of users">
+        <div class="card" *ngFor="let data of NewRequeste; let i = index">
           <div class="image">
             <!-- <img *ngIf="data.image" src="../../assets/logo.png" alt=""> -->
             <img *ngIf="!data.image" src="https://icon-library.net/images/image-placeholder-icon/image-placeholder-icon-3.jpg" alt="">
           </div>
-          <div class="details" *ngFor = "let data of NewRequeste">
+          <div class="details" >
             <!-- <p><b>Need a Book?: {{data.book}} </b></p>
             <p>Confirmation state:{{data.confirmed}}</p> -->
 
@@ -38,14 +40,16 @@
             <p>Date In: {{data.datein}}</p>
             <p>Date Out: {{data.dateout}}</p>
             <p>Lessons: {{data.lessons}}</p> -->
-            
+            <p>Date In: {{data.doc.datein}}</p>
+            <p>Date Out: {{data.doc.dateout}}</p>
           </div>
-          <p>{{data.doc.location.address}}</p>
+           
+         
           <div class="call">
-            <button expand="full" (click)="Decline(data.doc, data.docid)">Decline</button>
+            <button expand="full" (click)="Decline(data.doc, data.docid, i)">Decline</button>
           </div>
           <div class="request">
-            <button expand="full" (click)="Accept(data)">Accept</button>
+            <button expand="full" (click)="Accept(data, i, data.docid)">Accept</button>
           </div>
         </div>
       </div>
