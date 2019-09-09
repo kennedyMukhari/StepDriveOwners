@@ -9,9 +9,14 @@
   
   
   <div  class="avatar-images">
-    <!-- <img *ngIf="!profileImage" (click)="selectImage()" src="../../assets/icon2.png" class="thumbavatar"> -->
-    <img src="{{this.businessdata.image}}" class="thumbavatar" (click)="selectImage()" >
-  </div>
+    <div (click)="goToRev()" class="rev">
+        <ion-icon name="star-outline"></ion-icon>
+        <ion-icon size="large" name="star-outline"></ion-icon>
+        <ion-icon name="star-outline"></ion-icon>
+    </div>
+    <img *ngIf="!this.businessdata.image" (click)="selectImage()" src="../../assets/icon2.png" class="thumbavatar">
+    <img *ngIf="this.businessdata.image" src="{{this.businessdata.image}}" class="thumbavatar" >
+  </digit v>
         
         <div  class="profile-form">
   
@@ -88,7 +93,7 @@
           </div>
           <div class="pack">
               <h2 text-center>
-                Instructor Package.
+                Instructor Packages.
               </h2>
             </div>
 
@@ -128,9 +133,9 @@
           {{validate.message}}
         </div>
       </div>
-      <ion-button size="small" (click)="addPack()">
+      <button  size="small" (click)="addPack()">
         Add Package
-      </ion-button>
+      </button>
   </div>
   <div class="s-packs">
     <div>
@@ -138,10 +143,8 @@
       <div class="pack-l" *ngFor="let p of businessdata.packages; let i = index" (click)="editpack(p)">
         <p><b>{{p.name}}</b></p>
         <p> {{p.number}} Lessons R{{p.amount}}.00</p>
-        <div class="dele">
-          <ion-fab-button (click)="deletepack(i)" style="margin: 0 !important;" size="small">
-            <ion-icon name="close"></ion-icon>
-          </ion-fab-button>
+        <div class="dele" (click)="deletepack(i)">
+          <p>x</p>
         </div>
       </div>
     </div>

@@ -362,7 +362,9 @@ export class ProfilePage implements OnInit {
         })
       }
 
-      
+      goToRev() {
+        this.router.navigate(['past-b']);
+      }
       
     }
 

@@ -27,7 +27,17 @@
           background: linear-gradient(#4C0A0A, #790B0B);
       }
 
-
+      .rev {
+        position: absolute;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        // flex-direction: column;
+        top: 0;
+        right: 0;
+        padding-right: 2px;
+      }
 
       .thumbavatar {
           position: relative;
@@ -70,6 +80,11 @@
       // background: red;
       .inp{
         width: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
         .input {
           p {
             font-size: 80%;
@@ -85,6 +100,13 @@
           }
         }
       }
+      button {
+        background: linear-gradient(#4C0A0A,#790B0B);
+        width: 60%;
+        height: 20px;
+        border-radius: 10px;
+        color: white;
+      }
       .s-packs {
         width: 50%;
         overflow-y: auto;
@@ -93,16 +115,29 @@
         align-items: center;
         .pack-l {
           width: 90%;
-          margin: 5px auto;
-          background: rgb(207, 207, 207);
+          margin: 7px auto;
+          background: linear-gradient(#4C0A0A,#790B0B);
           padding: 2px;
           border-radius: 10px;
           position: relative;
+          color: white;
+          
           .dele {
             position: absolute;
-            top: -5px;
+            top: 0px;
             right: -5px;
             z-index: 5;
+            width: 25px;
+            text-align: center;
+            height: 20px;
+            overflow: hidden;
+            background: red;
+            border-radius: 100px;
+            color: white;
+            p {
+              margin: 0;
+              padding: 0;
+            }
           }
           p {
             margin: 0;
@@ -160,22 +195,22 @@
           color: white;
       }
     }
-    .time {
-      margin-right: 2px;
-      margin-left: 2px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      ion-item{
-        border: 1px solid #4C0A0A;
-        padding-right:3px;
-        border-radius: 200px;
-        margin-bottom:2px;
-        width: 50%;
-        height: 70px;
+    // .time {
+    //   margin-right: 2px;
+    //   margin-left: 2px;
+    //   display: flex;
+    //   justify-content: center;
+    //   align-items: center;
+    //   ion-item{
+    //     border: 1px solid #4C0A0A;
+    //     padding-right:3px;
+    //     border-radius: 200px;
+    //     margin-bottom:2px;
+    //     width: 50%;
+    //     height: 70px;
         
-      }
-    }
+    //   }
+    // }
    }
    .pack {
      display: flex;
