@@ -69,7 +69,7 @@ async presentAlert() {
     this.db.collection('bookings').onSnapshot(snapshot => {
         this.NewRequeste = [];
         snapshot.forEach(doc => {
-          if(doc.data().schooluid === firebase.auth().currentUser.uid && doc.data().accepted === undefined && doc.data().confirmed === undefined ){
+          if(doc.data().schooluid === firebase.auth().currentUser.uid  && doc.data().confirmed === 'waiting' ){
             this.NewRequeste.push({docid : doc.id, doc : doc.data() });
           }
       });
@@ -86,11 +86,16 @@ async presentAlert() {
   }
 
   ll(){
-    console.log('Accepted array',  this.NewRequeste);
+       var arr = [{},
+        {datein: '07-04-2019'},
+        {datein: '07-02-2019'},
+        {datein: '07-05-2019'}]; 
+       var sorted = arr.sort(); 
+       console.log("Returned string is : " + sorted );
   }
 
   Accept(Customer, i, docid){
-      this.db.collection('bookings').doc(docid).set({confirmed: true}, {merge: true});
+      this.db.collection('bookings').doc(docid).set({confirmed: 'accepted'}, {merge: true});
       this.data.SavedData.push(Customer);
       this.NewRequeste.splice(i, 1);
       console.log('Accepted array',  this.NewRequeste);
@@ -107,7 +112,7 @@ async presentAlert() {
   Decline(doc, docid, i){
 
     console.log('Accepted array before',  this.NewRequeste);
-    this.db.collection('bookings').doc(docid).set({confirmed: false}, {merge: true});
+    this.db.collection('bookings').doc(docid).set({confirmed: 'rejected'}, {merge: true});
    
     this.NewRequeste.splice(i, 1)
     console.log('Accepted array after',  this.NewRequeste);
