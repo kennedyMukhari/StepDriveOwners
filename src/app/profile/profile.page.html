@@ -95,39 +95,48 @@
 
 <div class="packs">
   <div class="inp" #inputs>
+
+      <div class="input">
+          <p>Package name</p>
+          <input *ngIf="businessdata.packages.length<4" type="text" formControlName="name" [(ngModel)]="pack.name">
+            <input *ngIf="businessdata.packages.length==4" disabled="true" type="text" formControlName="name" [(ngModel)]="pack.name">
+          <!-- <input  [disabled]="packscomplete > 4" type="text" formControlName="name" [(ngModel)]="pack.name"> -->
+        </div>
+
     <div class="input">
       <p>amount</p>
-        <input [disabled]="packscomplete" type="text" formControlName="amount" [(ngModel)]="pack.amount">
+        <input *ngIf="businessdata.packages.length<4" type="text" formControlName="amount" [(ngModel)]="pack.amount">
+        <input *ngIf="businessdata.packages.length==4" disabled="true" type="text" formControlName="amount" [(ngModel)]="pack.amount">
       </div>
-      <div class="error" *ngFor="let validate of validation_messages.amount">
+      <!-- <div class="error" *ngFor="let validate of validation_messages.amount">
         <div class="messages"
         *ngIf="loginForm.get('amount').hasError(validate.type) && (loginForm.get('amount').dirty || loginForm.get('amount').touched)">
           {{validate.message}}
         </div>
-      </div>
+      </div> -->
 
-      <div class="input">
-        <p>Package name</p>
-        <input  [disabled]="packscomplete==true" type="text" formControlName="name" [(ngModel)]="pack.name">
-      </div>
+     
 
-      <div class="error" *ngFor="let validate of validation_messages.name">
+      <!-- <div class="error" *ngFor="let validate of validation_messages.name">
         <div class="messages"
         *ngIf="loginForm.get('name').hasError(validate.type) && (loginForm.get('name').dirty || loginForm.get('name').touched)">
           {{validate.message}}
         </div>
-      </div>
+      </div> -->
 
       <div class="input">
         <p>number</p>
-        <input [disabled]="packscomplete" type="text" formControlName="number" [(ngModel)]="pack.number">
+        <input *ngIf="businessdata.packages.length<4" type="text" formControlName="number" [(ngModel)]="pack.number">
+          <input *ngIf="businessdata.packages.length==4" disabled="true" type="text" formControlName="number" [(ngModel)]="pack.number">
+        <!-- <input [disabled]="packscomplete > 4" type="text" formControlName="number" [(ngModel)]="pack.number"> -->
       </div>
-      <div class="error" *ngFor="let validate of validation_messages.number">
+      <!-- <div class="error" *ngFor="let validate of validation_messages.number">
         <div class="messages"
         *ngIf="loginForm.get('number').hasError(validate.type) && (loginForm.get('number').dirty || loginForm.get('number').touched)">
           {{validate.message}}
         </div>
-      </div>
+        
+      </div> -->
       <ion-button size="small" (click)="addPack()">
         Add Package
       </ion-button>
