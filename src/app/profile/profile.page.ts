@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import * as firebase from 'firebase';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Camera,CameraOptions } from '@ionic-native/Camera/ngx';
@@ -16,6 +16,7 @@ import { AlertController } from '@ionic/angular';
 
 
 export class ProfilePage implements OnInit {
+  @ViewChild('inputs', {static: true}) input:ElementRef
 
   display = false;
   toastCtrl: any;
@@ -44,13 +45,11 @@ export class ProfilePage implements OnInit {
   currentPos : Geoposition;
   db = firebase.firestore();
   storage = firebase.storage().ref();
-
-  package = {
-    name: '',
-    amount: '',
-    number: ''
-  };
-
+  pack = {
+    amount: null,
+    name: null,
+    number: null
+  }
   businessdata = {
     schoolname: '',
     registration: '',
@@ -60,6 +59,7 @@ export class ProfilePage implements OnInit {
     cost: '',
     desc: '',
     address: '',
+    packages : [],
     open: '',
     closed: '',
     allday: 'true',
@@ -69,7 +69,7 @@ export class ProfilePage implements OnInit {
 
   amount : string;
 
- 
+  packscomplete = true;
 
   validation_messages = {
     'schoolname': [
@@ -145,12 +145,13 @@ export class ProfilePage implements OnInit {
      public router:Router,
      public camera: Camera,
      public alertController: AlertController,
-     public popoverController: PopoverController) 
+     public popoverController: PopoverController,
+     public rendere: Renderer2) 
 
      {
     
     this.loginForm = this.forms.group({
-      image: new FormControl(this.businessdata.image, Validators.compose([Validators.required])),
+      // image: new FormControl(this.businessdata.image, Validators.compose([Validators.required])),
       schoolname: new FormControl(this.businessdata.schoolname, Validators.compose([Validators.required])),
       
       registration: new FormControl(this.businessdata.cellnumber, Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])),
@@ -162,20 +163,41 @@ export class ProfilePage implements OnInit {
       open: new FormControl(this.businessdata.open, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-.]+$')])),
       closed: new FormControl(this.businessdata.closed, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-.]+$')])),
       allday: new FormControl(this.businessdata.allday, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-.]+$')])),
-      amount: new FormControl(this.package.amount, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-.]+$')])),
-      name: new FormControl(this.package.name, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-.]+$')]) ),
-      number: new FormControl(this.package.amount, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-.]+$')]))
+      amount: new FormControl(this.pack.amount, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-.]+$')])),
+      name: new FormControl(this.pack.name, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-.]+$')]) ),
+      number: new FormControl(this.pack.amount, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-.]+$')]))
     })
 
-   
+    // this.rendere.setStyle(this.input.nativeElement, 'opacity', 'o');
+    
+    
 
   }
 
   showData(){
     console.log('Data in the package',this.amount);
   }
-
-
+  addPack(){
+    
+    if (this.businessdata.packages.length == 4 || this.businessdata.packages.length > 3) {
+      this.packscomplete = true;
+      console.log('Packs are 4');
+      
+    } else {
+      this.businessdata.packages.push(this.pack);
+    this.pack = {
+      amount: null,
+      name: null,
+      number: null
+    }
+    }
+  }
+  deletepack(index) {
+    this.businessdata.packages.splice(index, 1);
+  }
+  editpack(pack) {
+    this.pack = pack;
+  }
   async presentPopover(ev: any) {
     const popover = await this.popoverController.create({
       component: PopOverComponent,
@@ -248,7 +270,7 @@ export class ProfilePage implements OnInit {
      }, err => {
      }, () => {
       upload.snapshot.ref.getDownloadURL().then(downUrl => {
-        this.userProfile.image = downUrl;
+        this.businessdata.image = downUrl;
         console.log('Image downUrl', downUrl);
 
         this.isuploaded = true;
@@ -282,9 +304,7 @@ export class ProfilePage implements OnInit {
             email : this.businessdata.email,
             image : this.businessdata.image,
             open : this.businessdata.open,
-            packages :{name: this.package.name,
-    amount: this.package.amount,
-  number: this.package.number},
+            packages :this.businessdata.packages,
             
             registration : this.businessdata.registration,
             schoolname : this.businessdata.schoolname,
@@ -311,7 +331,7 @@ export class ProfilePage implements OnInit {
           
         }
         
-        console.log('The data',this.package);
+        console.log('The data',this.pack);
         
       }
 
@@ -331,8 +351,10 @@ export class ProfilePage implements OnInit {
             this.businessdata.open = doc.data().open
             this.businessdata.address = doc.data().address
             this.businessdata.closed = doc.data().closed
-            
+            this.businessdata.packages = doc.data().packages
           })
+         this.pack = this.businessdata.packages[0];
+         console.log(this.businessdata);
          
         }).catch(err => {
           console.log(err);
