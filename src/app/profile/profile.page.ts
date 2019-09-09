@@ -8,6 +8,7 @@ import { GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/ge
 import { PopoverController } from '@ionic/angular';
 import { PopOverComponent } from '../pop-over/pop-over.component';
 import { AlertController } from '@ionic/angular';
+import * as moment from 'moment';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
@@ -64,15 +65,15 @@ export class ProfilePage implements OnInit {
     desc: '',
     address: '',
     packages : [],
-    open: '',
-    closed: '',
+    open: 'boolean',
+    closed: 'true',
     allday: 'true',
     schooluid: '',
-  
+   
   }
 
   amount : string;
-
+  now = moment().format('"hh-mm-A"');
 
   validation_messages = {
     'schoolname': [
@@ -183,11 +184,11 @@ export class ProfilePage implements OnInit {
 
  async  addPack(){
     
-    if (this.businessdata.packages.length === 4 || this.pack.amount === null || this.pack.name === null || this.pack.number === null) {
+    if (this.businessdata.packages.length == 4 || this.pack.amount === null || this.pack.name === null || this.pack.number === null) {
       const alert = await this.alertController.create({
         header: 'Alert',
         subHeader: 'Subtitle',
-        message: 'This is an alert message.',
+        message: 'filed cannot be empty and the packages must be four.',
         buttons: ['OK']
       });
   
@@ -226,9 +227,6 @@ export class ProfilePage implements OnInit {
     this.options = {
       enableHighAccuracy : true
   };
-
- 
-
   this.geolocation.getCurrentPosition(this.options).then((pos : Geoposition) => {
 
       this.currentPos = pos;      
@@ -246,10 +244,11 @@ export class ProfilePage implements OnInit {
       // }
       // this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
       // this.addMarker();
+      this.getProfile();
   },(err : PositionError)=>{
       console.log("error : " + err.message);
   });
-    this.getProfile();
+    
   }
 
 
@@ -324,10 +323,11 @@ export class ProfilePage implements OnInit {
           }).then(res => {
             console.log('Profile created');
             this.getProfile()
-            this.router.navigateByUrl('/the-map');
+            this.router.navigateByUrl('main');
           }).catch(error => {
             console.log('Error');
           });
+
   //allrt for time 
         }else{
 
@@ -345,6 +345,55 @@ export class ProfilePage implements OnInit {
         
         console.log('The data',this.pack);
         
+
+        // open(){
+        //   console.log('The customers CheckintDate ',this.businessdata.open);
+        //   console.log('Todays date is ', this.now);
+        //   if(this.businessdata.open < this.now){
+        //     const alert = await this.alertController.create({
+        //       message: 'Please select the correct time.',
+        //       buttons: ['OK']
+        //     });
+        //       alert.present();
+        //   }else {
+        //     this.businessdata.open = true;
+        //   }
+        //   console.log(this.businessdata.open);
+        // }
+      
+        // closed(){
+        //   console.log('The customers CheckOutDate ',  this.businessdata.closed );
+        //   console.log('Todays date is ', this.now);
+        //   if(this.businessdata.closed <  this.businessdata.closed){
+        //     const alert = await this.alertController.create({
+        //       message: 'Please select the correct time.',
+        //       buttons: ['OK']
+        //     });
+        //       alert.present();
+        //   }else if( this.businessdata.closed === undefined){
+        //     const alert =  this.alert.create({
+        //       message: 'Please select the Checkin time first.',
+        //       buttons: ['OK']
+        //     });
+        //       alert.present();
+        //   }else if (this.businessdata.closed === this.businessdata.closed){
+        //     const alert = await this.alertController.create({
+        //       message: 'open and closing time cannot not the same  cannot be on the same day.',
+        //       buttons: ['OK']
+        //     });
+        //       alert.present();
+        //   }else{
+        //     this.businessdata.closed = true; 
+        //     console.log("the checkout part");
+        //   }
+        //   console.log(this.businessdata.closed);
+        // }
+      
+  
+
+
+
+
       }
 
 
@@ -376,8 +425,7 @@ export class ProfilePage implements OnInit {
 
       goToRev() {
         this.router.navigate(['past-b']);
-      }
-      
+      } 
     }
 
     

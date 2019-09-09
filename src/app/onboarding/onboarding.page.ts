@@ -18,7 +18,7 @@ export class OnboardingPage implements OnInit {
     this.storage.get('onboarding').then(val => {
       if (val == 'checked') {
         console.log(val);
-        this.router.navigate(['main']);
+        this.router.navigate(['login']);
 
       } else {
         console.log('on-boarding now');
