@@ -97,7 +97,7 @@
   <div class="inp" #inputs>
     <div class="input">
       <p>amount</p>
-        <input [disabled]="packscomplete" type="text" formControlName="amount" [(ngModel)]="pack.amount">
+        <input  type="text" formControlName="amount" [(ngModel)]="pack.amount">
       </div>
       <div class="error" *ngFor="let validate of validation_messages.amount">
         <div class="messages"
@@ -108,7 +108,7 @@
 
       <div class="input">
         <p>Package name</p>
-        <input  [disabled]="packscomplete==true" type="text" formControlName="name" [(ngModel)]="pack.name">
+        <input   type="text" formControlName="name" [(ngModel)]="pack.name">
       </div>
 
       <div class="error" *ngFor="let validate of validation_messages.name">
@@ -120,7 +120,7 @@
 
       <div class="input">
         <p>number</p>
-        <input [disabled]="packscomplete" type="text" formControlName="number" [(ngModel)]="pack.number">
+        <input  type="text" formControlName="number" [(ngModel)]="pack.number">
       </div>
       <div class="error" *ngFor="let validate of validation_messages.number">
         <div class="messages"

@@ -45,11 +45,15 @@ export class ProfilePage implements OnInit {
   currentPos : Geoposition;
   db = firebase.firestore();
   storage = firebase.storage().ref();
+
+
   pack = {
     amount: null,
     name: null,
     number: null
   }
+
+
   businessdata = {
     schoolname: '',
     registration: '',
@@ -69,7 +73,6 @@ export class ProfilePage implements OnInit {
 
   amount : string;
 
-  packscomplete = true;
 
   validation_messages = {
     'schoolname': [
@@ -177,21 +180,30 @@ export class ProfilePage implements OnInit {
   showData(){
     console.log('Data in the package',this.amount);
   }
-  addPack(){
+
+ async  addPack(){
     
-    if (this.businessdata.packages.length == 4 || this.businessdata.packages.length > 3) {
-      this.packscomplete = true;
-      console.log('Packs are 4');
+    if (this.businessdata.packages.length === 4 || this.pack.amount === null || this.pack.name === null || this.pack.number === null) {
+      const alert = await this.alertController.create({
+        header: 'Alert',
+        subHeader: 'Subtitle',
+        message: 'This is an alert message.',
+        buttons: ['OK']
+      });
+  
+      await alert.present();
       
     } else {
       this.businessdata.packages.push(this.pack);
-    this.pack = {
+      this.pack = {
       amount: null,
       name: null,
       number: null
-    }
+      }
     }
   }
+
+
   deletepack(index) {
     this.businessdata.packages.splice(index, 1);
   }
