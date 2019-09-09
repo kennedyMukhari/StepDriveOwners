@@ -8,7 +8,7 @@
     <div class="profile" *ngFor="let data of Booking">
       <div class="image">
      <div class="img">
-        <img src="{{data.user.image}}" alt="">
+        <!-- <img src="{{data.user.image}}" alt=""> -->
      </div>
       </div>
       <div class="details" >
@@ -26,10 +26,10 @@
 
 
 
-        <h4>Address: {{Customer.doc.location.address}}</h4>
-        <h4>Datein: {{Customer.doc.datein}}</h4>
-        <h4>Dateout: {{Customer.doc.dateout}}</h4>
-        <h4>PackageName: {{Customer.doc.package.name}}</h4>
+        <h4>Address: {{data.doc.location.address}}</h4>
+        <h4>Datein: {{data.doc.datein}}</h4>
+        <h4>Dateout: {{data.doc.dateout}}</h4>
+        <h4>PackageName: {{data.doc.package.name}}</h4>
   
         <!-- <p id="package">Packge:<b>{{data.package.amount}}</b></p>
         <p id="package"><b>{{data.package.number}}</b></p>

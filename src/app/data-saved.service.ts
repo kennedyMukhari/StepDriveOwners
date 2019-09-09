@@ -7,5 +7,5 @@ export class DataSavedService {
 
   constructor() { }
 
-  SavedData = {};
+  SavedData = [];
 }

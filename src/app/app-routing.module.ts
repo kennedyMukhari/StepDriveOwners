@@ -3,6 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   { path: '', redirectTo: 'onboarding', pathMatch: 'full' },
+  { path: 'the-map', loadChildren: './the-map/the-map.module#TheMapPageModule' },
   { path: 'home', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
   { path: 'main', loadChildren: './main/main.module#MainPageModule' },
   { path: 'viewdetails', loadChildren: './viewdetails/viewdetails.module#ViewdetailsPageModule' },
@@ -16,7 +17,6 @@ const routes: Routes = [
   { path: 'profile', loadChildren: './profile/profile.module#ProfilePageModule' },
   { path: 'graphs', loadChildren: './graphs/graphs.module#GraphsPageModule' },
   { path: 'past-b', loadChildren: './past-b/past-b.module#PastBPageModule' },
-  { path: 'the-map', loadChildren: './the-map/the-map.module#TheMapPageModule' },
   { path: 'onboarding', loadChildren: './onboarding/onboarding.module#OnboardingPageModule' },
   { path: 'reset-password', loadChildren: './reset-password/reset-password.module#ResetPasswordPageModule' },
   { path: 'prof', loadChildren: './prof/prof.module#ProfPageModule' },
