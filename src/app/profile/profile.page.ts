@@ -74,7 +74,7 @@ export class ProfilePage implements OnInit {
    
   }
 
-  amount : string;
+  // amount : string;
   now = moment().format('"hh-mm-A"');
 
   validation_messages = {
@@ -207,7 +207,7 @@ export class ProfilePage implements OnInit {
   }
 
   showData(){
-    console.log('Data in the package',this.amount);
+    // console.log('Data in the package',this.amount);
   }
 
  async  addPack(){

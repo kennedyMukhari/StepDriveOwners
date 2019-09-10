@@ -33,10 +33,33 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        // flex-direction: column;
+        flex-direction: column;
         top: 0;
         right: 0;
         padding-right: 2px;
+        .views {
+          top: 10px;
+          right: 0;
+          color: white;
+          display: flex;
+          padding-right:6%; 
+          align-items: center;
+          font-size: 10px;
+          // border: 1px solid white;
+          p{
+            font-size: 10px;
+            top: 0;
+          }
+        }
+        .stars {
+          // border: 1px solid white;
+          top: 10px;
+          right: 0;
+          color: white;
+          display: flex;
+          padding-right:6%; 
+          justify-content: center;
+        }
       }
 
       .thumbavatar {
@@ -185,7 +208,7 @@
      .progress{
        display: flex;
        justify-content: center;
-       
+
       ion-progress-bar {
         width: 60%;
       }

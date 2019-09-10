@@ -10,10 +10,16 @@
 
       <div class="avatar-images">
         <div (click)="goToRev()" class="rev">
-          <ion-icon name="star"></ion-icon>
-          <ion-icon size="large" name="star-half"></ion-icon>
-          <ion-icon name="star-outline"></ion-icon>
+          <div class="stars">
+            <ion-icon name="star"></ion-icon>
+            <ion-icon size="large" name="star-half"></ion-icon>
+            <ion-icon name="star-outline"></ion-icon>
+          </div>
+          <div class="views">
+            Reviews
+          </div>
         </div>
+
         <img *ngIf="!this.businessdata.image" (click)="selectImage()" src="../../assets/icon2.png" class="thumbavatar">
         <img *ngIf="this.businessdata.image" src="{{this.businessdata.image}}" class="thumbavatar" (click)="selectImage()">
       </div>
@@ -141,7 +147,7 @@
           </div>
           <div class="s-packs">
             <div>
-              <p *ngIf="!businessdata.packages[0]">No packages</p>
+              <p text-center *ngIf="!businessdata.packages[0]"><strong>No packages yet</strong></p>
               <div class="pack-l" *ngFor="let p of businessdata.packages; let i = index" (click)="editpack(p)">
                 <p><b>{{p.name}}</b></p>
                 <p> {{p.number}} Lessons R{{p.amount}}.00</p>
