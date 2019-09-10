@@ -12,6 +12,7 @@ import { Router }  from '@angular/router';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
+  db = firebase.firestore()
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -19,18 +20,21 @@ export class AppComponent {
     public router : Router
   ) {
     this.initializeApp();
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        // User is signed in.
-        console.log('Current user in', user.uid);
-      } else {
-        // No user is signed in.
-      }
-    });
+    
   }
 
   initializeApp() {
+    
     this.platform.ready().then(() => {
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          // User is signed in.
+          
+          console.log('Current user in', user.uid);
+        } else {
+          // No user is signed in.
+        }
+      });
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });

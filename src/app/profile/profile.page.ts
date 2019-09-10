@@ -67,8 +67,8 @@ export class ProfilePage implements OnInit {
     desc: '',
     address: '',
     packages : [],
-    open: '',
-    closed: '',
+    open: 'boolean',
+    closed: 'true',
     allday: 'true',
     schooluid: '',
    
@@ -393,7 +393,7 @@ export class ProfilePage implements OnInit {
           }).then(res => {
             console.log('Profile created');
             this.getProfile()
-            this.router.navigateByUrl('/the-map');
+            this.router.navigateByUrl('main');
           }).catch(error => {
             console.log('Error');
           });
@@ -467,8 +467,9 @@ export class ProfilePage implements OnInit {
       
       }
 
-      
-      
+      goToRev() {
+        this.router.navigate(['past-b']);
+      } 
     }
 
     

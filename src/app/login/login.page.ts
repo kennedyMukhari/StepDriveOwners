@@ -3,7 +3,7 @@ import { FormGroup, Validators, FormBuilder, ReactiveFormsModule, FormsModule } 
 import { LoadingController, AlertController } from '@ionic/angular';
 import { AuthService } from '../../app/user/auth.service';
 import { Router } from '@angular/router';
-
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-login',
@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.page.scss']
 })
 export class LoginPage implements OnInit {
+  db = firebase.firestore()
   public loginForm: FormGroup;
   public loading: HTMLIonLoadingElement;
 
@@ -32,23 +33,49 @@ export class LoginPage implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user.uid) {
+        this.db.collection('drivingschools').where('schooluid', '==', user.uid).get().then(res => {
+          if (res.empty) {
+            this.router.navigateByUrl('profile');
+          } else {
+            this.router.navigateByUrl('main');
+          }
+        })
+      }
+    })
+  }
 
   async loginUser(loginForm: FormGroup): Promise<void> {
     if (!loginForm.valid) {
       console.log('Form is not valid yet, current value:', loginForm.value);
     } else {
       this.loading = await this.loadingCtrl.create();
-      await this.loading.present();
+      this.loading.present();
 
       const email = loginForm.value.email;
       const password = loginForm.value.password;
 
       this.authService.loginUser(email, password).then(
-        () => {
-          this.loading.dismiss().then(() => {
-            this.router.navigateByUrl('main');
-          });
+        (user) => {
+          // this.loading.dismiss().then(() => {
+          //   this.router.navigateByUrl('main');
+          // });
+          firebase.auth().onAuthStateChanged(user => {
+            if (user.uid) {
+              this.db.collection('drivingschools').where('schooluid', '==', user.uid).get().then(res => {
+                if (res.empty) {
+                  this.loading.dismiss()
+                  this.router.navigateByUrl('profile');
+                  
+                } else {
+                  this.loading.dismiss()
+                  this.router.navigateByUrl('main');
+                }
+              })
+            }
+          })
         },
         error => {
           this.loading.dismiss().then(async () => {
