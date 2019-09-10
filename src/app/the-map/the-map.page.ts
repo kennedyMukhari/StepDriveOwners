@@ -133,7 +133,8 @@ async presentAlert() {
       this.requests = [];
       this.NewRequeste = [];
       console.log('You are logged out');
-      firebase.auth().signOut().then(res => {
+      firebase.auth().signOut().then((res) => {
+       console.log(res);
         this.router.navigateByUrl('/login');
       })
     }
