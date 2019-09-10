@@ -186,7 +186,7 @@ export class ProfilePage implements OnInit {
     })
   }
   showData(){
-    console.log('Data in the package',this.amount);
+    // console.log('Data in the package',this.amount);
   }
  async  addPack(){
     
@@ -258,9 +258,12 @@ export class ProfilePage implements OnInit {
   deletepack(index) {
     this.businessdata.packages.splice(index, 1);
   }
+
   editpack(pack) {
     this.pack = pack;
   }
+
+
   async presentPopover(ev: any) {
     const popover = await this.popoverController.create({
       component: PopOverComponent,

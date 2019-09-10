@@ -11,6 +11,12 @@
     background-size: cover;
     height: 100%;
     overflow: hidden;
+    .logt{
+      position: absolute;
+      top: 0;
+      color: white;
+      right: 0;
+    }
     .avatar-images {
       width: 100%;
       height: 30vh;
