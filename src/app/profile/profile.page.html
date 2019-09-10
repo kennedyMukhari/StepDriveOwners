@@ -21,7 +21,8 @@
 
       <div class="profile-form">
 
-        <p *ngIf="isuploading">Uploading</p>
+        <!-- <p *ngIf="isuploading">Uploading</p> -->
+        <ion-progress-bar *ngIf="isuploading" type="indeterminate" color="secondary" value="0.5"></ion-progress-bar>
         <p *ngIf="isuploaded">Done</p>
         <div class="input">
           <p>SchoolName</p>
