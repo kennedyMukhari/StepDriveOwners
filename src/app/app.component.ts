@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import * as firebase from 'firebase';
 import { Router }  from '@angular/router';
+import { TabsService } from './core/tabs.service';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ import { Router }  from '@angular/router';
 export class AppComponent {
   constructor(
     private platform: Platform,
+    public tabs: TabsService,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     public router : Router

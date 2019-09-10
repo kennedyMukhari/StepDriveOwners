@@ -29,7 +29,7 @@
     
      
         
-          <div class="card"  *ngFor="let r of reviews">
+          <div class="card"  *ngFor="let r of Newreviews">
             <div class="ava">
               <ion-avatar slot="start">
                 <img src="../../assets/shapes.svg">
@@ -38,9 +38,9 @@
           
             <div class="comments">
               <ion-label>
-                <h2>{{r.name}}</h2>
+                <h2>{{r.username}}</h2>
       
-                <p>{{r.comments}}</p>
+                <p>{{r.text}}</p>
               </ion-label>
             </div>
           </div>

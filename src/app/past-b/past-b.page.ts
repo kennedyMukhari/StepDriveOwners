@@ -11,24 +11,35 @@ export class PastBPage implements OnInit {
   db = firebase.firestore();
   //array in a database
   reviews = [];
+  Newreviews = [];
   constructor(private router: Router) { 
-    this.db.collection('review').onSnapshot(snapshot => {
-      snapshot.forEach(doc => {
-        // this.users = doc.data();
-        // this.addMarkersOnTheCustomersCurrentLocation(this.users.coords.lat, this.users.coords.lng);
-        this.reviews.push(doc.data());
-        console.log('My array is ',this.reviews);
-        this.reviews.forEach(Customers => {
-          console.log('reviews in my array in my array', Customers.schooluid);
-          console.log('Owners UID logged in', firebase.auth().currentUser.uid);
-          if(Customers.schooluid === firebase.auth().currentUser.uid){
-             this.reviews.push(doc.data())
-          }
-        }) 
+  
 
+  }
+
+  ionViewWillEnter(){
+   
+    this.db.collection('reviews').onSnapshot(snapshot => {
+      this.Newreviews = [];
+     
+      snapshot.forEach(Element => {
+       
+            this.reviews.push(Element.data());
+      });
+
+      this.reviews.forEach(item => {
+      
+        if(item.schooluid === firebase.auth().currentUser.uid){
+                 this.Newreviews.push(item)
+              }
       })
+      
+      console.log('NewreViews', this.Newreviews.length);
     });
 
+    
+    
+    
   }
 
   ngOnInit() {

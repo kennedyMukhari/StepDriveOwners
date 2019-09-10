@@ -12,6 +12,10 @@ const routes: Routes = [
   {
     path: '',
     component: ProfilePage
+  },
+  {
+    path: 'main',
+    component: ProfilePage
   }
 ];
 

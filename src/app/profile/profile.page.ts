@@ -8,16 +8,14 @@ import { GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/ge
 import { PopoverController } from '@ionic/angular';
 import { PopOverComponent } from '../pop-over/pop-over.component';
 import { AlertController } from '@ionic/angular';
+import * as moment from 'moment';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
 })
-
-
 export class ProfilePage implements OnInit {
   @ViewChild('inputs', {static: true}) input:ElementRef
-
   display = false;
   toastCtrl: any;
   swipeUp() {
@@ -40,20 +38,16 @@ export class ProfilePage implements OnInit {
    number: '',
    amount:''
   }
-
   options : GeolocationOptions;
   currentPos : Geoposition;
   db = firebase.firestore();
   storage = firebase.storage().ref();
-
-
   pack = {
     amount: null,
     name: null,
     number: null
   }
-
-
+  opened : boolean
   businessdata = {
     schoolname: '',
     registration: '',
@@ -68,12 +62,10 @@ export class ProfilePage implements OnInit {
     closed: '',
     allday: 'true',
     schooluid: '',
-  
+   
   }
-
   amount : string;
-
-
+  now = moment().format('"hh-mm-A"');
   validation_messages = {
     'schoolname': [
       {type: 'required', message: 'schoolname is required.'},
@@ -87,7 +79,6 @@ export class ProfilePage implements OnInit {
    'email': [
     {type: 'required', message: 'email is valid.'},
     {type: 'minlength', message: 'email is required.'},
-
   ],
   'cellnumber': [
     {type: 'required', message: 'cellnumber is required.'},
@@ -132,8 +123,6 @@ export class ProfilePage implements OnInit {
     {type: 'required', message: 'Amount is required.'},
   ]
   }
-
-
   profileForm: FormGroup
   profileImage: string;
   userProv: any;
@@ -150,7 +139,6 @@ export class ProfilePage implements OnInit {
      public alertController: AlertController,
      public popoverController: PopoverController,
      public rendere: Renderer2) 
-
      {
     
     this.loginForm = this.forms.group({
@@ -170,24 +158,43 @@ export class ProfilePage implements OnInit {
       name: new FormControl(this.pack.name, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-.]+$')]) ),
       number: new FormControl(this.pack.amount, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-.]+$')]))
     })
-
     // this.rendere.setStyle(this.input.nativeElement, 'opacity', 'o');
     
-    
-
   }
-
+  ionViewWillEnter(){
+    this.db.collection('drivingschools').where('schooluid', '==', firebase.auth().currentUser.uid).get().then(res => {
+      res.forEach(doc => {
+        console.log(doc.data());
+        this.businessdata.image = doc.data().image
+        this.businessdata.schoolname = doc.data().schoolname
+        this.businessdata.registration = doc.data().registration
+        this.businessdata.email = doc.data().email
+        this.businessdata.cellnumber = doc.data().cellnumber
+        this.businessdata.cost = doc.data().cost
+        this.businessdata.desc = doc.data().desc
+        this.businessdata.open = doc.data().open
+        this.businessdata.address = doc.data().address
+        this.businessdata.closed = doc.data().closed
+        this.businessdata.packages = doc.data().packages
+      })
+     this.pack = this.businessdata.packages[0];
+     console.log(this.businessdata);
+     
+    }).catch(err => {
+      console.log(err);
+      
+    })
+  }
   showData(){
     console.log('Data in the package',this.amount);
   }
-
  async  addPack(){
     
-    if (this.businessdata.packages.length === 4 || this.pack.amount === null || this.pack.name === null || this.pack.number === null) {
+    if (this.businessdata.packages.length == 4 || this.pack.amount === null || this.pack.name === null || this.pack.number === null) {
       const alert = await this.alertController.create({
         header: 'Alert',
         subHeader: 'Subtitle',
-        message: 'This is an alert message.',
+        message: 'filed cannot be empty and the packages must be four.',
         buttons: ['OK']
       });
   
@@ -202,8 +209,52 @@ export class ProfilePage implements OnInit {
       }
     }
   }
-
-
+  async CheckData(){
+  //   let one : string;
+  //   let two = "08:01 am";
+  //   console.log(this.businessdata.open);
+  //   console.log(this.businessdata.closed);
+    
+  
+  //   one =  this.businessdata.closed;
+  //   // console.log('Data parsed', one);
+  //   for(let i = 0; i < one.length; i ++){
+  //     console.log(one[i]);
+      
+  //   }
+  // console.log('Your time is',);
+  
+  if(this.businessdata.closed.slice(11, 16) === this.businessdata.open.slice(11, 16) || this.businessdata.closed.slice(11, 16) < this.businessdata.open.slice(11, 16)){
+    const alert = await this.alertController.create({
+      // header: 'Alert',
+      // subHeader: 'Subtitle',
+      message: 'time canot not be the same .',
+      buttons: ['OK']
+    });
+    await alert.present();
+  }else{
+    const alert = await this.alertController.create({
+      // header: 'Alert',
+      // subHeader: 'Subtitle',
+      message: 'Well Done Buddy Way to Go!',
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+    // function formatAMPM(date) {
+    //   var hours = date.getHours();
+    //   var minutes = date.getMinutes();
+    //   var ampm = hours >= 12 ? 'pm' : 'am';
+    //   hours = hours % 12;
+    //   hours = hours ? hours : 12; // the hour '0' should be '12'
+    //   minutes = minutes < 10 ? '0'+minutes : minutes;
+    //   var strTime = hours + ':' + minutes + ' ' + ampm;
+    //   return strTime;
+    // }
+    
+    // console.log(formatAMPM(new Date));
+    
+  }
   deletepack(index) {
     this.businessdata.packages.splice(index, 1);
   }
@@ -219,42 +270,11 @@ export class ProfilePage implements OnInit {
     });
     return await popover.present();
   }
-
   obj = {};
   // options : GeolocationOptions;
   ngOnInit() {
-    this.options = {
-      enableHighAccuracy : true
-  };
-
- 
-
-  this.geolocation.getCurrentPosition(this.options).then((pos : Geoposition) => {
-
-      this.currentPos = pos;      
-      console.log(pos);
-      // this.addMap(pos.coords.latitude, pos.coords.longitude);
-     
-    this.obj = pos.coords;
-    console.log('Current Location in the profile page', this.obj);
-      // let latLng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-      // let mapOptions = {
-      // center: latLng,
-      // zoom: 15,
-      // disableDefaultUI: true,
-      // mapTypeId: google.maps.MapTypeId.ROADMAP
-      // }
-      // this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-      // this.addMarker();
-  },(err : PositionError)=>{
-      console.log("error : " + err.message);
-  });
-    this.getProfile();
   }
-
-
   // image upload
-
   async selectImage(){
     let option: CameraOptions = {
       quality: 100,
@@ -267,24 +287,26 @@ export class ProfilePage implements OnInit {
     await this.camera.getPicture(option).then( res => {
       console.log(res);
       const image = `data:image/jpeg;base64,${res}`;
-
       this.profileImage = image;
       // const UserImage = this.storage.child(this.userProv.getUser().uid+'.jpg');
       let imageRef =this.storage.child('image').child('imageName');
-
     const upload = imageRef.putString(image, 'data_url');
      upload.on('state_changed', snapshot => {
        let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
        this.uploadprogress = progress;
        if (progress == 100){
-        this.isuploading = false;
+        this.isuploading = true;
+if (this.uploadprogress == 100){
+       this.isuploading = false;
+      }else {
+        this.isuploading = true;
+      }
        }
      }, err => {
      }, () => {
       upload.snapshot.ref.getDownloadURL().then(downUrl => {
         this.businessdata.image = downUrl;
         console.log('Image downUrl', downUrl);
-
         this.isuploaded = true;
       })
      })
@@ -294,88 +316,103 @@ export class ProfilePage implements OnInit {
     this.imageSelected = true;
   }
   
-
-
-
   // await(){
   //   this.router.navigateByUrl('/Awaiting')
   // }
   //inserting driving drivers school details to the database 
-
-
  
   async  createAccount(){
-        if (this.businessdata.open != this.businessdata.closed){
-          this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
-            address : this.businessdata.address,
-            allday : this.businessdata.allday,
-            cellnumber : this.businessdata.cellnumber,
-            closed : this.businessdata.closed,
-            cost : this.businessdata.cost,
-            desc : this.businessdata.desc,
-            email : this.businessdata.email,
-            image : this.businessdata.image,
-            open : this.businessdata.open,
-            packages :this.businessdata.packages,
+    
+        // if (this.businessdata.closed.slice(11, 16)  != this.businessdata.open.slice(11, 16)  && this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)  ){
+        //   this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
+        //     address : this.businessdata.address,
+        //     allday : this.businessdata.allday,
+        //     cellnumber : this.businessdata.cellnumber,
+        //     closed : this.businessdata.closed,
+        //     cost : this.businessdata.cost,
+        //     desc : this.businessdata.desc,
+        //     email : this.businessdata.email,
+        //     image : this.businessdata.image,
+        //     open : this.businessdata.open,
+        //     packages :this.businessdata.packages,
             
-            registration : this.businessdata.registration,
-            schoolname : this.businessdata.schoolname,
-            schooluid : firebase.auth().currentUser.uid
-          }).then(res => {
-            console.log('Profile created');
-            this.getProfile()
-            this.router.navigateByUrl('/the-map');
-          }).catch(error => {
-            console.log('Error');
-          });
-  //allrt for time 
-        }else{
-
-          const alert = await this.alertController.create({
-            // header: 'Alert',
-            // subHeader: 'Subtitle',
-            message: 'time canot not be the same .',
-            buttons: ['OK']
-          });
+        //     registration : this.businessdata.registration,
+        //     schoolname : this.businessdata.schoolname,
+        //     schooluid : firebase.auth().currentUser.uid
+        //   }).then(res => {
+        //     console.log('Profile created');
+        //     this.getProfile()
+        //     this.router.navigateByUrl('the-map');
+        //   }).catch(error => {
+        //     console.log('Error');
+        //   });
+        // }else{
+        //   const alert = await this.alertController.create({
+        //     // header: 'Alert',
+        //     // subHeader: 'Subtitle',
+        //     message: 'Enter the correct time!',
+        //     buttons: ['OK']
+        //   });
       
-          await alert.present();
+        //   await alert.present();
           
           
-        }
+        // }
         
-        console.log('The data',this.pack);
-        
+        console.log('The data',this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)  );
+ 
       }
-
-
+      // async open(){
+      //     console.log('The customers CheckintDate ',this.businessdata.open);
+      //     console.log('Todays date is ', this.now);
+      //     if(this.businessdata.open < this.now){
+      //       const alert = await this.alertController.create({
+      //         message: 'Please select the correct time.',
+      //         buttons: ['OK']
+      //       });
+      //         alert.present();
+      //     }else {
+      //       this.businessdata.open = true;
+      //     }
+      //     console.log(this.businessdata.open);
+      //   }
+      
+      //   closed(){
+      //     console.log('The customers CheckOutDate ',  this.businessdata.closed );
+      //     console.log('Todays date is ', this.now);
+      //     if(this.businessdata.closed <  this.businessdata.closed){
+      //       const alert = await this.alertController.create({
+      //         message: 'Please select the correct time.',
+      //         buttons: ['OK']
+      //       });
+      //         alert.present();
+      //     }else if( this.businessdata.closed === undefined){
+      //       const alert =  this.alert.create({
+      //         message: 'Please select the Checkin time first.',
+      //         buttons: ['OK']
+      //       });
+      //         alert.present();
+      //     }else if (this.businessdata.closed === this.businessdata.closed){
+      //       const alert = await this.alertController.create({
+      //         message: 'open and closing time cannot not the same  cannot be on the same day.',
+      //         buttons: ['OK']
+      //       });
+      //         alert.present();
+      //     }else{
+      //       this.businessdata.closed = true; 
+      //       console.log("the checkout part");
+      //     }
+      //     console.log(this.businessdata.closed);
+      //   }
+      
       getProfile() {
         
-        this.db.collection('drivingschools').where('schooluid', '==', firebase.auth().currentUser.uid).get().then(res => {
-          res.forEach(doc => {
-            console.log(doc.data());
-            this.businessdata.image = doc.data().image
-            this.businessdata.schoolname = doc.data().schoolname
-            this.businessdata.registration = doc.data().registration
-            this.businessdata.email = doc.data().email
-            this.businessdata.cellnumber = doc.data().cellnumber
-            this.businessdata.cost = doc.data().cost
-            this.businessdata.desc = doc.data().desc
-            this.businessdata.open = doc.data().open
-            this.businessdata.address = doc.data().address
-            this.businessdata.closed = doc.data().closed
-            this.businessdata.packages = doc.data().packages
-          })
-         this.pack = this.businessdata.packages[0];
-         console.log(this.businessdata);
-         
-        }).catch(err => {
-          console.log(err);
-          
-        })
+      
       }
-
-      
-      
+      goToRev() {
+        this.router.navigate(['past-b']);
+      } 
+      profile() {
+        this.router.navigate(['the-map']);
+      } 
     }
-
-    
