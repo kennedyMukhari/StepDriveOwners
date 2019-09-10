@@ -74,7 +74,7 @@ export class ProfilePage implements OnInit {
    
   }
 
-  // amount : string;
+  amount : string;
   now = moment().format('"hh-mm-A"');
 
   validation_messages = {
@@ -207,7 +207,7 @@ export class ProfilePage implements OnInit {
   }
 
   showData(){
-    // console.log('Data in the package',this.amount);
+    console.log('Data in the package',this.amount);
   }
 
  async  addPack(){
@@ -343,11 +343,11 @@ export class ProfilePage implements OnInit {
        if (progress == 100){
         this.isuploading = true;
 
-        if (this.uploadprogress == 100){
-          this.isuploading = false;
-         }else {
-           this.isuploading = true;
-         }
+if (this.uploadprogress == 100){
+       this.isuploading = false;
+      }else {
+        this.isuploading = true;
+      }
 
 
        }
@@ -382,45 +382,45 @@ export class ProfilePage implements OnInit {
 
 
     
-        if (this.businessdata.closed.slice(11, 16)  != this.businessdata.open.slice(11, 16)  && this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)  ){
-          this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
-            address : this.businessdata.address,
-            allday : this.businessdata.allday,
-            cellnumber : this.businessdata.cellnumber,
-            closed : this.businessdata.closed,
-            cost : this.businessdata.cost,
-            desc : this.businessdata.desc,
-            email : this.businessdata.email,
-            image : this.businessdata.image,
-            open : this.businessdata.open,
-            packages :this.businessdata.packages,
+        // if (this.businessdata.closed.slice(11, 16)  != this.businessdata.open.slice(11, 16)  && this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)  ){
+        //   this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
+        //     address : this.businessdata.address,
+        //     allday : this.businessdata.allday,
+        //     cellnumber : this.businessdata.cellnumber,
+        //     closed : this.businessdata.closed,
+        //     cost : this.businessdata.cost,
+        //     desc : this.businessdata.desc,
+        //     email : this.businessdata.email,
+        //     image : this.businessdata.image,
+        //     open : this.businessdata.open,
+        //     packages :this.businessdata.packages,
             
-            registration : this.businessdata.registration,
-            schoolname : this.businessdata.schoolname,
-            schooluid : firebase.auth().currentUser.uid
-          }).then(res => {
-            console.log('Profile created');
-            this.getProfile()
-            this.router.navigateByUrl('the-map');
-          }).catch(error => {
-            console.log('Error');
-          });
+        //     registration : this.businessdata.registration,
+        //     schoolname : this.businessdata.schoolname,
+        //     schooluid : firebase.auth().currentUser.uid
+        //   }).then(res => {
+        //     console.log('Profile created');
+        //     this.getProfile()
+        //     this.router.navigateByUrl('the-map');
+        //   }).catch(error => {
+        //     console.log('Error');
+        //   });
 
-        }else{
+        // }else{
 
-          const alert = await this.alertController.create({
-            // header: 'Alert',
-            // subHeader: 'Subtitle',
-            message: 'Enter the correct time!',
-            buttons: ['OK']
-          });
+        //   const alert = await this.alertController.create({
+        //     // header: 'Alert',
+        //     // subHeader: 'Subtitle',
+        //     message: 'Enter the correct time!',
+        //     buttons: ['OK']
+        //   });
       
-          await alert.present();
+        //   await alert.present();
           
           
-        }
+        // }
         
-        // console.log('The data',this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)  );
+        console.log('The data',this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)  );
  
       }
 
