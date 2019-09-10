@@ -85,14 +85,7 @@ async presentAlert() {
   
   }
 
-  ll(){
-       var arr = [{},
-        {datein: '07-04-2019'},
-        {datein: '07-02-2019'},
-        {datein: '07-05-2019'}]; 
-       var sorted = arr.sort(); 
-       console.log("Returned string is : " + sorted );
-  }
+
 
   Accept(Customer, i, docid){
       this.db.collection('bookings').doc(docid).set({confirmed: 'accepted'}, {merge: true});
@@ -107,6 +100,9 @@ async presentAlert() {
   // ngOnInit() {
   //   // this.add()
   // }
+
+
+ 
 
 
   Decline(doc, docid, i){

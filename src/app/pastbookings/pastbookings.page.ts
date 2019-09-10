@@ -18,6 +18,7 @@ export class PastbookingsPage implements OnInit {
  NewBooking=[];
  user=[];
  Customer = [];
+ SortedBookings = [];
 
 
 
@@ -60,6 +61,7 @@ export class PastbookingsPage implements OnInit {
 
   
  ionViewDidEnter(){
+
   this.Booking = [];
   this.Customer = this.data.SavedData;
   console.log("Data in the profile is",this.Customer);
@@ -70,7 +72,35 @@ export class PastbookingsPage implements OnInit {
     }        
   
   })
+  this.SortData();
  }
+ 
+
+ bubbleSort(array){
+  const length = array.length;
+  for(let i = 0; i < length; i++){
+    for(let j = 0; j < length - 1; j++){
+      if(array[j].doc.date > array[j + 1].doc.date){
+        this.swap(array, j, j + 1);
+      }
+    }
+  }
+
+  return array;
+}
+
+swap(array, a, b){
+ const temp = array[a];
+ array[a] = array[b];
+ array[b] = temp;
+}
+
+
+SortData(){
+     let MyArray = this.Booking;
+     this.SortedBookings = this.bubbleSort(MyArray);  
+}
+
 
   ngOnInit() {
   
