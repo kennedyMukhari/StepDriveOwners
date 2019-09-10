@@ -20,8 +20,13 @@
           </div>
         </div>
 
+
         <img *ngIf="!this.businessdata.image" (click)="selectImage()" src="../../assets/icon2.png" class="thumbavatar">
         <img *ngIf="this.businessdata.image" src="{{this.businessdata.image}}" class="thumbavatar" (click)="selectImage()">
+      </div>
+
+      <div class="logt">
+        <ion-icon size="large" name="log-out"></ion-icon>
       </div>
 
       <div class="profile-form">
