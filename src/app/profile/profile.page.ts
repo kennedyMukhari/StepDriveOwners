@@ -67,14 +67,13 @@ export class ProfilePage implements OnInit {
     desc: '',
     address: '',
     packages : [],
-    open: 'boolean',
-    closed: 'true',
+    open: '',
+    closed: '',
     allday: 'true',
     schooluid: '',
    
   }
 
-  // amount : string;
   now = moment().format('"hh-mm-A"');
 
   validation_messages = {
