@@ -15,15 +15,15 @@
           <ion-icon name="star-outline"></ion-icon>
         </div>
         <img *ngIf="!this.businessdata.image" (click)="selectImage()" src="../../assets/icon2.png" class="thumbavatar">
-        <img *ngIf="this.businessdata.image" src="{{this.businessdata.image}}" class="thumbavatar"
-          (click)="selectImage()">
+        <img *ngIf="this.businessdata.image" src="{{this.businessdata.image}}" class="thumbavatar" (click)="selectImage()">
       </div>
 
       <div class="profile-form">
 
         <!-- <p *ngIf="isuploading">Uploading</p> -->
-        <ion-progress-bar *ngIf="isuploading" type="indeterminate" color="secondary" value="0.5"></ion-progress-bar>
-        <p *ngIf="isuploaded">Done</p>
+        <div class="progress">
+          <ion-progress-bar *ngIf="isuploading" color="secondary" value="{{uploadprogress}}"></ion-progress-bar>
+        </div>
         <div class="input">
           <p>SchoolName</p>
           <input type="text" formControlName="schoolname" [(ngModel)]="businessdata.schoolname">
@@ -101,57 +101,57 @@
 
 
         <div class="packs">
-            <div class="inp" #inputs>
-              <div class="input">
-                <p>amount</p>
-                <input type="number" formControlName="amount" [(ngModel)]="pack.amount">
-              </div>
-              <div class="error" *ngFor="let validate of validation_messages.amount">
-                <div class="messages"
-                  *ngIf="loginForm.get('amount').hasError(validate.type) && (loginForm.get('amount').dirty || loginForm.get('amount').touched)">
-                  {{validate.message}}
-                </div>
-              </div>
-  
-              <div class="input">
-                <p>Package name</p>
-                <input type="text" formControlName="name" [(ngModel)]="pack.name">
-              </div>
-  
-              <div class="error" *ngFor="let validate of validation_messages.name">
-                <div class="messages"
-                  *ngIf="loginForm.get('name').hasError(validate.type) && (loginForm.get('name').dirty || loginForm.get('name').touched)">
-                  {{validate.message}}
-                </div>
-              </div>
-  
-              <div class="input">
-                <p>number</p>
-                <input type="text" formControlName="number" [(ngModel)]="pack.number">
-              </div>
-              <div class="error" *ngFor="let validate of validation_messages.number">
-                <div class="messages"
-                  *ngIf="loginForm.get('number').hasError(validate.type) && (loginForm.get('number').dirty || loginForm.get('number').touched)">
-                  {{validate.message}}
-                </div>
-              </div>
-              <button size="small" (click)="addPack()">
-                  Add Package
-                </button>
+          <div class="inp" #inputs>
+            <div class="input">
+              <p>amount</p>
+              <input type="text" formControlName="amount" [(ngModel)]="pack.amount">
             </div>
-            <div class="s-packs">
-              <div>
-                <p *ngIf="!businessdata.packages[0]">No packages</p>
-                <div class="pack-l" *ngFor="let p of businessdata.packages; let i = index" (click)="editpack(p)">
-                  <p><b>{{p.name}}</b></p>
-                  <p> {{p.number}} Lessons R{{p.amount}}.00</p>
-                  <div class="dele" (click)="deletepack(i)">
-                    <p>x</p>
-                  </div>
+            <!-- <div class="error" *ngFor="let validate of validation_messages.amount">
+              <div class="messages"
+                *ngIf="loginForm.get('amount').hasError(validate.type) && (loginForm.get('amount').dirty || loginForm.get('amount').touched)">
+                {{validate.message}}
+              </div>
+            </div> -->
+
+            <div class="input">
+              <p>Package name</p>
+              <input type="text" formControlName="name" [(ngModel)]="pack.name">
+            </div>
+
+            <!-- <div class="error" *ngFor="let validate of validation_messages.name">
+              <div class="messages"
+                *ngIf="loginForm.get('name').hasError(validate.type) && (loginForm.get('name').dirty || loginForm.get('name').touched)">
+                {{validate.message}}
+              </div>
+            </div> -->
+
+            <div class="input">
+              <p>number</p>
+              <input type="text" formControlName="number" [(ngModel)]="pack.number">
+            </div>
+            <!-- <div class="error" *ngFor="let validate of validation_messages.number">
+              <div class="messages"
+                *ngIf="loginForm.get('number').hasError(validate.type) && (loginForm.get('number').dirty || loginForm.get('number').touched)">
+                {{validate.message}}
+              </div>
+            </div> -->
+            <button size="small" (click)="addPack()">
+              Add Package
+            </button>
+          </div>
+          <div class="s-packs">
+            <div>
+              <p *ngIf="!businessdata.packages[0]">No packages</p>
+              <div class="pack-l" *ngFor="let p of businessdata.packages; let i = index" (click)="editpack(p)">
+                <p><b>{{p.name}}</b></p>
+                <p> {{p.number}} Lessons R{{p.amount}}.00</p>
+                <div class="dele" (click)="deletepack(i)">
+                  <p>x</p>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
         <div class="time">
           <ion-item>

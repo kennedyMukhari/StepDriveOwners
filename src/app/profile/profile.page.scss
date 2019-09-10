@@ -182,6 +182,14 @@
      height: 60vh;
      overflow: hidden;
      overflow: scroll;
+     .progress{
+       display: flex;
+       justify-content: center;
+       
+      ion-progress-bar {
+        width: 60%;
+      }
+     }
      .dbtn {
       display: flex;
       justify-content: center;
