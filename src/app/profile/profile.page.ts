@@ -67,14 +67,14 @@ export class ProfilePage implements OnInit {
     desc: '',
     address: '',
     packages : [],
-    open: 'boolean',
-    closed: 'true',
+    open: '',
+    closed: '',
     allday: 'true',
     schooluid: '',
    
   }
 
-  amount : string;
+  // amount : string;
   now = moment().format('"hh-mm-A"');
 
   validation_messages = {
@@ -207,7 +207,7 @@ export class ProfilePage implements OnInit {
   }
 
   showData(){
-    console.log('Data in the package',this.amount);
+    // console.log('Data in the package',this.amount);
   }
 
  async  addPack(){
@@ -341,7 +341,15 @@ export class ProfilePage implements OnInit {
        let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
        this.uploadprogress = progress;
        if (progress == 100){
-        this.isuploading = false;
+        this.isuploading = true;
+
+        if (this.uploadprogress == 100){
+          this.isuploading = false;
+         }else {
+           this.isuploading = true;
+         }
+
+
        }
      }, err => {
      }, () => {
@@ -374,7 +382,7 @@ export class ProfilePage implements OnInit {
 
 
     
-        if (this.businessdata.closed.slice(11, 16)  != this.businessdata.open.slice(11, 16)  &&this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)  ){
+        if (this.businessdata.closed.slice(11, 16)  != this.businessdata.open.slice(11, 16)  && this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)  ){
           this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
             address : this.businessdata.address,
             allday : this.businessdata.allday,
@@ -393,7 +401,7 @@ export class ProfilePage implements OnInit {
           }).then(res => {
             console.log('Profile created');
             this.getProfile()
-            this.router.navigateByUrl('main');
+            this.router.navigateByUrl('the-map');
           }).catch(error => {
             console.log('Error');
           });
@@ -412,7 +420,7 @@ export class ProfilePage implements OnInit {
           
         }
         
-        console.log('The data',this.pack);
+        // console.log('The data',this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)  );
  
       }
 
@@ -469,6 +477,9 @@ export class ProfilePage implements OnInit {
 
       goToRev() {
         this.router.navigate(['past-b']);
+      } 
+      profile() {
+        this.router.navigate(['the-map']);
       } 
     }
 
