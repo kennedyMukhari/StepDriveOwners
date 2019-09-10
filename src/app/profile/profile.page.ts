@@ -339,11 +339,16 @@ export class ProfilePage implements OnInit {
      upload.on('state_changed', snapshot => {
        let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
        this.uploadprogress = progress;
-       console.log(this.uploadprogress);
-       if (this.uploadprogress == 100){
-        this.isuploading = false;
-       }else {
-         this.isuploading = true;
+       if (progress == 100){
+        this.isuploading = true;
+
+if (this.uploadprogress == 100){
+       this.isuploading = false;
+      }else {
+        this.isuploading = true;
+      }
+
+
        }
      }, err => {
      }, () => {
@@ -376,45 +381,45 @@ export class ProfilePage implements OnInit {
 
 
     
-        if (this.businessdata.closed.slice(11, 16)  != this.businessdata.open.slice(11, 16)  &&this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)  ){
-          this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
-            address : this.businessdata.address,
-            allday : this.businessdata.allday,
-            cellnumber : this.businessdata.cellnumber,
-            closed : this.businessdata.closed,
-            cost : this.businessdata.cost,
-            desc : this.businessdata.desc,
-            email : this.businessdata.email,
-            image : this.businessdata.image,
-            open : this.businessdata.open,
-            packages :this.businessdata.packages,
+        // if (this.businessdata.closed.slice(11, 16)  != this.businessdata.open.slice(11, 16)  && this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)  ){
+        //   this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
+        //     address : this.businessdata.address,
+        //     allday : this.businessdata.allday,
+        //     cellnumber : this.businessdata.cellnumber,
+        //     closed : this.businessdata.closed,
+        //     cost : this.businessdata.cost,
+        //     desc : this.businessdata.desc,
+        //     email : this.businessdata.email,
+        //     image : this.businessdata.image,
+        //     open : this.businessdata.open,
+        //     packages :this.businessdata.packages,
             
-            registration : this.businessdata.registration,
-            schoolname : this.businessdata.schoolname,
-            schooluid : firebase.auth().currentUser.uid
-          }).then(res => {
-            console.log('Profile created');
-            this.getProfile()
-            this.router.navigateByUrl('main');
-          }).catch(error => {
-            console.log('Error');
-          });
+        //     registration : this.businessdata.registration,
+        //     schoolname : this.businessdata.schoolname,
+        //     schooluid : firebase.auth().currentUser.uid
+        //   }).then(res => {
+        //     console.log('Profile created');
+        //     this.getProfile()
+        //     this.router.navigateByUrl('the-map');
+        //   }).catch(error => {
+        //     console.log('Error');
+        //   });
 
-        }else{
+        // }else{
 
-          const alert = await this.alertController.create({
-            // header: 'Alert',
-            // subHeader: 'Subtitle',
-            message: 'Enter the correct time!',
-            buttons: ['OK']
-          });
+        //   const alert = await this.alertController.create({
+        //     // header: 'Alert',
+        //     // subHeader: 'Subtitle',
+        //     message: 'Enter the correct time!',
+        //     buttons: ['OK']
+        //   });
       
-          await alert.present();
+        //   await alert.present();
           
           
-        }
+        // }
         
-        console.log('The data',this.pack);
+        console.log('The data',this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)  );
  
       }
 
@@ -471,6 +476,9 @@ export class ProfilePage implements OnInit {
 
       goToRev() {
         this.router.navigate(['past-b']);
+      } 
+      profile() {
+        this.router.navigate(['the-map']);
       } 
     }
 
