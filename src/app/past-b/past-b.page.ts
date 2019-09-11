@@ -8,28 +8,37 @@ import * as firebase from 'firebase';
 })
 export class PastBPage implements OnInit {
   db = firebase.firestore();
-  storage = firebase.firestore();
-  // reviews = [];
-  review= [];
-  newreviews=[];
+  //array in a database
+  reviews = [];
+  Newreviews = [];
   constructor(private router: Router) { 
-    this.db.collection('reviews').onSnapshot(snapshot => {
-      snapshot.forEach(doc => {
-        // this.users = doc.data();
-        // this.addMarkersOnTheCustomersCurrentLocation(this.users.coords.lat, this.users.coords.lng);
-        this.review.push(doc.data());
-        console.log('My array is ',this.review);
-        this.review.forEach(Customers => {
-          console.log('reviews in my array in my array', Customers.schooluid);
-          console.log('Owners UID logged in', firebase.auth().currentUser.uid);
-          if(Customers.schooluid === firebase.auth().currentUser.uid){
-             this.review.push(doc.data())
-          }
-        }) 
+  
 
+  }
+
+  ionViewWillEnter(){
+   
+    this.db.collection('reviews').onSnapshot(snapshot => {
+      this.Newreviews = [];
+     
+      snapshot.forEach(Element => {
+       
+            this.reviews.push(Element.data());
+      });
+
+      this.reviews.forEach(item => {
+      
+        if(item.schooluid === firebase.auth().currentUser.uid){
+                 this.Newreviews.push(item)
+              }
       })
+      
+      console.log('NewreViews', this.Newreviews.length);
     });
 
+    
+    
+    
   }
 
   ngOnInit() {

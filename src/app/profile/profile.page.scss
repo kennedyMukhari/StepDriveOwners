@@ -11,6 +11,12 @@
     background-size: cover;
     height: 100%;
     overflow: hidden;
+    .logt{
+      position: absolute;
+      top: 0;
+      color: white;
+      right: 0;
+    }
     .avatar-images {
       width: 100%;
       height: 30vh;
@@ -26,7 +32,6 @@
           width: 100%;
           background: linear-gradient(#4C0A0A, #790B0B);
       }
-
       .rev {
         position: absolute;
         color: white;
@@ -61,7 +66,6 @@
           justify-content: center;
         }
       }
-
       .thumbavatar {
           position: relative;
           width: 15vh;
@@ -107,7 +111,6 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-
         .input {
           p {
             font-size: 80%;
@@ -200,7 +203,6 @@
      color: red;
      text-align: center;
    }
-
    .profile-form {
      height: 60vh;
      overflow: hidden;
@@ -208,7 +210,6 @@
      .progress{
        display: flex;
        justify-content: center;
-
       ion-progress-bar {
         width: 60%;
       }
