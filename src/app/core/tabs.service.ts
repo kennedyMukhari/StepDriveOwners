@@ -12,7 +12,7 @@ export class TabsService {
 
   hideTabBarPages = [
     'profile',
-    'the-map',
+    // 'the-map',
     'past-b',
     'analytics',
     'graphs',
@@ -46,14 +46,14 @@ export class TabsService {
   // A simple subscription that tells us what page we're currently navigating to.
   private navEvents() {
     this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe((e: any) => {
-      console.log('ddddddddddddddddddddddddddddddddd',e);
+      console.log(e);
       this.showHideTabs(e);
     });
   }
 
   private showHideTabs(e: any) {
     // Result:  e.url: "/tabs/groups/new-group?type=group"
-    console.log('fffffffffffffffffffffffffffff',e);
+    console.log(e);
     // Split the URL up into an array.
     const urlArray = e.url.split('/');
     // Result: urlArray: ["", "tabs", "groups", "new-group?type=group"]
@@ -77,4 +77,5 @@ export class TabsService {
     } catch (err) {
     }
   }
+
 }

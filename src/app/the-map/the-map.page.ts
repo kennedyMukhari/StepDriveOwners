@@ -132,6 +132,9 @@ async presentAlert() {
        console.log(res);
         this.router.navigateByUrl('/login');
       })
+
+      console.log('The current user is', firebase.auth().currentUser.uid);
+      
     }
 
  
