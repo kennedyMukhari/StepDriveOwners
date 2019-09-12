@@ -387,7 +387,9 @@ export class ProfilePage implements OnInit {
             registration : this.businessdata.registration,
             schoolname : this.businessdata.schoolname,
             schooluid : firebase.auth().currentUser.uid
+            
           }).then(res => {
+            
             console.log('Profile created');
             this.getProfile()
             this.router.navigateByUrl('the-map');
