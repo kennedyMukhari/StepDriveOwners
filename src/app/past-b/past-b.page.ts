@@ -7,29 +7,43 @@ import * as firebase from 'firebase';
  styleUrls: ['./past-b.page.scss'],
 })
 export class PastBPage implements OnInit {
- db = firebase.firestore();
- //array in a database
- reviews = [];
- Newreviews = [];
- constructor(private router: Router) {
- }
- ionViewWillEnter(){
-   this.db.collection('reviews').onSnapshot(snapshot => {
-     this.Newreviews = [];
-     snapshot.forEach(Element => {
-           this.reviews.push(Element.data());
-     });
-     this.reviews.forEach(item => {
-       if(item.schooluid === firebase.auth().currentUser.uid){
-                this.Newreviews.push(item)
-             }
-     })
-     console.log('NewreViews', this.Newreviews.length);
-   });
- }
- ngOnInit() {
- }
- goToGraph() {
-   this.router.navigate(['graphs']);
- }
+  db = firebase.firestore();
+  //array in a database
+  reviews = [];
+  Newreviews = [];
+  constructor(private router: Router) { 
+  
+
+  }
+
+  ionViewWillEnter(){
+   
+    this.db.collection('reviews').onSnapshot(snapshot => {
+      this.Newreviews = [];
+     
+      snapshot.forEach(Element => {
+       
+            this.reviews.push(Element.data());
+      });
+
+      this.reviews.forEach(item => {
+      
+        if(item.schooluid === firebase.auth().currentUser.uid){
+                 this.Newreviews.push(item)
+              }
+      })
+      
+      console.log('NewreViews', this.Newreviews.length);
+    });
+
+    
+    
+    
+  }
+
+  ngOnInit() {
+  }
+  goToGraph() {
+    this.router.navigate(['graphs']);
+  }
 }

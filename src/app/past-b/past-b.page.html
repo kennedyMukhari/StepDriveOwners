@@ -19,18 +19,24 @@
     </div>
     <div class="rev">
     </div>
-  </div>
-  <div class="rev">
-    <h2>
-      Reviews
-    </h2>
-  </div>
-  <div padding class="cards" >
-        <div class="card"  *ngFor="let r of Newreviews">
-          <div class="ava">
-            <ion-avatar slot="start">
-              <img src="../../assets/shapes.svg">
-            </ion-avatar>
+    <div padding class="cards" >
+    
+     
+        
+          <div class="card"  *ngFor="let r of Newreviews">
+            <div class="ava">
+              <ion-avatar slot="start">
+                <img src="../../assets/shapes.svg">
+              </ion-avatar>
+            </div>
+          
+            <div class="comments">
+              <ion-label>
+                <h2>{{r.username}}</h2>
+      
+                <p>{{r.text}}</p>
+              </ion-label>
+            </div>
           </div>
           <div class="comments">
             <ion-label>

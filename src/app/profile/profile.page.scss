@@ -32,7 +32,6 @@
           width: 100%;
           background: linear-gradient(#4C0A0A, #790B0B);
       }
-
       .rev {
         position: absolute;
         color: white;
@@ -42,6 +41,7 @@
         flex-direction: column;
         top: 0;
         left: 0;
+        padding-right: 2px;
         .views {
           top: 10px;
           right: 0;
@@ -56,7 +56,6 @@
             top: 0;
           }
         }
-
         .stars {
           // border: 1px solid white;
           top: 10px;
@@ -67,7 +66,6 @@
           justify-content: center;
         }
       }
-
       .thumbavatar {
           position: relative;
           width: 15vh;
@@ -113,7 +111,6 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-
         .input {
           p {
             font-size: 80%;
@@ -206,7 +203,6 @@
      color: red;
      text-align: center;
    }
-
    .profile-form {
      height: 60vh;
      overflow: hidden;
@@ -214,7 +210,6 @@
      .progress{
        display: flex;
        justify-content: center;
-
       ion-progress-bar {
         width: 60%;
       }
