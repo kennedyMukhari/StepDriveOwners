@@ -73,7 +73,7 @@ export class TabsService {
 
     // Not ideal to set the timeout, but I haven't figured out a better method to wait until the page is in transition...
     try {
-      setTimeout(() => shouldHide ? this.hideTabs() : this.showTabs(), 300);
+      setTimeout(() => shouldHide ? this.hideTabs() : this.showTabs(), 2000);
     } catch (err) {
     }
   }

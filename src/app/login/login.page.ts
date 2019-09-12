@@ -66,7 +66,7 @@ export class LoginPage implements OnInit {
             if (user.uid) {
               this.db.collection('drivingschools').where('schooluid', '==', user.uid).get().then(res => {
                 if (res.empty) {
-                  this.loading.dismiss()
+                  this.loading.dismiss();
                   this.router.navigateByUrl('profile');
                   
                 } else {

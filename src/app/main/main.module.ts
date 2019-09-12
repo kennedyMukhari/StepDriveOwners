@@ -16,7 +16,7 @@ const routes: Routes = [
         path: 'the-map',
         children: [
           {
-            path: 'the-map',
+            path: '',
             loadChildren: '../the-map/the-map.module#TheMapPageModule'
           }
         ]
