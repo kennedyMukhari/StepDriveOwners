@@ -3,7 +3,7 @@
 
 
   <div no-padding class="container">
-    <form [formGroup]="loginForm">
+ 
 
 
 
@@ -25,12 +25,12 @@
         <img *ngIf="this.businessdata.image" src="{{this.businessdata.image}}" class="thumbavatar" (click)="selectImage()">
       </div>
 
-      <div class="logt">
-        <ion-icon size="large" name="log-out"></ion-icon>
+      <div (click)="Logout()" class="logt">
+        <ion-icon size="large" name="exit"></ion-icon>
       </div>
 
       <div class="profile-form">
-
+          <form [formGroup]="loginForm">
         <!-- <p *ngIf="isuploading">Uploading</p> -->
         <div class="progress">
           <ion-progress-bar *ngIf="isuploading" color="secondary" value="{{uploadprogress}}"></ion-progress-bar>
@@ -105,65 +105,7 @@
             {{validate.message}}
           </div>
         </div>
-        <div class="pack">
-          <h2 text-center>
-            Instructor Package.
-          </h2>
-        </div>
 
-
-        <div class="packs">
-          <div class="inp" #inputs>
-            <div class="input">
-              <p>amount</p>
-              <input type="text" formControlName="amount" [(ngModel)]="pack.amount">
-            </div>
-            <!-- <div class="error" *ngFor="let validate of validation_messages.amount">
-              <div class="messages"
-                *ngIf="loginForm.get('amount').hasError(validate.type) && (loginForm.get('amount').dirty || loginForm.get('amount').touched)">
-                {{validate.message}}
-              </div>
-            </div> -->
-
-            <div class="input">
-              <p>Package name</p>
-              <input type="text" formControlName="name" [(ngModel)]="pack.name">
-            </div>
-
-            <!-- <div class="error" *ngFor="let validate of validation_messages.name">
-              <div class="messages"
-                *ngIf="loginForm.get('name').hasError(validate.type) && (loginForm.get('name').dirty || loginForm.get('name').touched)">
-                {{validate.message}}
-              </div>
-            </div> -->
-
-            <div class="input">
-              <p>number</p>
-              <input type="text" formControlName="number" [(ngModel)]="pack.number">
-            </div>
-            <!-- <div class="error" *ngFor="let validate of validation_messages.number">
-              <div class="messages"
-                *ngIf="loginForm.get('number').hasError(validate.type) && (loginForm.get('number').dirty || loginForm.get('number').touched)">
-                {{validate.message}}
-              </div>
-            </div> -->
-            <button size="small" (click)="addPack()">
-              Add Package
-            </button>
-          </div>
-          <div class="s-packs">
-            <div>
-              <p text-center *ngIf="!businessdata.packages[0]"><strong>No packages yet</strong></p>
-              <div class="pack-l" *ngFor="let p of businessdata.packages; let i = index" (click)="editpack(p)">
-                <p><b>{{p.name}}</b></p>
-                <p> {{p.number}} Lessons R{{p.amount}}.00</p>
-                <div class="dele" (click)="deletepack(i)">
-                  <p>x</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
         <div class="time">
           <ion-item>
@@ -190,13 +132,62 @@
           </div>
         </div>
 
-        <div class="dbtn">
+
+      </form>
+
+      <div class="pack">
+          <h2 text-center>
+            Instructor Package.
+          </h2>
+        </div>
+
+        <div class="packs">
+            <div class="inp" #inputs>
+              <div class="input">
+                <p>Package name</p>
+                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="pack.name">
+                <input *ngIf="businessdata.packages.length==4" disabled="true" type="text">
+  
+              </div>
+  
+  
+              <div class="input">
+                <p>Amount</p>
+                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="pack.amount">
+                <input *ngIf="businessdata.packages.length==4" disabled="true">
+              </div>
+  
+              <div class="input">
+                <p>Number</p>
+                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="pack.number">
+                <input *ngIf="businessdata.packages.length==4" disabled="true" type="text">
+              </div>
+  
+              <button size="small" (click)="addPack()">
+                Add Package
+              </button>
+            </div>
+            <div class="s-packs">
+  
+              <div>
+                <p text-center *ngIf="!businessdata.packages[0]"><strong>No packages yet</strong></p>
+                <div class="pack-l" *ngFor="let p of businessdata.packages; let i = index" (click)="editpack(p)">
+                  <p *ngIf="p.name"><b>{{p.name}}</b></p>
+                  <p *ngIf="p.number"> {{p.number}} Lessons R{{p.amount}}.00</p>
+                  <div class="dele" (click)="deletepack(i)">
+                    <p>x</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+      <div class="dbtn">
           <button (click)="createAccount()">
             Done
           </button>
         </div>
-
       </div>
-    </form>
+
   </div>
 </ion-content>

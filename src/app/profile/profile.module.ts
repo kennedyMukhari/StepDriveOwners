@@ -8,11 +8,25 @@ import { IonicModule } from '@ionic/angular';
 import { ProfilePage } from './profile.page';
 import { PopOverComponent } from '../pop-over/pop-over.component';
 
+
 const routes: Routes = [
+  
   {
     path: '',
-    component: ProfilePage
+    component: ProfilePage,
+  
   }
+  
+  
+  // {
+  //   path: '',
+  //   children: [
+  //     {
+  //       path: 'main',
+  //       loadChildren: '../main/main.module#MainPageModule'
+  //     }
+  //   ]
+  // },
 ];
 
 @NgModule({
