@@ -1,24 +1,24 @@
-<ion-header color="primary">
+<!-- <ion-header color="primary">
   <ion-toolbar>
      
-    <!-- <ion-title>TheMap</ion-title>  -->
-    <!-- <button ion-button (click)="addMarkersOnTheCustomersCurrentLocation()"><ion-icon name="add"></ion-icon>Add Marker</button> -->
+    <ion-title>TheMap</ion-title> 
+    <button ion-button (click)="addMarkersOnTheCustomersCurrentLocation()"><ion-icon name="add"></ion-icon>Add Marker</button>
     <button style="background: transparent" (click)="Logout()" class="Icon"><ion-icon color="light" name="log-out"></ion-icon></button> <br>
-    <!-- <button (click)="ll()">Show Data</button> -->
-    <!-- <button (click)="takeData()">Console Data</button> -->
-    <!-- <ion-icon ios="ios-contact" md="md-contact" (click)="goToProfile()" class="Icon"></ion-icon> -->
+    <button (click)="ll()">Show Data</button>
+    <button (click)="takeData()">Console Data</button>
+    <ion-icon ios="ios-contact" md="md-contact" (click)="goToProfile()" class="Icon"></ion-icon>
 
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
 <ion-content >
     <div #map id="map"></div> 
 
-    <!-- <div  padding class="profile">
+    <div  padding class="profile">
       <ion-thumbnail (click)="goToProfile()">
         <img src="../../assets/logo.png" alt="profile">
       </ion-thumbnail>
-    </div> -->
+    </div>
 
     <div #list  [ngClass]="{'list': display, 'listinactive': !display}">
       <div (click)="swipeUp()" class="toggler">
