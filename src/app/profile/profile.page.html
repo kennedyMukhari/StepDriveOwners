@@ -1,13 +1,7 @@
 <ion-content class="no-scroll" *ngIf="businessdata">
-
-
-
+<button (click)="aavg()"></button>
   <div no-padding class="container">
     
-
-
-
-
       <div class="avatar-images">
         <div (click)="goToRev()" class="rev">
           <div class="stars">
@@ -19,8 +13,6 @@
             Reviews
           </div>
         </div>
-
-
         <img *ngIf="!this.businessdata.image" (click)="selectImage()" src="../../assets/icon2.png" class="thumbavatar">
         <img *ngIf="this.businessdata.image" src="{{this.businessdata.image}}" class="thumbavatar"
           (click)="selectImage()">
@@ -55,7 +47,7 @@
             <div class="input">
               <p>Amount</p>
               <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="pack.amount">
-              <input *ngIf="businessdata.packages.length==4" disabled="true">
+              <input *ngIf="businessdata.packages.length==4" disabled="true" type="text">
             </div>
 
             <div class="input">
@@ -157,50 +149,6 @@
             {{validate.message}}
           </div>
         </div>
-
-        <!-- 
-        <div class="packs">
-          <div class="inp" #inputs>
-            <div class="input">
-              <p>Package name</p>
-              <input *ngIf="businessdata.packages.length<4" type="text" formControlName="name" [(ngModel)]="pack.name">
-                  <input *ngIf="businessdata.packages.length==4" disabled="true" type="text"  [(ngModel)]="pack.name">
-              
-            </div>
-            
-
-         
-
-            <div class="input">
-        <p>Amount</p>
-          <input *ngIf="businessdata.packages.length<4" type="text" formControlName="amount" [(ngModel)]="pack.amount">
-          <input *ngIf="businessdata.packages.length==4" disabled="true" type="text"  [(ngModel)]="pack.amount">
-        </div>
-
-        <div class="input">
-            <p>Number</p>
-              <input *ngIf="businessdata.packages.length<4" type="text" formControlName="amount" [(ngModel)]="pack.number">
-              <input *ngIf="businessdata.packages.length==4" disabled="true" type="text"  [(ngModel)]="pack.number">
-            </div>
-           
-            <button size="small" (click)="addPack()">
-              Add Package
-            </button>
-          </div>
-          <div class="s-packs">
-            
-            <div>
-              <p text-center *ngIf="!businessdata.packages[0]"><strong>No packages yet</strong></p>
-              <div class="pack-l" *ngFor="let p of businessdata.packages; let i = index" (click)="editpack(p)">
-                <p><b>{{p.name}}</b></p>
-                <p> {{p.number}} Lessons R{{p.amount}}.00</p>
-                <div class="dele" (click)="deletepack(i)">
-                  <p>x</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
 
         <!-- OPEN TIME -->
         <div class="time">

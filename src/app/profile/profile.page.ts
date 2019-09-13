@@ -8,7 +8,7 @@ import { GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/ge
 import { PopoverController } from '@ionic/angular';
 import { PopOverComponent } from '../pop-over/pop-over.component';
 import { AlertController } from '@ionic/angular';
-import * as moment from 'moment';
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
@@ -43,9 +43,9 @@ export class ProfilePage implements OnInit {
   db = firebase.firestore();
   storage = firebase.storage().ref();
   pack = {
-    amount: 1254,
-    name: 'Package',
-    number: 5
+    amount: '',
+    name: '',
+    number: ''
   }
   opened : boolean
   businessdata = {
