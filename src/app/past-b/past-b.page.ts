@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase';
+import { Platform } from '@ionic/angular';
 
 @Component({
  selector: 'app-past-b',
@@ -20,7 +21,7 @@ export class PastBPage implements OnInit {
 
 
 
-  constructor(private router: Router) { 
+  constructor(private router: Router, public platform : Platform) { 
     this.db.collection('drivingschools').onSnapshot(snapshot => {
       this.NewDrivingschool = [];
      
@@ -46,6 +47,14 @@ export class PastBPage implements OnInit {
   }
 
   ionViewWillEnter(){
+
+    // this.platform.ready().then(() => {
+    //   console.log('Core service init');
+    //   const tabBar = document.getElementById('myTabBar');
+    //    tabBar.style.display = 'none';
+    // });
+
+
     firebase.auth().onAuthStateChanged(user => {
       this.db.collection('reviews').where('schooluid','==', user.uid).onSnapshot(snapshot => {
         snapshot.forEach(doc =>{

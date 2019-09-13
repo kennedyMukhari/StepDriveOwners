@@ -13,11 +13,11 @@ export class TabsService {
   hideTabBarPages = [
     'profile',
     // 'the-map',
-    'past-b',
-    'analytics',
-    'graphs',
-    'help',
-    'bookings'
+    // 'past-b',
+    // 'analytics',
+    // 'graphs',
+    // 'help',
+    // 'bookings'
   ];
 
   routeParamPages: string[] = [
@@ -29,7 +29,7 @@ export class TabsService {
   }
 
 
-  ionViewDidEnter(){
+  ionViewWillEnter(){
 
     this.platform.ready().then(() => {
       console.log('Core service init');
@@ -52,14 +52,14 @@ export class TabsService {
   }
 
   // A simple subscription that tells us what page we're currently navigating to.
-  private navEvents() {
+  public navEvents() {
     this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe((e: any) => {
       console.log(e);
       this.showHideTabs(e);
     });
   }
 
-  private showHideTabs(e: any) {
+  public showHideTabs(e: any) {
     // Result:  e.url: "/tabs/groups/new-group?type=group"
     console.log(e);
     // Split the URL up into an array.
@@ -81,7 +81,7 @@ export class TabsService {
 
     // Not ideal to set the timeout, but I haven't figured out a better method to wait until the page is in transition...
     try {
-      setTimeout(() => shouldHide ? this.hideTabs() : this.showTabs(), 2000);
+      setTimeout(() => shouldHide ? this.hideTabs() : this.showTabs(), 100);
     } catch (err) {
     }
   }

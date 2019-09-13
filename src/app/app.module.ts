@@ -17,7 +17,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 import { TabsService } from './core/tabs.service';
-import { GooglePlaceModule } from "ngx-google-places-autocomplete";
+
 
 
 
@@ -27,7 +27,7 @@ firebase.initializeApp(FIREBASE_CONFIG);
   declarations: [AppComponent],
   entryComponents: [],
   imports: [BrowserModule, 
-    GooglePlaceModule, BrowserModule, 
+   BrowserModule, 
   IonicModule.forRoot(),
   AppRoutingModule,
   IonicSwipeAllModule,

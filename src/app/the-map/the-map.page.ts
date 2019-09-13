@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { DataSavedService } from '../data-saved.service';
 // import undefined = require('firebase/empty-import');
 import { AlertController } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
 
  
 
@@ -40,8 +41,10 @@ export class TheMapPage implements OnInit {
   schools = [];
   requests = [];
   NewRequeste = [];
+  Data = [];
+  NewData = [];
 
-  constructor( private geolocation : Geolocation,public alertController: AlertController, public AuthService : AuthService, public data: DataSavedService,  public router:Router, private nativeGeocoder: NativeGeocoder) { 
+  constructor( private geolocation : Geolocation,private platform: Platform, public alertController: AlertController, public AuthService : AuthService, public data: DataSavedService,  public router:Router, private nativeGeocoder: NativeGeocoder) { 
 
   }
 
@@ -62,7 +65,35 @@ async presentAlert() {
   }
 
   ionViewDidEnter(){
+
+    this.db.collection('drivingschools').onSnapshot(snapshot => {
+      this.Data = [];
+     
+      snapshot.forEach(Element => {
+       
+            this.Data.push(Element.data());
+      });
+      this.Data.forEach(item => {
+      
+        if(item.schooluid === firebase.auth().currentUser.uid){
+                 this.NewData.push(item);
+                 console.log('NewDrivingschool', this.NewData);
+                 
+              }
+      })
+      
+     
+    
+    }); 
+    
+    // this.platform.ready().then(() => {
+    //   console.log('Core service init');
+    //   const tabBar = document.getElementById('myTabBar');
+    //    tabBar.style.display = 'none';
+    // });
+    
     this.getUserPosition();
+    
     
     this.db.collection('bookings').onSnapshot(snapshot => {
         this.NewRequeste = [];

@@ -20,6 +20,8 @@ user = {
   uid: ''
 }
 
+Data = [];
+NewData = [];
 
 mon = []
 tue = []
@@ -46,6 +48,29 @@ charts: any;
   }
 
   ionViewWillEnter() {
+
+    this.db.collection('drivingschools').onSnapshot(snapshot => {
+      this.Data = [];
+      this.NewData = [];
+     
+      snapshot.forEach(Element => {
+       
+            this.Data.push(Element.data());
+      });
+      this.Data.forEach(item => {
+      
+        if(item.schooluid === firebase.auth().currentUser.uid){
+                 this.NewData.push(item);
+                 console.log('NewDrivingschool', this.NewData);
+                 
+              }
+      })
+      
+     
+    
+    }); 
+
+
   this.getRequests();
   }
 
