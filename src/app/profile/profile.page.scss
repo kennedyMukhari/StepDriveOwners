@@ -193,7 +193,7 @@
         width: 97%;
         padding: 15px 10px;
         border: none;
-        border: solid 1px #4C0A0A;
+        border:  1px solid var( --ion-color-primary);
         background: none;
         color: #4C0A0A;
         border-radius: 200px;
@@ -228,22 +228,13 @@
           color: white;
       }
     }
-    // .time {
-    //   margin-right: 2px;
-    //   margin-left: 2px;
-    //   display: flex;
-    //   justify-content: center;
-    //   align-items: center;
-    //   ion-item{
-    //     border: 1px solid #4C0A0A;
-    //     padding-right:3px;
-    //     border-radius: 200px;
-    //     margin-bottom:2px;
-    //     width: 50%;
-    //     height: 70px;
-        
-    //   }
-    // }
+    .time {
+
+      ion-item{
+        border-bottom: 2px dotted var(--ion-color-medium);
+        //text-align: center;
+      }
+    }
    }
    .pack {
      display: flex;

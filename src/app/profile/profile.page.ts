@@ -49,7 +49,7 @@ export class ProfilePage implements OnInit {
 
 
   pack = {
-    mount: '',
+    amount: '',
     name: '',
     number: ''
   }
@@ -197,7 +197,7 @@ export class ProfilePage implements OnInit {
   async addPack(){
     console.log('Package ',this.pack);
     
-    if (!this.pack.mount || !this.pack.name || !this.pack.number) {
+    if (!this.pack.amount || !this.pack.name || !this.pack.number) {
       const alert = await this.alertController.create({
         header: 'Alert',
         subHeader: 'Subtitle',
@@ -209,15 +209,18 @@ export class ProfilePage implements OnInit {
       
     } else {
 
-      console.log('Pack added');
+      console.log( this.pack.amount +'Pack added');
       
       if (this.businessdata.packages.length !== 4) {
         this.businessdata.packages.push(this.pack);
-      this.pack = {
-      mount: null,
-      name: null,
-      number: null
-      }
+        
+
+        this.pack = {
+          amount: '',
+          name: '',
+          number: ''
+        }
+
       }
     }
   }
@@ -253,19 +256,6 @@ export class ProfilePage implements OnInit {
   editpack(pack) {
     this.pack = pack;
   }
-
-
-  async presentPopover(ev: any) {
-    const popover = await this.popoverController.create({
-      component: PopOverComponent,
-      event: ev,
-      animated: true,
-      showBackdrop: true
-    });
-    return await popover.present();
-  }
-
-  obj = {};
   // options : GeolocationOptions;
   ngOnInit() {
   }
