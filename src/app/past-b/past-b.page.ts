@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase';
-import { IonicRatingModule } from 'ionic4-rating';
 
 @Component({
  selector: 'app-past-b',
@@ -50,7 +49,7 @@ export class PastBPage implements OnInit {
     firebase.auth().onAuthStateChanged(user => {
       this.db.collection('reviews').where('schooluid','==', user.uid).onSnapshot(snapshot => {
         snapshot.forEach(doc =>{
-          console.log('Document : ', doc.data());
+          console.log('Document : ', doc.data().image);
           
           this.ratingTotal += parseInt(doc.data().rating);
          this.reviews.push(doc.data());
@@ -58,7 +57,7 @@ export class PastBPage implements OnInit {
         })
         this.avgRating = this.ratingTotal / this.reviews.length;
         console.log('revLeng', this.avgRating);
-        console.log('NewreViews', this.ratingTotal);
+        console.log('reViews', this.reviews);
       })
     })
     
