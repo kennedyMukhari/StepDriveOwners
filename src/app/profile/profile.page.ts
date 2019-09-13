@@ -8,8 +8,6 @@ import { GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/ge
 import { PopoverController } from '@ionic/angular';
 import { PopOverComponent } from '../pop-over/pop-over.component';
 import { AlertController } from '@ionic/angular';
-import { Address } from 'ngx-google-places-autocomplete/objects/address';
-import { GooglePlaceDirective } from 'ngx-google-places-autocomplete/ngx-google-places-autocomplete.directive';
 
 
 @Component({
@@ -23,7 +21,6 @@ import { GooglePlaceDirective } from 'ngx-google-places-autocomplete/ngx-google-
 
 export class ProfilePage implements OnInit {
   @ViewChild('inputs', {static: true}) input:ElementRef
-  @ViewChild("placesRef", {static: true}) placesRef : GooglePlaceDirective;
   display = false;
   toastCtrl: any;
 
@@ -209,11 +206,6 @@ export class ProfilePage implements OnInit {
     this.getUserPosition();
    
   }
-
-  public handleAddressChange(address: Address) {
-    console.log(Address);
-    
-}
   
   getUserPosition(){
     this.options = {
