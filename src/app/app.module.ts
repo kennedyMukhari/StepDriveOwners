@@ -9,7 +9,6 @@ import { Camera } from '@ionic-native/Camera/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { IonicSwipeAllModule } from "ionic-swipe-all";
-// import { MapPage } from './map/map.page';
 import { FIREBASE_CONFIG } from '../environments/firebase_config';
 import * as firebase from 'firebase'
 import { HttpClientModule } from "@angular/common/http";
@@ -17,7 +16,6 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 import { TabsService } from './core/tabs.service';
-
 
 
 

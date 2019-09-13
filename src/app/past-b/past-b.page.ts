@@ -29,7 +29,6 @@ export class PastBPage implements OnInit {
        
             this.Drivingschool.push(Element.data());
       });
-
       this.Drivingschool.forEach(item => {
       
         if(item.schooluid === firebase.auth().currentUser.uid){
@@ -45,7 +44,6 @@ export class PastBPage implements OnInit {
       //  this.avgRating=this.ratingTotal / this.reviews.length;
        
   }
-
   ionViewWillEnter(){
 
     // this.platform.ready().then(() => {
@@ -70,7 +68,6 @@ export class PastBPage implements OnInit {
       })
     })
     
-
    
   }
   
@@ -83,12 +80,8 @@ export class PastBPage implements OnInit {
     // })
     // console.log('rating', this.avgRating);
  
-
-
-
   
   ngOnInit() {
-
   }
   goToGraph() {
     this.router.navigate(['graphs']);
