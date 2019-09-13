@@ -13,6 +13,7 @@ import { TabsService } from './core/tabs.service';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
+
   db = firebase.firestore()
   constructor(
     private platform: Platform,

@@ -10,12 +10,17 @@ import * as Chart from 'chart.js';
   styleUrls: ['./analytics.page.scss'],
 })
 export class AnalyticsPage implements OnInit {
+
+
   @ViewChild('barChart', {static: false}) barChart;
 //database 
+
 db = firebase.firestore();
 user = {
   uid: ''
 }
+
+
 mon = []
 tue = []
 wed = []
@@ -39,38 +44,42 @@ charts: any;
     })
     this.getRequests();
   }
-  ionViewDidEnter() {
-    
-    
-    
+
+  ionViewWillEnter() {
+  this.getRequests();
   }
+
+
   getRequests() {
-    this.db.collection('bookings').where('schooluid', '==',this.user.uid).get().then(res => {
+
+    this.db.collection('bookings').where('schooluid', '==',firebase.auth().currentUser.uid).get().then(res => {
       console.log(res);
       
       res.forEach(doc => {
-        console.log(doc.data());
-        
+       
         let date = doc.data().datecreated
         let newDate = date.split(" ")
+       
+        
         if (newDate[0] == "Mon") {
           this.mon.push(doc.data())
         } else if (newDate[0] == "Tue") {
           this.tue.push(doc.data())
-        }else if (newDate[0] == "wed") {
-          this.tue.push(doc.data())
+        }else if (newDate[0] == "Wed") {
+          this.wed.push(doc.data())
         }
-        else if (newDate[0] == "thu") {
-          this.tue.push(doc.data())
+        else if (newDate[0] == "Thu") {
+          this.thu.push(doc.data())
+          console.log("The new Date is",this.thu.length);
         }
-        else if (newDate[0] == "fri") {
-          this.tue.push(doc.data())
+        else if (newDate[0] == "Fri") {
+          this.fri.push(doc.data())
         }
-        else if (newDate[0] == "sat") {
-          this.tue.push(doc.data())
+        else if (newDate[0] == "Sat") {
+          this.sat.push(doc.data())
         }
-        else if (newDate[0] == "sun") {
-          this.tue.push(doc.data())
+        else if (newDate[0] == "Sun") {
+          this.sun.push(doc.data())
         }
       })
       this.createBarChart();
@@ -80,10 +89,11 @@ charts: any;
       console.log(err);
       
     })
+
   }
 
   createBarChart() {
-    
+
     this.charts = new Chart(this.barChart.nativeElement, {
       type: 'line',
       data: {
@@ -91,7 +101,7 @@ charts: any;
         datasets: [{
           label: 'Lessons offered per week',
           // data: [this.mon.length, this.tue.length, this.wed.length, this.thu.length, this.fri.length, this.sat.length, this.sun.length],
-           data: [12, this.tue.length, this.wed.length, this.thu.length, this.fri.length, this.sat.length, this.sun.length],
+           data: [this.mon.length, this.tue.length, this.wed.length, this.thu.length, this.fri.length, this.sat.length, this.sun.length],
           backgroundColor: 'rgb(38, 194, 129)', // array should have same number of elements as number of dataset
           borderColor: 'rgb(38, 194, 129)',// array should have same number of elements as number of dataset
           borderWidth: 1
