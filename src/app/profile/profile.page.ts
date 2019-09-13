@@ -269,62 +269,28 @@ export class ProfilePage implements OnInit {
   }
 
   async CheckData(){
-  //   let one : string;
-  //   let two = "08:01 am";
-  //   console.log(this.businessdata.open);
-  //   console.log(this.businessdata.closed);
-    
   
-  //   one =  this.businessdata.closed;
-  //   // console.log('Data parsed', one);
-
-  //   for(let i = 0; i < one.length; i ++){
-
-  //     console.log(one[i]);
+    
+    if(this.businessdata.closed.slice(11, 16) === this.businessdata.open.slice(11, 16) || this.businessdata.closed.slice(11, 16) < this.businessdata.open.slice(11, 16)){
+      const alert = await this.alertController.create({
+        // header: 'Alert',
+        // subHeader: 'Subtitle',
+        message: 'time canot not be the same .',
+        buttons: ['OK']
+      });
+      await alert.present();
+    }else{
+      const alert = await this.alertController.create({
+        // header: 'Alert',
+        // subHeader: 'Subtitle',
+        message: 'Well Done Buddy Way to Go!',
+        buttons: ['OK']
+      });
+      await alert.present();
+    }
+     
       
-  //   }
-
-  // console.log('Your time is',);
-  
-
-  if(this.businessdata.closed.slice(11, 16) === this.businessdata.open.slice(11, 16) || this.businessdata.closed.slice(11, 16) < this.businessdata.open.slice(11, 16)){
-    const alert = await this.alertController.create({
-      // header: 'Alert',
-      // subHeader: 'Subtitle',
-      message: 'time canot not be the same .',
-      buttons: ['OK']
-    });
-
-    await alert.present();
-  }else{
-    const alert = await this.alertController.create({
-      // header: 'Alert',
-      // subHeader: 'Subtitle',
-      message: 'Well Done Buddy Way to Go!',
-      buttons: ['OK']
-    });
-
-    await alert.present();
-  }
-
-
-
-
-
-    // function formatAMPM(date) {
-    //   var hours = date.getHours();
-    //   var minutes = date.getMinutes();
-    //   var ampm = hours >= 12 ? 'pm' : 'am';
-    //   hours = hours % 12;
-    //   hours = hours ? hours : 12; // the hour '0' should be '12'
-    //   minutes = minutes < 10 ? '0'+minutes : minutes;
-    //   var strTime = hours + ':' + minutes + ' ' + ampm;
-    //   return strTime;
-    // }
-    
-    // console.log(formatAMPM(new Date));
-    
-  }
+    }
 
   deletepack(index) {
     this.businessdata.packages.splice(index, 1);
@@ -333,19 +299,6 @@ export class ProfilePage implements OnInit {
   editpack(pack) {
     this.pack = pack;
   }
-
-
-  async presentPopover(ev: any) {
-    const popover = await this.popoverController.create({
-      component: PopOverComponent,
-      event: ev,
-      animated: true,
-      showBackdrop: true
-    });
-    return await popover.present();
-  }
-
-  obj = {};
   // options : GeolocationOptions;
   ngOnInit() {
   }

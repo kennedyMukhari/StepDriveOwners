@@ -1,49 +1,73 @@
+
 <ion-content class="no-scroll" >
-  <div class="container">
-    <div class="dSchool">
-      <div class="thumb">
-          <ion-avatar>
-        <img src="../../assets/shapes.svg" />
-          </ion-avatar>
-      </div>
-      <div class="Dname">
-        <div class="name">
-          <p>
-            L-Mani Driving School
-          </p>
+    <div class="container">
+      <div class="dSchool" *ngFor="let d of NewDrivingschool">
+        <div class="thumb">
+            <ion-avatar>
+          <img src="{{d.image}}">
+            </ion-avatar>
         </div>
-        <!-- <div class="todo">
-          <p text-end><a>Todo: 3 | Done: 57 | Declined: 34</a></p>
-        </div> -->
+        <div class="Dname">
+          <div class="name">
+            <p>
+              {{d.schoolname}}
+            </p>
+          </div>
+          <!-- <div class="todo">
+            <p text-end><a>Todo: 3 | Done: 57 | Declined: 34</a></p>
+          </div> -->
+        </div>
+      </div>
+      <div class="rev">
       </div>
     </div>
     <div class="rev">
+      <h2>
+        Reviews 
+       <ionic4-star-rating #rating
+            activeIcon = "ios-star"
+            defaultIcon = "ios-star-outline"
+            activeColor = "#488aff" 
+            defaultColor = "#f4f4f4"
+            readonly="false"
+            rating="{{avgRating}}"
+            fontSize = "32px"
+            (ratingChanged)="logRatingChange($event)">
+        </ionic4-star-rating>
+      </h2>
     </div>
     <div padding class="cards" >
     
      
         
-          <div class="card"  *ngFor="let r of Newreviews">
+          <div class="card" *ngFor = "let item of reviews">
             <div class="ava">
               <ion-avatar slot="start">
-                <img src="../../assets/shapes.svg">
+                <img src={{item.image}}>
               </ion-avatar>
             </div>
           
             <div class="comments">
               <ion-label>
-                <h2>{{r.username}}</h2>
-      
-                <p>{{r.text}}</p>
+                <h1>{{item.username}}</h1>
+                <p>{{item.text}}</p>
+                
+                <ionic4-star-rating #rating
+                activeIcon = "ios-star"
+                defaultIcon = "ios-star-outline"
+                activeColor = "#488aff" 
+                defaultColor = "#f4f4f4"
+                readonly="false"
+                rating="{{item.rating}}"
+                fontSize = "32px"
+                (ratingChanged)="logRatingChange($event)">
+            </ionic4-star-rating>
               </ion-label>
             </div>
           </div>
-          <div class="comments">
-            <ion-label>
-              <h2>{{r.username}}</h2>
-              <p>{{r.text}}</p>
-            </ion-label>
-          </div>
-        </div>
-  </div>
-</ion-content>
+
+         
+    </div>
+
+    
+  </ion-content>
