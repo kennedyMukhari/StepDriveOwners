@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase';
-
 @Component({
  selector: 'app-past-b',
  templateUrl: './past-b.page.html',
@@ -17,9 +16,6 @@ export class PastBPage implements OnInit {
   Newreviews = [];
   avgRating = 0;
   ratingTotal = 0;
-
-
-
   constructor(private router: Router) { 
     this.db.collection('drivingschools').onSnapshot(snapshot => {
       this.NewDrivingschool = [];
@@ -28,7 +24,6 @@ export class PastBPage implements OnInit {
        
             this.Drivingschool.push(Element.data());
       });
-
       this.Drivingschool.forEach(item => {
       
         if(item.schooluid === firebase.auth().currentUser.uid){
@@ -44,7 +39,6 @@ export class PastBPage implements OnInit {
       //  this.avgRating=this.ratingTotal / this.reviews.length;
        
   }
-
   ionViewWillEnter(){
     firebase.auth().onAuthStateChanged(user => {
       this.db.collection('reviews').where('schooluid','==', user.uid).onSnapshot(snapshot => {
@@ -61,7 +55,6 @@ export class PastBPage implements OnInit {
       })
     })
     
-
    
   }
   
@@ -74,12 +67,8 @@ export class PastBPage implements OnInit {
     // })
     // console.log('rating', this.avgRating);
  
-
-
-
   
   ngOnInit() {
-
   }
   goToGraph() {
     this.router.navigate(['graphs']);

@@ -40,7 +40,8 @@ export class TheMapPage implements OnInit {
   schools = [];
   requests = [];
   NewRequeste = [];
-
+  NewDrivingschool=[];
+  Drivingschool=[]
   constructor( private geolocation : Geolocation,public alertController: AlertController, public AuthService : AuthService, public data: DataSavedService,  public router:Router, private nativeGeocoder: NativeGeocoder) { 
 
   }
