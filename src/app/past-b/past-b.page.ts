@@ -4,9 +4,9 @@ import * as firebase from 'firebase';
 import { IonicRatingModule } from 'ionic4-rating';
 
 @Component({
-  selector: 'app-past-b',
-  templateUrl: './past-b.page.html',
-  styleUrls: ['./past-b.page.scss'],
+ selector: 'app-past-b',
+ templateUrl: './past-b.page.html',
+ styleUrls: ['./past-b.page.scss'],
 })
 export class PastBPage implements OnInit {
   db = firebase.firestore();
@@ -50,6 +50,8 @@ export class PastBPage implements OnInit {
     firebase.auth().onAuthStateChanged(user => {
       this.db.collection('reviews').where('schooluid','==', user.uid).onSnapshot(snapshot => {
         snapshot.forEach(doc =>{
+          console.log('Document : ', doc.data());
+          
           this.ratingTotal += parseInt(doc.data().rating);
          this.reviews.push(doc.data());
          
@@ -57,7 +59,7 @@ export class PastBPage implements OnInit {
         this.avgRating = this.ratingTotal / this.reviews.length;
         console.log('revLeng', this.avgRating);
         console.log('NewreViews', this.ratingTotal);
-      }); 
+      })
     })
     
 

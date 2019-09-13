@@ -14,8 +14,11 @@ import { AlertController } from '@ionic/angular';
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
 })
+
+
 export class ProfilePage implements OnInit {
   @ViewChild('inputs', {static: true}) input:ElementRef
+
   display = false;
   toastCtrl: any;
   swipeUp() {
@@ -34,20 +37,26 @@ export class ProfilePage implements OnInit {
     open: '',
     closed: '',
     allday: '',
-   name:'',
-   number: '',
-   amount:''
+  //  name:'',
+  //  number: '',
+  //  amount:''
   }
+
   options : GeolocationOptions;
   currentPos : Geoposition;
   db = firebase.firestore();
   storage = firebase.storage().ref();
+
+
   pack = {
-    amount: '',
+    mount: '',
     name: '',
     number: ''
   }
+
+
   opened : boolean
+
   businessdata = {
     schoolname: '',
     registration: '',
@@ -58,14 +67,15 @@ export class ProfilePage implements OnInit {
     desc: '',
     address: '',
     packages : [],
-    open: null,
-    closed: null,
-    allday: 'false',
+    open: '',
+    closed: '',
+    allday: 'true',
     schooluid: '',
    
   }
-  // amount : string;
+
   // now = moment().format('"hh-mm-A"');
+
   validation_messages = {
     'schoolname': [
       {type: 'required', message: 'schoolname is required.'},
@@ -79,6 +89,7 @@ export class ProfilePage implements OnInit {
    'email': [
     {type: 'required', message: 'email is valid.'},
     {type: 'minlength', message: 'email is required.'},
+
   ],
   'cellnumber': [
     {type: 'required', message: 'cellnumber is required.'},
@@ -109,20 +120,10 @@ export class ProfilePage implements OnInit {
     {type: 'required', message: 'Password is required.'},
     {type: 'minlength', message: 'password must be atleast 6 char or more.'},
     {type: 'maxlength', message: 'Password must be less than 8 char or less'},
-  ],
-  'name': [
-    {type: 'required', message: 'Name is required.'},
-   
-  ],
-  'number': [
-    {type: 'required', message: 'Number of lesson required.'},
-    {type: 'minlength', message: 'password must be atleast 6 char or more.'},
-    {type: 'maxlength', message: 'Password must be less than 8 char or less'},
-  ],
-  'amount': [
-    {type: 'required', message: 'Amount is required.'},
   ]
   }
+
+
   profileForm: FormGroup
   profileImage: string;
   userProv: any;
@@ -139,6 +140,7 @@ export class ProfilePage implements OnInit {
      public alertController: AlertController,
      public popoverController: PopoverController,
      public rendere: Renderer2) 
+
      {
     
     this.loginForm = this.forms.group({
@@ -154,13 +156,15 @@ export class ProfilePage implements OnInit {
       open: new FormControl(this.businessdata.open, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-.]+$')])),
       closed: new FormControl(this.businessdata.closed, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-.]+$')])),
       allday: new FormControl(this.businessdata.allday, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-.]+$')])),
-      // amount: new FormControl(this.pack.amount, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-.]+$')])),
-      // name: new FormControl(this.pack.name, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-.]+$')]) ),
-      // number: new FormControl(this.pack.amount, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-.]+$')]))
     })
+
     // this.rendere.setStyle(this.input.nativeElement, 'opacity', 'o');
     
+
+
   }
+
+
   ionViewWillEnter(){
     this.db.collection('drivingschools').where('schooluid', '==', firebase.auth().currentUser.uid).get().then(res => {
       res.forEach(doc => {
@@ -177,7 +181,7 @@ export class ProfilePage implements OnInit {
         this.businessdata.closed = doc.data().closed
         this.businessdata.packages = doc.data().packages
       })
-    //  this.pack = this.businessdata.packages[0];
+     this.pack = this.businessdata.packages[0];
      console.log(this.businessdata);
      
     }).catch(err => {
@@ -185,13 +189,15 @@ export class ProfilePage implements OnInit {
       
     })
   }
+
   showData(){
     // console.log('Data in the package',this.amount);
   }
- async addPack(){
+
+  async addPack(){
     console.log('Package ',this.pack);
     
-    if (!this.pack.amount || !this.pack.name || !this.pack.number) {
+    if (!this.pack.mount || !this.pack.name || !this.pack.number) {
       const alert = await this.alertController.create({
         header: 'Alert',
         subHeader: 'Subtitle',
@@ -208,36 +214,38 @@ export class ProfilePage implements OnInit {
       if (this.businessdata.packages.length !== 4) {
         this.businessdata.packages.push(this.pack);
       this.pack = {
-      amount: null,
+      mount: null,
       name: null,
       number: null
       }
       }
     }
   }
+
   async CheckData(){
   
     
-  if(this.businessdata.closed.slice(11, 16) === this.businessdata.open.slice(11, 16) || this.businessdata.closed.slice(11, 16) < this.businessdata.open.slice(11, 16)){
-    const alert = await this.alertController.create({
-      // header: 'Alert',
-      // subHeader: 'Subtitle',
-      message: 'time canot not be the same .',
-      buttons: ['OK']
-    });
-    await alert.present();
-  }else{
-    const alert = await this.alertController.create({
-      // header: 'Alert',
-      // subHeader: 'Subtitle',
-      message: 'Well Done Buddy Way to Go!',
-      buttons: ['OK']
-    });
-    await alert.present();
-  }
-   
-    
-  }
+    if(this.businessdata.closed.slice(11, 16) === this.businessdata.open.slice(11, 16) || this.businessdata.closed.slice(11, 16) < this.businessdata.open.slice(11, 16)){
+      const alert = await this.alertController.create({
+        // header: 'Alert',
+        // subHeader: 'Subtitle',
+        message: 'time canot not be the same .',
+        buttons: ['OK']
+      });
+      await alert.present();
+    }else{
+      const alert = await this.alertController.create({
+        // header: 'Alert',
+        // subHeader: 'Subtitle',
+        message: 'Well Done Buddy Way to Go!',
+        buttons: ['OK']
+      });
+      await alert.present();
+    }
+     
+      
+    }
+
   deletepack(index) {
     this.businessdata.packages.splice(index, 1);
   }
@@ -256,11 +264,17 @@ export class ProfilePage implements OnInit {
     });
     return await popover.present();
   }
+
   obj = {};
   // options : GeolocationOptions;
   ngOnInit() {
   }
+
+
+
+
   // image upload
+
   async selectImage(){
     let option: CameraOptions = {
       quality: 100,
@@ -273,26 +287,32 @@ export class ProfilePage implements OnInit {
     await this.camera.getPicture(option).then( res => {
       console.log(res);
       const image = `data:image/jpeg;base64,${res}`;
+
       this.profileImage = image;
       // const UserImage = this.storage.child(this.userProv.getUser().uid+'.jpg');
       let imageRef =this.storage.child('image').child('imageName');
+
     const upload = imageRef.putString(image, 'data_url');
      upload.on('state_changed', snapshot => {
        let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
        this.uploadprogress = progress;
        if (progress == 100){
         this.isuploading = true;
-if (this.uploadprogress == 100){
-       this.isuploading = false;
-      }else {
-        this.isuploading = true;
-      }
+
+         if (this.uploadprogress == 100) {
+           this.isuploading = false;
+         } else {
+           this.isuploading = true;
+         }
+
+
        }
      }, err => {
      }, () => {
       upload.snapshot.ref.getDownloadURL().then(downUrl => {
         this.businessdata.image = downUrl;
         console.log('Image downUrl', downUrl);
+
         this.isuploaded = true;
       })
      })
@@ -303,63 +323,129 @@ if (this.uploadprogress == 100){
   }
   
 
+
+
+  // await(){
+  //   this.router.navigateByUrl('/Awaiting')
+  // }
+  //inserting driving drivers school details to the database 
+
+
  
-  async  createAccount() {
-    let starD = new Date(this.businessdata.open);
-    let closeD = new Date(this.businessdata.closed);
-    let difference = closeD.getTime() - starD.getTime()
-    console.log(this.businessdata)
+  async  createAccount(){
+
+    console.log('Create Account method called');
     
-    console.log('Time difference', difference);
-    if (difference<=1 ) {
-      const alerter = await this.alertController.create({
-        message: 'Open time and closing time must not be similar.',
-        buttons: [
-          {text: 'Okay',
-        role: 'cancel'}
-        ]
-      })
-      alerter.present()
+    // this.router.navigateByUrl('/main');
+        if (this.businessdata.closed.slice(11, 16)  != this.businessdata.open.slice(11, 16)  && this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)  ){
+          this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
+            address : this.businessdata.address,
+            allday : this.businessdata.allday,
+            cellnumber : this.businessdata.cellnumber,
+            closed : this.businessdata.closed,
+            cost : this.businessdata.cost,
+            desc : this.businessdata.desc,
+            email : this.businessdata.email,
+            image : this.businessdata.image,
+            open : this.businessdata.open,
+            packages :this.businessdata.packages,
+            
+            registration : this.businessdata.registration,
+            schoolname : this.businessdata.schoolname,
+            schooluid : firebase.auth().currentUser.uid
+          }).then(res => {
+            console.log('Profile created');
+            this.getProfile()
+            this.router.navigateByUrl('the-map');
+          }).catch(error => {
+            console.log('Error');
+          });
+
+        }else{
+
+          const alert = await this.alertController.create({
+            // header: 'Alert',
+            // subHeader: 'Subtitle',
+            message: 'Enter the correct time!',
+            buttons: ['OK']
+          });
       
-    } else {
-      console.log('Time is more');
-      this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
-        address : this.businessdata.address,
-        allday : this.businessdata.allday,
-        cellnumber : this.businessdata.cellnumber,
-        closed : this.businessdata.closed,
-        cost : this.businessdata.cost,
-        desc : this.businessdata.desc,
-        email : this.businessdata.email,
-        image : this.businessdata.image,
-        open : this.businessdata.open,
-        packages :this.businessdata.packages,
-        
-        registration : this.businessdata.registration,
-        schoolname : this.businessdata.schoolname,
-        schooluid : firebase.auth().currentUser.uid
-      }).then(res => {
-        console.log('Profile created');
-        this.getProfile()
-        this.router.navigateByUrl('the-map');
-      }).catch(error => {
-        console.log('Error');
-      });
-    }
+          await alert.present();
+          
+          
+        }
         
         console.log('The data',this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)  );
  
       }
+
+
+      // async open(){
+      //     console.log('The customers CheckintDate ',this.businessdata.open);
+      //     console.log('Todays date is ', this.now);
+      //     if(this.businessdata.open < this.now){
+      //       const alert = await this.alertController.create({
+      //         message: 'Please select the correct time.',
+      //         buttons: ['OK']
+      //       });
+      //         alert.present();
+      //     }else {
+      //       this.businessdata.open = true;
+      //     }
+      //     console.log(this.businessdata.open);
+      //   }
       
+      //   closed(){
+      //     console.log('The customers CheckOutDate ',  this.businessdata.closed );
+      //     console.log('Todays date is ', this.now);
+      //     if(this.businessdata.closed <  this.businessdata.closed){
+      //       const alert = await this.alertController.create({
+      //         message: 'Please select the correct time.',
+      //         buttons: ['OK']
+      //       });
+      //         alert.present();
+      //     }else if( this.businessdata.closed === undefined){
+      //       const alert =  this.alert.create({
+      //         message: 'Please select the Checkin time first.',
+      //         buttons: ['OK']
+      //       });
+      //         alert.present();
+      //     }else if (this.businessdata.closed === this.businessdata.closed){
+      //       const alert = await this.alertController.create({
+      //         message: 'open and closing time cannot not the same  cannot be on the same day.',
+      //         buttons: ['OK']
+      //       });
+      //         alert.present();
+      //     }else{
+      //       this.businessdata.closed = true; 
+      //       console.log("the checkout part");
+      //     }
+      //     console.log(this.businessdata.closed);
+      //   }
       
+
+
       getProfile() {
         
       
       }
+
       goToRev() {
         this.router.navigate(['past-b']);
       } 
       profile() {
         this.router.navigate(['the-map']);
       } 
+      Logout() {
+        // this.users = [];
+        // this.requests = [];
+        // this.NewRequeste = [];
+        console.log('You are logged out');
+        firebase.auth().signOut().then((res) => {
+         console.log(res);
+          this.router.navigateByUrl('/login');
+        })
+      }
     }
+
+    
