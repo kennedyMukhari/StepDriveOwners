@@ -21,10 +21,12 @@ import { TabsService } from './core/tabs.service';
 
 
 firebase.initializeApp(FIREBASE_CONFIG);
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, 
+  imports: [BrowserModule,
+  BrowserModule, 
   IonicModule.forRoot(),
   AppRoutingModule,
   IonicSwipeAllModule,

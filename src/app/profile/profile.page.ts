@@ -9,6 +9,7 @@ import { PopoverController } from '@ionic/angular';
 import { PopOverComponent } from '../pop-over/pop-over.component';
 import { AlertController } from '@ionic/angular';
 
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
@@ -16,11 +17,17 @@ import { AlertController } from '@ionic/angular';
 })
 
 
+
+
 export class ProfilePage implements OnInit {
   @ViewChild('inputs', {static: true}) input:ElementRef
-
   display = false;
   toastCtrl: any;
+
+  option={
+    componentRestrictions: { country: 'ZA' }
+    };
+
   swipeUp() {
     this.display = !this.display;
   }
@@ -48,13 +55,18 @@ export class ProfilePage implements OnInit {
   storage = firebase.storage().ref();
 
 
-  pack = {
-    amount: '',
-    name: '',
-    number: ''
-  }
+  // pack = {
+    amount: string;
+    name: string;
+    number: string;
+  // }
 
-
+   pack = {
+    amount: this.amount,
+    name: this.name,
+    number: this.number,
+  }  
+  
   opened : boolean
 
   businessdata = {
@@ -74,6 +86,7 @@ export class ProfilePage implements OnInit {
    
   }
 
+  counter : number = 0;
   // now = moment().format('"hh-mm-A"');
 
   validation_messages = {
@@ -162,10 +175,6 @@ export class ProfilePage implements OnInit {
     
 
 
-  }
-
-
-  ionViewWillEnter(){
     this.db.collection('drivingschools').where('schooluid', '==', firebase.auth().currentUser.uid).get().then(res => {
       res.forEach(doc => {
         console.log(doc.data());
@@ -188,41 +197,68 @@ export class ProfilePage implements OnInit {
       console.log(err);
       
     })
+
+
   }
+
+
+  ionViewWillEnter(){
+    this.getUserPosition();
+   
+  }
+
+  
+  getUserPosition(){
+    this.options = {
+        enableHighAccuracy : true
+    };
+    this.geolocation.getCurrentPosition(this.options).then((pos : Geoposition) => {
+        this.currentPos = pos;      
+        console.log(pos);
+        console.log('this is your Current Location', pos.coords.latitude);
+    },(err : PositionError)=>{
+        console.log("error : " + err.message);
+    });
+}
+
 
   showData(){
     // console.log('Data in the package',this.amount);
   }
 
-  async addPack(){
-    console.log('Package ',this.pack);
-    
-    if (!this.pack.amount || !this.pack.name || !this.pack.number) {
-      const alert = await this.alertController.create({
-        header: 'Alert',
-        subHeader: 'Subtitle',
-        message: 'Please fill all package fields.',
-        buttons: ['OK']
-      });
-  
-      await alert.present();
-      
-    } else {
-
-      console.log( this.pack.amount +'Pack added');
-      
-      if (this.businessdata.packages.length !== 4) {
-        this.businessdata.packages.push(this.pack);
-        
-
-        this.pack = {
-          amount: '',
-          name: '',
-          number: ''
-        }
-
-      }
+ async addPack(obj){
+    console.log('Package ',obj);
+    this.counter += 1;
+    if(obj != null || obj != undefined || this.counter < 5){
+      this.businessdata.packages.push({name: obj.name, amount:obj.amount, number:obj.number});
+      obj.name = '';
+      obj.amount = '';
+      obj.number = '';
     }
+    
+    // if (!this.pack.amount || !this.pack.name || !this.pack.number) {
+    //   const alert = await this.alertController.create({
+    //     header: 'Alert',
+    //     subHeader: 'Subtitle',
+    //     message: 'Please fill all package fields.',
+    //     buttons: ['OK']
+    //   });
+  
+    //   await alert.present();
+      
+    // } else {
+
+    //   console.log('Pack added');
+      
+      // if (this.businessdata.packages.length !== 4) {
+       
+      // this.pack = {
+      // amount: '',
+      // name: '',
+      // number: ''
+      // }
+      // }
+    // }
   }
 
   async CheckData(){
@@ -324,9 +360,9 @@ export class ProfilePage implements OnInit {
  
   async  createAccount(){
 
-    console.log('Create Account method called');
+    console.log('Create Account method called',  this.businessdata.packages);
     
-    // this.router.navigateByUrl('/main');
+    this.router.navigateByUrl('/main');
         if (this.businessdata.closed.slice(11, 16)  != this.businessdata.open.slice(11, 16)  && this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)  ){
           this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
             address : this.businessdata.address,
@@ -338,12 +374,15 @@ export class ProfilePage implements OnInit {
             email : this.businessdata.email,
             image : this.businessdata.image,
             open : this.businessdata.open,
+            coords : {lat:  this.currentPos.coords.latitude,
+            lng:  this.currentPos.coords.longitude},
             packages :this.businessdata.packages,
-            
             registration : this.businessdata.registration,
             schoolname : this.businessdata.schoolname,
             schooluid : firebase.auth().currentUser.uid
+            
           }).then(res => {
+            
             console.log('Profile created');
             this.getProfile()
             this.router.navigateByUrl('the-map');

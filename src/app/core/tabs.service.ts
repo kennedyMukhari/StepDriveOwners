@@ -26,19 +26,27 @@ export class TabsService {
 
   constructor(private router: Router, private platform: Platform) {
    
+  }
+
+
+  ionViewDidEnter(){
+
     this.platform.ready().then(() => {
       console.log('Core service init');
       this.navEvents();
     });
-    
+
   }
 
   public hideTabs() {
+    console.log("hideTabs tab method is called");
     const tabBar = document.getElementById('myTabBar');
     if (tabBar.style.display !== 'none') tabBar.style.display = 'none';
   }
 
   public showTabs() {
+    console.log("showTabs tab method is called");
+    
     const tabBar = document.getElementById('myTabBar');
     if (tabBar.style.display !== 'flex') tabBar.style.display = 'flex';
   }

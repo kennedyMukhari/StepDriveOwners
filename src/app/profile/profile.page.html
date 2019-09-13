@@ -20,6 +20,7 @@
         <img *ngIf="!this.businessdata.image" (click)="selectImage()" src="../../assets/icon2.png" class="thumbavatar">
         <img *ngIf="this.businessdata.image" src="{{this.businessdata.image}}" class="thumbavatar" (click)="selectImage()">
       </div>
+     
 
       <div (click)="Logout()" class="logt">
         <ion-icon size="large" name="exit"></ion-icon>
@@ -32,6 +33,7 @@
           <ion-progress-bar *ngIf="isuploading" color="secondary" value="{{uploadprogress}}"></ion-progress-bar>
         </div>
         
+
         <div class="input">
           <p>SchoolName</p>
           <input type="text" formControlName="schoolname" [(ngModel)]="businessdata.schoolname">
@@ -140,7 +142,7 @@
             <div class="inp" #inputs>
               <div class="input">
                 <p>Package name</p>
-                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="pack.name">
+                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="name">
                 <input *ngIf="businessdata.packages.length==4" disabled="true" type="text">
   
               </div>
@@ -148,17 +150,17 @@
   
               <div class="input">
                 <p>Amount</p>
-                <input *ngIf="businessdata.packages.length<4" type="tel" [(ngModel)]="pack.amount">
-                <input *ngIf="businessdata.packages.length==4" disabled="true" type="tel">
+                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="amount">
+                <input *ngIf="businessdata.packages.length==4" disabled="true">
               </div>
   
               <div class="input">
                 <p>Number</p>
-                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="pack.number">
+                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="number">
                 <input *ngIf="businessdata.packages.length==4" disabled="true" type="text">
               </div>
   
-              <button size="small" (click)="addPack()">
+              <button size="small" (click)="addPack({name:name, amount:amount, number:number})">
                 Add Package
               </button>
             </div>
