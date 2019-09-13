@@ -229,13 +229,14 @@ export class ProfilePage implements OnInit {
  async addPack(obj){
     console.log('Package ',obj);
     this.counter += 1;
-    if(obj != null || obj != undefined || this.counter < 5){
+    if(obj != null && obj != undefined && this.counter < 5){
       this.businessdata.packages.push({name: obj.name, amount:obj.amount, number:obj.number});
       obj.name = '';
       obj.amount = '';
       obj.number = '';
+      console.log('Package ',obj);
     }
-    
+
     // if (!this.pack.amount || !this.pack.name || !this.pack.number) {
     //   const alert = await this.alertController.create({
     //     header: 'Alert',

@@ -43,7 +43,25 @@ export class TheMapPage implements OnInit {
   NewDrivingschool=[];
   Drivingschool=[]
   constructor( private geolocation : Geolocation,public alertController: AlertController, public AuthService : AuthService, public data: DataSavedService,  public router:Router, private nativeGeocoder: NativeGeocoder) { 
-
+    this.db.collection('drivingschools').onSnapshot(snapshot => {
+      this.NewDrivingschool = [];
+     
+      snapshot.forEach(Element => {
+       
+            this.Drivingschool.push(Element.data());
+      });
+      this.Drivingschool.forEach(item => {
+      
+        if(item.schooluid === firebase.auth().currentUser.uid){
+                 this.NewDrivingschool.push(item);
+             
+                 
+              }
+      })
+      
+      console.log('NewDrivingschool', this.NewDrivingschool);
+    
+    });   
   }
 
 
