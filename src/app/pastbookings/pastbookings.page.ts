@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as firebase from 'firebase';
 import { DataSavedService } from '../data-saved.service';
+import { Platform } from '@ionic/angular';
 
 
 
@@ -22,7 +23,7 @@ export class PastbookingsPage implements OnInit {
 
 
 
-  constructor(public data : DataSavedService) { 
+  constructor(public data : DataSavedService, public platform : Platform) { 
 
  
     //retriving data from booking collection
@@ -61,6 +62,12 @@ export class PastbookingsPage implements OnInit {
 
   
  ionViewDidEnter(){
+
+  // this.platform.ready().then(() => {
+  //   console.log('Core service init');
+  //   const tabBar = document.getElementById('myTabBar');
+  //    tabBar.style.display = 'none';
+  // });
 
   this.Booking = [];
   this.Customer = this.data.SavedData;

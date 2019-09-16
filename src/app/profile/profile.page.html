@@ -160,7 +160,7 @@
                 <input *ngIf="businessdata.packages.length==4" disabled="true" type="text">
               </div>
   
-              <button size="small" (click)="addPack({name:name, amount:amount, number:number})">
+              <button size="small" (click)="addPack({name:name, amount:amount, number:number})" >
                 Add Package
               </button>
             </div>
@@ -180,7 +180,7 @@
           </div>
 
       <div class="dbtn">
-          <button (click)="createAccount()">
+          <button (click)="createAccount(loginForm)">
             Done
           </button>
         </div>

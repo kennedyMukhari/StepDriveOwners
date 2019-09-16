@@ -11,6 +11,8 @@ import * as firebase from 'firebase';
   styleUrls: ['./login.page.scss']
 })
 export class LoginPage implements OnInit {
+
+
   db = firebase.firestore()
   public loginForm: FormGroup;
   public loading: HTMLIonLoadingElement;
@@ -48,6 +50,8 @@ export class LoginPage implements OnInit {
   }
 
   async loginUser(loginForm: FormGroup): Promise<void> {
+
+    
     if (!loginForm.valid) {
       console.log('Form is not valid yet, current value:', loginForm.value);
     } else {

@@ -1,13 +1,21 @@
 import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import * as firebase from 'firebase';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Camera,CameraOptions } from '@ionic-native/Camera/ngx';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation'; 
 import { PopoverController } from '@ionic/angular';
 import { PopOverComponent } from '../pop-over/pop-over.component';
 import { AlertController } from '@ionic/angular';
+import { TabsService } from '../core/tabs.service';
+import { Platform } from '@ionic/angular';
+import { Injectable } from '@angular/core';
+import { filter } from 'rxjs/operators';
+import { FormGroup, Validators,FormControl, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
+
+
+
+
 
 
 @Component({
@@ -21,6 +29,7 @@ import { AlertController } from '@ionic/angular';
 
 export class ProfilePage implements OnInit {
   @ViewChild('inputs', {static: true}) input:ElementRef
+ 
   display = false;
   toastCtrl: any;
 
@@ -56,9 +65,9 @@ export class ProfilePage implements OnInit {
 
 
   // pack = {
-    amount: string;
-    name: string;
-    number: string;
+    amount: string = '';
+    name: string = '';
+    number: string = '';
   // }
 
    pack = {
@@ -152,23 +161,33 @@ export class ProfilePage implements OnInit {
      public camera: Camera,
      public alertController: AlertController,
      public popoverController: PopoverController,
-     public rendere: Renderer2) 
+     public rendere: Renderer2, 
+     public tabs: TabsService,
+     public platform : Platform,
+     ) 
 
      {
     
     this.loginForm = this.forms.group({
       // image: new FormControl(this.businessdata.image, Validators.compose([Validators.required])),
       schoolname: new FormControl(this.businessdata.schoolname, Validators.compose([Validators.required])),
-      
-      registration: new FormControl(this.businessdata.cellnumber, Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])),
-      email: new FormControl(this.businessdata.registration, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-.]+$')])),
+    
+
+      email: new FormControl(this.businessdata.email, Validators.compose([Validators.required])),
+
       cellnumber: new FormControl(this.businessdata.cellnumber, Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])),
-      cost: new FormControl(this.businessdata.cost, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-.]+$')])),
-      desc: new FormControl(this.businessdata.desc, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-.]+$')])),
-      address: new FormControl(this.businessdata.address, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-.]+$')])),
-      open: new FormControl(this.businessdata.open, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-.]+$')])),
-      closed: new FormControl(this.businessdata.closed, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-.]+$')])),
-      allday: new FormControl(this.businessdata.allday, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-.]+$')])),
+
+      cost: new FormControl(this.businessdata.cost, Validators.compose([Validators.required])),
+
+      desc: new FormControl(this.businessdata.desc, Validators.compose([Validators.required])),
+
+      address: new FormControl(this.businessdata.address, Validators.compose([Validators.required])),
+
+      open: new FormControl(this.businessdata.open, Validators.compose([Validators.required])),
+
+      closed: new FormControl(this.businessdata.closed, Validators.compose([Validators.required]))
+
+     
     })
 
     // this.rendere.setStyle(this.input.nativeElement, 'opacity', 'o');
@@ -202,10 +221,20 @@ export class ProfilePage implements OnInit {
   }
 
 
-  ionViewWillEnter(){
+  ionViewDidEnter(){
+    
     this.getUserPosition();
+    this.platform.ready().then(() => {
+      console.log('Core service init');
+      const tabBar = document.getElementById('myTabBar');
+       tabBar.style.display = 'none';
+    });
+
    
   }
+
+
+
   
   getUserPosition(){
     this.options = {
@@ -226,16 +255,27 @@ export class ProfilePage implements OnInit {
   }
 
  async addPack(obj){
-    console.log('Package ',obj);
-    this.counter += 1;
-    if(obj != null && obj != undefined && this.counter < 5){
+  
+  
+  
+    if(obj.amount !== '' && obj.name !== '' && obj.number !== '' && this.counter < 4){
       this.businessdata.packages.push({name: obj.name, amount:obj.amount, number:obj.number});
-      obj.name = '';
-      obj.amount = '';
-      obj.number = '';
+      // obj.name = '';
+      // obj.amount = '';
+      // obj.number = '';
+      this.counter += 1;
       console.log('Package ',obj);
+      console.log('Package ', this.counter);
+    }else{
+      const alert = await this.alertController.create({
+        // header: 'Alert',
+        // subHeader: 'Subtitle',
+        message: 'Fields cannot be empty!',
+        buttons: ['OK']
+      });
+      await alert.present();
     }
-
+   
     // if (!this.pack.amount || !this.pack.name || !this.pack.number) {
     //   const alert = await this.alertController.create({
     //     header: 'Alert',
@@ -290,6 +330,7 @@ export class ProfilePage implements OnInit {
   }
 
   editpack(pack) {
+    console.log('This is your pack',pack);
     this.pack = pack;
   }
   // options : GeolocationOptions;
@@ -358,54 +399,131 @@ export class ProfilePage implements OnInit {
 
 
  
-  async  createAccount(){
-
-    console.log('Create Account method called',  this.businessdata.packages);
+  async  createAccount(loginForm: FormGroup): Promise<void>{
     
-    this.router.navigateByUrl('/main');
-        if (this.businessdata.closed.slice(11, 16)  != this.businessdata.open.slice(11, 16)  && this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)  ){
-          this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
-            address : this.businessdata.address,
-            allday : this.businessdata.allday,
-            cellnumber : this.businessdata.cellnumber,
-            closed : this.businessdata.closed,
-            cost : this.businessdata.cost,
-            desc : this.businessdata.desc,
-            email : this.businessdata.email,
-            image : this.businessdata.image,
-            open : this.businessdata.open,
-            coords : {lat:  this.currentPos.coords.latitude,
-            lng:  this.currentPos.coords.longitude},
-            packages :this.businessdata.packages,
-            registration : this.businessdata.registration,
-            schoolname : this.businessdata.schoolname,
-            schooluid : firebase.auth().currentUser.uid
-            
-          }).then(res => {
-            
-            console.log('Profile created');
-            this.getProfile()
-            this.router.navigateByUrl('the-map');
-          }).catch(error => {
-            console.log('Error');
-          });
+
+    console.log('Results in the businessdata', this.businessdata.schoolname == '');
+    console.log("showTabs tab method is called");
+
+      // console.log('The data',this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)  );
+      //   const tabBar = document.getElementById('myTabBar');
+      //   tabBar.style.display = 'flex';
+
+
+      // this.businessdata.closed.slice(11, 16)  != this.businessdata.open.slice(11, 16)  && this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)
+
+        if (loginForm.valid ){
+          console.log('Results in the businessdata', loginForm.valid);
+          if( this.businessdata.closed.slice(11, 16)  != this.businessdata.open.slice(11, 16)  && this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)){
+
+               if(this.businessdata.schoolname == ''){
+
+                this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
+                  address : this.businessdata.address,
+                  allday : this.businessdata.allday,
+                  cellnumber : this.businessdata.cellnumber,
+                  closed : this.businessdata.closed,
+                  cost : this.businessdata.cost,
+                  desc : this.businessdata.desc,
+                  email : this.businessdata.email,
+                  image : this.businessdata.image,
+                  open : this.businessdata.open,
+                  coords : {lat:  this.currentPos.coords.latitude,
+                  lng:  this.currentPos.coords.longitude},
+                  packages :this.businessdata.packages,
+                  registration : this.businessdata.registration,
+                  schoolname : this.businessdata.schoolname,
+                  schooluid : firebase.auth().currentUser.uid           
+                }).then(res => {           
+                  // console.log('Profile created');
+                  // this.getProfile()
+                  // this.router.navigateByUrl('the-map');
+                }).catch(error => {
+                  console.log('Error');
+                });
+    
+                this.platform.ready().then(() => {
+                  console.log('Core service init');
+                  const tabBar = document.getElementById('myTabBar');
+                  tabBar.style.display = 'flex';
+                });
+                  
+    
+                const alert = await this.alertController.create({
+                  // header: 'Alert',
+                  // subHeader: 'Subtitle',
+                  message: 'Profile successfully created!',
+                  buttons: ['OK']
+                });
+                await alert.present();
+
+               }else{
+
+              
+
+                this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
+                  address : this.businessdata.address,
+                  allday : this.businessdata.allday,
+                  cellnumber : this.businessdata.cellnumber,
+                  closed : this.businessdata.closed,
+                  cost : this.businessdata.cost,
+                  desc : this.businessdata.desc,
+                  email : this.businessdata.email,
+                  image : this.businessdata.image,
+                  open : this.businessdata.open,
+                  coords : {lat:  this.currentPos.coords.latitude,
+                  lng:  this.currentPos.coords.longitude},
+                  packages :this.businessdata.packages,
+                  registration : this.businessdata.registration,
+                  schoolname : this.businessdata.schoolname,
+                  schooluid : firebase.auth().currentUser.uid           
+                }).then(res => {           
+                  // console.log('Profile created');
+                  // this.getProfile()
+                  // this.router.navigateByUrl('the-map');
+                }).catch(error => {
+                  console.log('Error');
+                });
+    
+               
+    
+                const alert = await this.alertController.create({
+                  // header: 'Alert',
+                  // subHeader: 'Subtitle',
+                  message: 'Profile successfully updated!',
+                  buttons: ['OK']
+                });
+                await alert.present();
+
+
+                this.platform.ready().then(() => {
+                  console.log('Core service init');
+                  const tabBar = document.getElementById('myTabBar');
+                  tabBar.style.display = 'flex';
+                });
+                  
+               }
+          
+
+          }else{
+            const alert = await this.alertController.create({
+              // header: 'Alert',
+              // subHeader: 'Subtitle',
+              message: 'Enter the correct time!',
+              buttons: ['OK']
+            });     
+            await alert.present();
+          }   
 
         }else{
-
           const alert = await this.alertController.create({
             // header: 'Alert',
             // subHeader: 'Subtitle',
-            message: 'Enter the correct time!',
+            message: 'Fields cannot be empty!',
             buttons: ['OK']
-          });
-      
+          });     
           await alert.present();
-          
-          
         }
-        
-        console.log('The data',this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)  );
- 
       }
 
 
