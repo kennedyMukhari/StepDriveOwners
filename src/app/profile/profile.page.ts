@@ -603,6 +603,34 @@ export class ProfilePage implements OnInit {
           this.router.navigateByUrl('/login');
         })
       }
+      // checkAddress(){
+      //   console.log(this.request.location.address);
+      //   let location = this.request.location.address;
+      //   let address = this.http.get('https://maps.googleapis.com/maps/api/geocode/json', {
+      //     params: {
+      //       address: location,
+      //       key: 'AIzaSyAT55USDnQ-tZLHJlzryDJbxseD8sLSdZE'
+      //     }
+      //   }).subscribe(res => {
+      //       console.log('Address', res.json());
+      //       if (res.json().status == 'OK') {
+      //         this.message.text = "Address Okay"
+      //         this.message.id = 1;
+      //         this.addressokay = true;
+      //         this.request.location.address = res.json().results[0].formatted_address;
+      //         this.request.location.lat = res.json().results[0].geometry.location.lat;
+      //         this.request.location.lng = res.json().results[0].geometry.location.lng;
+      //         console.log('Data: ', this.request);
+    
+      //       } else {
+      //         this.message.text = "Address not found or Invalid."
+      //         this.message.id = 0;
+      //       }
+      //   }, err => {
+      //     console.log(err);
+      //     // this.message = "Address not found or Invalid."
+      //   })
+      // }
     }
 
     
