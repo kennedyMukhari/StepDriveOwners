@@ -2,12 +2,20 @@ import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/co
 import * as firebase from 'firebase';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Camera,CameraOptions } from '@ionic-native/Camera/ngx';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation'; 
 import { PopoverController } from '@ionic/angular';
 import { PopOverComponent } from '../pop-over/pop-over.component';
 import { AlertController } from '@ionic/angular';
+import { TabsService } from '../core/tabs.service';
+import { Platform } from '@ionic/angular';
+import { Injectable } from '@angular/core';
+import { filter } from 'rxjs/operators';
+
+
+
+
 
 
 @Component({
@@ -21,6 +29,7 @@ import { AlertController } from '@ionic/angular';
 
 export class ProfilePage implements OnInit {
   @ViewChild('inputs', {static: true}) input:ElementRef
+ 
   display = false;
   toastCtrl: any;
 
@@ -152,7 +161,9 @@ export class ProfilePage implements OnInit {
      public camera: Camera,
      public alertController: AlertController,
      public popoverController: PopoverController,
-     public rendere: Renderer2) 
+     public rendere: Renderer2, 
+     public tabs: TabsService,
+     public platform : Platform) 
 
      {
     
@@ -203,9 +214,19 @@ export class ProfilePage implements OnInit {
 
 
   ionViewWillEnter(){
+    
     this.getUserPosition();
+    this.platform.ready().then(() => {
+      console.log('Core service init');
+      const tabBar = document.getElementById('myTabBar');
+       tabBar.style.display = 'none';
+    });
+
    
   }
+
+
+
   
   getUserPosition(){
     this.options = {
@@ -226,16 +247,16 @@ export class ProfilePage implements OnInit {
   }
 
  async addPack(obj){
-    console.log('Package ',obj);
+  
     this.counter += 1;
-    if(obj != null && obj != undefined && this.counter < 5){
+    if(obj !== null && obj !== undefined && this.counter < 5){
       this.businessdata.packages.push({name: obj.name, amount:obj.amount, number:obj.number});
       obj.name = '';
       obj.amount = '';
       obj.number = '';
       console.log('Package ',obj);
     }
-
+   
     // if (!this.pack.amount || !this.pack.name || !this.pack.number) {
     //   const alert = await this.alertController.create({
     //     header: 'Alert',
@@ -361,8 +382,12 @@ export class ProfilePage implements OnInit {
   async  createAccount(){
 
     console.log('Create Account method called',  this.businessdata.packages);
+    console.log("showTabs tab method is called");
     
-    this.router.navigateByUrl('/main');
+    const tabBar = document.getElementById('myTabBar');
+    tabBar.style.display = 'flex';
+    
+
         if (this.businessdata.closed.slice(11, 16)  != this.businessdata.open.slice(11, 16)  && this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)  ){
           this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
             address : this.businessdata.address,
@@ -383,9 +408,9 @@ export class ProfilePage implements OnInit {
             
           }).then(res => {
             
-            console.log('Profile created');
-            this.getProfile()
-            this.router.navigateByUrl('the-map');
+            // console.log('Profile created');
+            // this.getProfile()
+            // this.router.navigateByUrl('the-map');
           }).catch(error => {
             console.log('Error');
           });
@@ -475,6 +500,34 @@ export class ProfilePage implements OnInit {
           this.router.navigateByUrl('/login');
         })
       }
+      // checkAddress(){
+      //   console.log(this.request.location.address);
+      //   let location = this.request.location.address;
+      //   let address = this.http.get('https://maps.googleapis.com/maps/api/geocode/json', {
+      //     params: {
+      //       address: location,
+      //       key: 'AIzaSyAT55USDnQ-tZLHJlzryDJbxseD8sLSdZE'
+      //     }
+      //   }).subscribe(res => {
+      //       console.log('Address', res.json());
+      //       if (res.json().status == 'OK') {
+      //         this.message.text = "Address Okay"
+      //         this.message.id = 1;
+      //         this.addressokay = true;
+      //         this.request.location.address = res.json().results[0].formatted_address;
+      //         this.request.location.lat = res.json().results[0].geometry.location.lat;
+      //         this.request.location.lng = res.json().results[0].geometry.location.lng;
+      //         console.log('Data: ', this.request);
+    
+      //       } else {
+      //         this.message.text = "Address not found or Invalid."
+      //         this.message.id = 0;
+      //       }
+      //   }, err => {
+      //     console.log(err);
+      //     // this.message = "Address not found or Invalid."
+      //   })
+      // }
     }
 
     

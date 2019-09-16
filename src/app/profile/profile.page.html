@@ -2,10 +2,6 @@
 <button (click)="aavg()"></button>
   <div no-padding class="container">
  
-
-
-
-
       <div class="avatar-images">
         <div (click)="goToRev()" class="rev">
           <div class="stars">
@@ -158,9 +154,10 @@
                 <input *ngIf="businessdata.packages.length==4" disabled="true" type="text">
               </div>
   
-              <button size="small" (click)="addPack()">
+              <button size="small"  (click)="addPack({name:name, amount:amount, number:number})" >
                 Add Package
               </button>
+              
             </div>
             <div class="s-packs">
   

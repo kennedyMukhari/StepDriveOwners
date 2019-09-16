@@ -24,8 +24,8 @@ firebase.initializeApp(FIREBASE_CONFIG);
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule,
-  BrowserModule, 
+  imports: [BrowserModule, 
+   BrowserModule, 
   IonicModule.forRoot(),
   AppRoutingModule,
   IonicSwipeAllModule,

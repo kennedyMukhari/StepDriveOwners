@@ -14,9 +14,9 @@
 <ion-content >
     <div #map id="map"></div> 
 
-    <div  padding class="profile" *ngFor="let d of NewDrivingschool">
-      <ion-thumbnail (click)="goToProfile()">
-        <img src="{{d.image}}" alt="profile">
+    <div  padding class="profile" *ngFor = "let item of NewData" >
+      <ion-thumbnail (click)="goToProfile()" >
+        <img src="{{item.image}}" alt="profile">
       </ion-thumbnail>
     </div>
 
