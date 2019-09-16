@@ -69,6 +69,13 @@ export class PastbookingsPage implements OnInit {
   //    tabBar.style.display = 'none';
   // });
 
+    
+  this.platform.ready().then(() => {
+    console.log('Core service init');
+    const tabBar = document.getElementById('myTabBar');
+     tabBar.style.display = 'none';
+  });
+
   this.Booking = [];
   this.Customer = this.data.SavedData;
   console.log("Data in the profile is",this.Customer);
@@ -106,6 +113,15 @@ swap(array, a, b){
 SortData(){
      let MyArray = this.Booking;
      this.SortedBookings = this.bubbleSort(MyArray);  
+}
+
+showTab(){
+  this.platform.ready().then(() => {
+    console.log('Core service init');
+    const tabBar = document.getElementById('myTabBar');
+    tabBar.style.display = 'flex';
+  });
+    
 }
 
 

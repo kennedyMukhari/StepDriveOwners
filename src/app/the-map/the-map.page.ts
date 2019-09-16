@@ -12,6 +12,7 @@ import { DataSavedService } from '../data-saved.service';
 import { AlertController } from '@ionic/angular';
 import { Platform } from '@ionic/angular';
 
+
  
 
 
@@ -66,6 +67,13 @@ async presentAlert() {
 
   ionViewDidEnter(){
 
+    this.platform.ready().then(() => {
+      console.log('Core service init');
+      const tabBar = document.getElementById('myTabBar');
+       tabBar.style.display = 'none';
+    });
+
+
     this.db.collection('drivingschools').onSnapshot(snapshot => {
       this.Data = [];
      
@@ -114,6 +122,14 @@ async presentAlert() {
   
   }
 
+
+  showTab(){
+    this.platform.ready().then(() => {
+      console.log('Core service init');
+      const tabBar = document.getElementById('myTabBar');
+      tabBar.style.display = 'flex';
+    });   
+  }
 
 
   Accept(Customer, i, docid){

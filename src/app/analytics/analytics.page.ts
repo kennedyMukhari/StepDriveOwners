@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import * as firebase from 'firebase';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import * as Chart from 'chart.js';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-analytics',
@@ -37,7 +38,7 @@ Drivingschool=[];
 
 charts: any;
   colorArray: any;
-  constructor(private router: Router) {
+  constructor(private router: Router, private platform: Platform) {
 
     this.db.collection('drivingschools').onSnapshot(snapshot => {
       this.NewDrivingschool = [];
@@ -69,6 +70,12 @@ charts: any;
 
   ionViewWillEnter() {
 
+    this.platform.ready().then(() => {
+      console.log('Core service init');
+      const tabBar = document.getElementById('myTabBar');
+       tabBar.style.display = 'none';
+    });
+
     this.db.collection('drivingschools').onSnapshot(snapshot => {
       this.Data = [];
       this.NewData = [];
@@ -93,6 +100,8 @@ charts: any;
 
   this.getRequests();
   }
+
+  
 
 
   getRequests() {
@@ -163,6 +172,15 @@ charts: any;
         }
       }
     });
+}
+
+
+showTab(){
+  this.platform.ready().then(() => {
+    console.log('Core service init');
+    const tabBar = document.getElementById('myTabBar');
+    tabBar.style.display = 'flex';
+  });   
 }
 
 

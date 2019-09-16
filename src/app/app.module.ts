@@ -16,6 +16,9 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 import { TabsService } from './core/tabs.service';
+import { FormsModule } from '@angular/forms';
+
+
 
 
 
@@ -32,6 +35,7 @@ firebase.initializeApp(FIREBASE_CONFIG);
   HttpClientModule,
   IonicStorageModule.forRoot()],
   providers: [
+    FormsModule,
     Geolocation,
     TabsService,
     StatusBar,

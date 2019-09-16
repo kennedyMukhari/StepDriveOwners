@@ -29,6 +29,7 @@ import { FormGroup, Validators,FormControl, FormBuilder, ReactiveFormsModule, Fo
 
 export class ProfilePage implements OnInit {
   @ViewChild('inputs', {static: true}) input:ElementRef
+  
  
   display = false;
   toastCtrl: any;
@@ -224,6 +225,8 @@ export class ProfilePage implements OnInit {
   ionViewDidEnter(){
     
     this.getUserPosition();
+
+    
     this.platform.ready().then(() => {
       console.log('Core service init');
       const tabBar = document.getElementById('myTabBar');
@@ -397,7 +400,14 @@ export class ProfilePage implements OnInit {
   // }
   //inserting driving drivers school details to the database 
 
-
+  showTab(){
+    this.platform.ready().then(() => {
+      console.log('Core service init');
+      const tabBar = document.getElementById('myTabBar');
+      tabBar.style.display = 'flex';
+    });
+      
+  }
  
   async  createAccount(loginForm: FormGroup): Promise<void>{
     
@@ -442,11 +452,11 @@ export class ProfilePage implements OnInit {
                   console.log('Error');
                 });
     
-                this.platform.ready().then(() => {
-                  console.log('Core service init');
-                  const tabBar = document.getElementById('myTabBar');
-                  tabBar.style.display = 'flex';
-                });
+                // this.platform.ready().then(() => {
+                //   console.log('Core service init');
+                //   const tabBar = document.getElementById('myTabBar');
+                //   tabBar.style.display = 'flex';
+                // });
                   
     
                 const alert = await this.alertController.create({
@@ -496,11 +506,11 @@ export class ProfilePage implements OnInit {
                 await alert.present();
 
 
-                this.platform.ready().then(() => {
-                  console.log('Core service init');
-                  const tabBar = document.getElementById('myTabBar');
-                  tabBar.style.display = 'flex';
-                });
+                // this.platform.ready().then(() => {
+                //   console.log('Core service init');
+                //   const tabBar = document.getElementById('myTabBar');
+                //   tabBar.style.display = 'flex';
+                // });
                   
                }
           

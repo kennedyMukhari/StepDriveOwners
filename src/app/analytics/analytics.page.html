@@ -1,5 +1,5 @@
-<ion-content class="no-scroll">
-    <div class="container">
+<ion-content class="no-scroll"  (click)="showTab()">
+    <div class="container" (click)="showTab()">
         <div class="dSchool" *ngFor = "let item of NewData">
             <div class="thumb">
               <ion-avatar>
@@ -18,7 +18,7 @@
             </div>
           </div>
         </div>
-      <div class="graph">
+      <div class="graph" (click)="showTab()">
         <ion-card class="welcome-card">
           <ion-card-header>
             <ion-card-subtitle>Number of Students per day</ion-card-subtitle>
