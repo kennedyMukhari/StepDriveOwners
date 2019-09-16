@@ -17,7 +17,7 @@ import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 import { TabsService } from './core/tabs.service';
 import { FormsModule } from '@angular/forms';
-
+import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 
 
 
