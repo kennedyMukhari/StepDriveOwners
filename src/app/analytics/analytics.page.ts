@@ -68,8 +68,16 @@ charts: any;
     this.getRequests();
   }
 
-  ionViewWillEnter() {
-
+  ionViewDidEnter() {
+    this.mon = [];
+    this.tue = [];
+    this.wed = [];
+    this.thu = [];
+    this.fri = [];
+    this.sat = [];
+    this.sun = [];
+    console.log('Monday array',this.mon);
+    
     this.platform.ready().then(() => {
       console.log('Core service init');
       const tabBar = document.getElementById('myTabBar');
@@ -88,18 +96,13 @@ charts: any;
       
         if(item.schooluid === firebase.auth().currentUser.uid){
                  this.NewData.push(item);
-                 console.log('NewDrivingschool', this.NewData);
-                 
+                 console.log('NewDrivingschool', this.NewData);  
               }
       })
-      
-     
-    
-    }); 
-
+  }); 
 
   this.getRequests();
-  }
+}
 
   
 

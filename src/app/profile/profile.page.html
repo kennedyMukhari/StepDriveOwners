@@ -1,4 +1,21 @@
-<ion-content class="no-scroll" *ngIf="businessdata">
+<ion-header>
+    
+    <!-- <ion-toolbar color="primary">
+        <ion-searchbar [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="Search for a place"></ion-searchbar>
+      </ion-toolbar>
+
+      <ion-list [hidden]="autocompleteItems.length == 0">
+        <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
+          {{ item.description }}
+        </ion-item>
+      </ion-list> -->
+
+     
+  </ion-header>
+
+
+<ion-content class="no-scroll">
+   
 <button (click)="aavg()"></button>
   <div no-padding class="container" (click)="showTab()">
  
@@ -28,7 +45,6 @@
           <ion-progress-bar *ngIf="isuploading" color="secondary" value="{{uploadprogress}}"></ion-progress-bar>
         </div>
         
-       
 
         <div class="input">
           <p>SchoolName</p>

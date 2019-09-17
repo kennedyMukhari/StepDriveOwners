@@ -1,17 +1,7 @@
-<!-- <ion-header color="primary">
-  <ion-toolbar>
-     
-    <ion-title>TheMap</ion-title> 
-    <button ion-button (click)="addMarkersOnTheCustomersCurrentLocation()"><ion-icon name="add"></ion-icon>Add Marker</button>
-    <button style="background: transparent" (click)="Logout()" class="Icon"><ion-icon color="light" name="log-out"></ion-icon></button> <br>
-    <button (click)="ll()">Show Data</button>
-    <button (click)="takeData()">Console Data</button>
-    <ion-icon ios="ios-contact" md="md-contact" (click)="goToProfile()" class="Icon"></ion-icon>
 
-  </ion-toolbar>
-</ion-header> -->
 
 <ion-content >
+    
     <div #map id="map" (click)="showTab()"></div> 
 
     <div  padding class="profile" *ngFor = "let item of NewData" >

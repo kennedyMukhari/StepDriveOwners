@@ -12,7 +12,9 @@ import { Platform } from '@ionic/angular';
 import { Injectable } from '@angular/core';
 import { filter } from 'rxjs/operators';
 import { FormGroup, Validators,FormControl, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
-
+import { NgZone } from '@angular/core';
+import { GooglePlaceDirective } from 'ngx-google-places-autocomplete/ngx-google-places-autocomplete.directive';
+import { Address } from 'ngx-google-places-autocomplete/objects/address';
 
 
 
@@ -28,8 +30,20 @@ import { FormGroup, Validators,FormControl, FormBuilder, ReactiveFormsModule, Fo
 
 
 export class ProfilePage implements OnInit {
-  @ViewChild('inputs', {static: true}) input:ElementRef
-  
+
+  @ViewChild('inputs', {static: true}) input:ElementRef;
+  @ViewChild("placesRef", {static: true}) placesRef : GooglePlaceDirective;
+//============================
+  GoogleAutocomplete: google.maps.places.AutocompleteService;
+  autocomplete: { input: string; };
+  autocompleteItems: any[];
+  location: any;
+  placeid: any;
+//==============================
+options2={
+  types: [],
+  componentRestrictions: { country: 'UA' }
+  }
  
   display = false;
   toastCtrl: any;
@@ -155,7 +169,9 @@ export class ProfilePage implements OnInit {
   userProfile: any;
   isuploaded: boolean;
   imageSelected: boolean;
-  constructor(public formBuilder: FormBuilder ,
+  constructor(
+    public zone: NgZone,
+    public formBuilder: FormBuilder ,
      private geolocation : Geolocation, 
      public forms: FormBuilder,
      public router:Router,
@@ -168,6 +184,12 @@ export class ProfilePage implements OnInit {
      ) 
 
      {
+       
+
+      this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
+      this.autocomplete = { input: '' };
+      this.autocompleteItems = [];
+
     
     this.loginForm = this.forms.group({
       // image: new FormControl(this.businessdata.image, Validators.compose([Validators.required])),
@@ -220,6 +242,40 @@ export class ProfilePage implements OnInit {
 
 
   }
+  public handleAddressChange(address: Address) {
+    // Do some stuff
+    console.log(address);
+    
+}
+  //========================================
+  updateSearchResults(){
+    if (this.autocomplete.input == '') {
+      this.autocompleteItems = [];
+      return;
+    }
+    this.GoogleAutocomplete.getPlacePredictions({ input: this.autocomplete.input },
+    (predictions, status) => {
+      this.autocompleteItems = [];
+      this.zone.run(() => {
+        predictions.forEach((prediction) => {
+          this.autocompleteItems.push(prediction);
+        });
+      });
+    });
+  }
+  
+  selectSearchResult(item) {
+    console.log(item)
+    this.location = item
+    this.placeid = this.location.place_id
+    console.log('placeid'+ this.placeid)
+  }
+
+  GoTo(){
+    return window.location.href = 'https://www.google.com/maps/place/?q=place_id:'+this.placeid;
+  }
+
+  //=========================================
 
 
   ionViewDidEnter(){

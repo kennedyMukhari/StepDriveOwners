@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { TheMapPage } from './the-map.page';
 
+
 const routes: Routes = [
   {
     path: '',

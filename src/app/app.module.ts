@@ -18,6 +18,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { TabsService } from './core/tabs.service';
 import { FormsModule } from '@angular/forms';
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
+import { GooglePlaceModule } from "ngx-google-places-autocomplete";
 
 
 
@@ -27,8 +28,12 @@ firebase.initializeApp(FIREBASE_CONFIG);
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, 
-   BrowserModule, 
+
+  imports: [
+  BrowserModule,
+  GooglePlaceModule,
+  FormsModule, 
+  BrowserModule, 
   IonicModule.forRoot(),
   AppRoutingModule,
   IonicSwipeAllModule,
