@@ -47,6 +47,7 @@
     "firebase": "^6.4.2",
     "firebase-admin": "^8.4.0",
     "firebase-functions": "^3.2.0",
+    "ionic-img-viewer": "^2.9.0",
     "ionic-swipe-all": "^2.0.0",
     "ionic4-rating": "^1.0.9",
     "ionic4-star-rating": "^1.1.0",

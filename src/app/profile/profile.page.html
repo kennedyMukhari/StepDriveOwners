@@ -1,5 +1,13 @@
-<ion-content class="no-scroll" *ngIf="businessdata">
-<button (click)="aavg()"></button>
+<ion-content class="no-scroll">
+    
+    <div class="viewImage">
+        <div (click)="openImage('', 'close')" class="close"><p>x</p></div>
+        <img (click)="selectImage()" *ngIf="viewImage.image" src="{{viewImage.image}}" alt="">
+        <img *ngIf="!viewImage.image" src="https://icon-library.net/images/image-placeholder-icon/image-placeholder-icon-3.jpg" alt="">
+      </div>
+    
+
+<!-- <button (click)="aavg()"></button> -->
   <div no-padding class="container" (click)="showTab()">
  
       <div class="avatar-images">
@@ -13,8 +21,8 @@
             Reviews
           </div>
         </div>
-        <img *ngIf="!this.businessdata.image" (click)="selectImage()" src="../../assets/icon2.png" class="thumbavatar">
-        <img *ngIf="this.businessdata.image" src="{{this.businessdata.image}}" class="thumbavatar" (click)="selectImage()">
+        <img *ngIf="!this.businessdata.image" (click)="openImage('', 'open')"  src="../../assets/icon2.png" class="thumbavatar">
+        <img *ngIf="this.businessdata.image" (click)="openImage(businessdata.image, 'open')"  src="{{this.businessdata.image}}" class="thumbavatar" (click)="selectImage()">
       </div>
 
       <div (click)="Logout()" class="logt">
@@ -184,4 +192,5 @@
       </div>
 
   </div>
+  <button (click)="openImage('', 'open')">open image</button>
 </ion-content>

@@ -95,7 +95,10 @@ export class ProfilePage implements OnInit {
     schooluid: '',
    
   }
-
+  viewImage = {
+    image: '',
+    open: false
+  }
   counter : number = 0;
   // now = moment().format('"hh-mm-A"');
 
@@ -162,9 +165,10 @@ export class ProfilePage implements OnInit {
      public camera: Camera,
      public alertController: AlertController,
      public popoverController: PopoverController,
-     public rendere: Renderer2, 
+     public renderer: Renderer2, 
      public tabs: TabsService,
      public platform : Platform,
+     public elementref: ElementRef, 
      ) 
 
      {
@@ -603,34 +607,27 @@ export class ProfilePage implements OnInit {
           this.router.navigateByUrl('/login');
         })
       }
-      // checkAddress(){
-      //   console.log(this.request.location.address);
-      //   let location = this.request.location.address;
-      //   let address = this.http.get('https://maps.googleapis.com/maps/api/geocode/json', {
-      //     params: {
-      //       address: location,
-      //       key: 'AIzaSyAT55USDnQ-tZLHJlzryDJbxseD8sLSdZE'
-      //     }
-      //   }).subscribe(res => {
-      //       console.log('Address', res.json());
-      //       if (res.json().status == 'OK') {
-      //         this.message.text = "Address Okay"
-      //         this.message.id = 1;
-      //         this.addressokay = true;
-      //         this.request.location.address = res.json().results[0].formatted_address;
-      //         this.request.location.lat = res.json().results[0].geometry.location.lat;
-      //         this.request.location.lng = res.json().results[0].geometry.location.lng;
-      //         console.log('Data: ', this.request);
-    
-      //       } else {
-      //         this.message.text = "Address not found or Invalid."
-      //         this.message.id = 0;
-      //       }
-      //   }, err => {
-      //     console.log(err);
-      //     // this.message = "Address not found or Invalid."
-      //   })
-      // }
+      openImage(image, cmd) {
+        // console.log('Open triggerd');
+        console.log(this.elementref);
+        
+        if (cmd == 'open') {
+          this.viewImage.image = image;
+          this.viewImage.open = true;
+          
+          let viewimage = this.elementref.nativeElement.children[0].children[0]
+          console.log('ggg',viewimage);
+          this.renderer.setStyle(viewimage, 'opacity', '1');
+          this.renderer.setStyle(viewimage, 'transform', 'scale(1)');
+        } else {
+          
+          this.viewImage.open = false;
+          let viewimage = this.elementref.nativeElement.children[0].children[0]
+          console.log('ggg',viewimage);
+          this.renderer.setStyle(viewimage, 'opacity', '0');
+          this.renderer.setStyle(viewimage, 'transform', 'scale(0)');
+        }
+      }
     }
 
     
