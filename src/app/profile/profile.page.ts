@@ -68,7 +68,7 @@ export class ProfilePage implements OnInit {
   // pack = {
     amount: string = '';
     name: string = '';
-    number: string = '';
+    number: number = 0;
   // }
 
    pack = {
@@ -261,27 +261,27 @@ export class ProfilePage implements OnInit {
     // console.log('Data in the package',this.amount);
   }
 
- async addPack(obj){
+ async addPack(){
   
+  this.businessdata.packages.push({name: this.name, amount:this.amount, number:this.number});
   
-  
-    if(obj.amount !== '' && obj.name !== '' && obj.number !== '' && this.counter < 4){
-      this.businessdata.packages.push({name: obj.name, amount:obj.amount, number:obj.number});
-      // obj.name = '';
-      // obj.amount = '';
-      // obj.number = '';
-      this.counter += 1;
-      console.log('Package ',obj);
-      console.log('Package ', this.counter);
-    }else{
-      const alert = await this.alertController.create({
-        // header: 'Alert',
-        // subHeader: 'Subtitle',
-        message: 'Fields cannot be empty!',
-        buttons: ['OK']
-      });
-      await alert.present();
-    }
+    // if(obj.amount !== '' && obj.name !== '' && obj.number !== '' && this.counter < 4){
+    //   this.businessdata.packages.push({name: obj.name, amount:obj.amount, number:obj.number});
+    //   // obj.name = '';
+    //   // obj.amount = '';
+    //   // obj.number = '';
+    //   this.counter += 1;
+    //   console.log('Package ',obj);
+    //   console.log('Package ', this.counter);
+    // }else{
+    //   const alert = await this.alertController.create({
+    //     // header: 'Alert',
+    //     // subHeader: 'Subtitle',
+    //     message: 'Fields cannot be empty!',
+    //     buttons: ['OK']
+    //   });
+    //   await alert.present();
+    // }
    
     // if (!this.pack.amount || !this.pack.name || !this.pack.number) {
     //   const alert = await this.alertController.create({

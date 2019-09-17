@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation'; 
-import {ViewChild ,ElementRef } from '@angular/core';
+import {ViewChild ,ElementRef, Renderer2 } from '@angular/core';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import * as firebase from 'firebase';
 import { AuthService } from '../../app/user/auth.service';
@@ -25,6 +25,11 @@ declare var google;
 
 export class TheMapPage implements OnInit {
 
+  viewImage = {
+    image: '',
+    open: false
+  }
+
   // toggles the div, goes up if true, goes down if false
   display = false;
   swipeUp() {
@@ -45,7 +50,14 @@ export class TheMapPage implements OnInit {
   Data = [];
   NewData = [];
 
-  constructor( private geolocation : Geolocation,private platform: Platform, public alertController: AlertController, public AuthService : AuthService, public data: DataSavedService,  public router:Router, private nativeGeocoder: NativeGeocoder) { 
+  constructor( private geolocation : Geolocation,private platform: Platform,
+     public alertController: AlertController, 
+     public AuthService : AuthService, 
+     public data: DataSavedService,  
+     public router:Router, 
+     private nativeGeocoder: NativeGeocoder,
+     public renderer: Renderer2, 
+     public elementref: ElementRef, ) { 
 
   }
 
@@ -436,7 +448,26 @@ addMarker(){
 }
 
 
-goToProfile(){
-  this.router.navigate(['profile']);
+openImage(image, cmd) {
+  // console.log('Open triggerd');
+  console.log(this.elementref);
+  
+  if (cmd == 'open') {
+    this.viewImage.image = image;
+    this.viewImage.open = true;
+    
+    let viewimage = this.elementref.nativeElement.children[0].children[1]
+    console.log('ggg',viewimage);
+    this.renderer.setStyle(viewimage, 'opacity', '1');
+    this.renderer.setStyle(viewimage, 'transform', 'scale(1)');
+  } else {
+    
+    this.viewImage.open = false;
+    let viewimage = this.elementref.nativeElement.children[0].children[1]
+    console.log('ggg',viewimage);
+    this.renderer.setStyle(viewimage, 'opacity', '0');
+    this.renderer.setStyle(viewimage, 'transform', 'scale(0)');
+  }
 }
+
 }

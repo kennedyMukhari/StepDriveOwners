@@ -23,7 +23,11 @@ export class AppComponent {
     public router : Router
   ) {
     this.initializeApp();
-    
+    // let status bar overlay webview
+  this.statusBar.overlaysWebView(true);
+
+// set status bar to white
+  this.statusBar.backgroundColorByHexString('#8B8B8B');
   }
 
   initializeApp() {

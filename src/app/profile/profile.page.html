@@ -22,7 +22,7 @@
           </div>
         </div>
         <img *ngIf="!this.businessdata.image" (click)="openImage('', 'open')"  src="../../assets/icon2.png" class="thumbavatar">
-        <img *ngIf="this.businessdata.image" (click)="openImage(businessdata.image, 'open')"  src="{{this.businessdata.image}}" class="thumbavatar" (click)="selectImage()">
+        <img *ngIf="this.businessdata.image" (click)="openImage(businessdata.image, 'open')"  src="{{this.businessdata.image}}" class="thumbavatar">
       </div>
 
       <div (click)="Logout()" class="logt">
@@ -146,7 +146,7 @@
             <div class="inp" #inputs>
               <div class="input">
                 <p>Package name</p>
-                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="pack.name">
+                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="name">
                 <input *ngIf="businessdata.packages.length==4" disabled="true" type="text">
   
               </div>
@@ -154,17 +154,17 @@
   
               <div class="input">
                 <p>Amount</p>
-                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="pack.mount">
+                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="mount">
                 <input *ngIf="businessdata.packages.length==4" type="text" disabled="true">
               </div>
   
               <div class="input">
                 <p>Number</p>
-                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="pack.number">
+                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="number">
                 <input *ngIf="businessdata.packages.length==4" disabled="true" type="text">
               </div>
   
-              <button size="small"  (click)="addPack({name:name, amount:amount, number:number})" >
+              <button size="small"  (click)="addPack()" >
                 Add Package
               </button>
               

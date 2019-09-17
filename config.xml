@@ -3,7 +3,7 @@
     <name>StepDriveOwner1</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://192.168.1.37:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -103,4 +103,5 @@
     <allow-navigation href="http://192.168.1.19:8104" sessionid="76e866e3" />
     <allow-navigation href="http://192.168.1.32:8100" sessionid="1870e82c" />
     <allow-navigation href="http://192.168.1.19:8101" sessionid="0edfa8b2" />
+    <allow-navigation href="http://192.168.1.37:8100" sessionid="b3a60754" />
 </widget>

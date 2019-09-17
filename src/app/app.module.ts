@@ -17,6 +17,7 @@ import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 import { TabsService } from './core/tabs.service';
 import { FormsModule } from '@angular/forms';
+// import { Keyboard } from '@ionic-native/keyboard/ngx';
 // import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 
 
@@ -43,7 +44,8 @@ firebase.initializeApp(FIREBASE_CONFIG);
     Camera,
     // PhotoViewer,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    NativeGeocoder
+    NativeGeocoder,
+    // Keyboard
   ],
   bootstrap: [AppComponent]
 })
