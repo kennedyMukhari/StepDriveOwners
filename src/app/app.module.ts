@@ -18,6 +18,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { TabsService } from './core/tabs.service';
 import { FormsModule } from '@angular/forms';
 // import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 
 
@@ -41,6 +42,7 @@ firebase.initializeApp(FIREBASE_CONFIG);
     StatusBar,
     SplashScreen,
     Camera,
+    LocalNotifications,
     // PhotoViewer,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     NativeGeocoder
