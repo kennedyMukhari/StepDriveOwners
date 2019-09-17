@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation'; 
-import {ViewChild ,ElementRef } from '@angular/core';
+import {ViewChild ,ElementRef,Renderer2 } from '@angular/core';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import * as firebase from 'firebase';
 import { AuthService } from '../../app/user/auth.service';
@@ -44,8 +44,11 @@ export class TheMapPage implements OnInit {
   NewRequeste = [];
   Data = [];
   NewData = [];
-
-  constructor( private geolocation : Geolocation,private platform: Platform, public alertController: AlertController, public AuthService : AuthService, public data: DataSavedService,  public router:Router, private nativeGeocoder: NativeGeocoder) { 
+  viewImage = {
+    image: '',
+    open: false
+  }
+  constructor( private geolocation : Geolocation,private platform: Platform, public alertController: AlertController, public AuthService : AuthService, public data: DataSavedService,  public router:Router, private nativeGeocoder: NativeGeocoder,  public elementref: ElementRef,public renderer: Renderer2, ) { 
 
   }
 
@@ -438,5 +441,26 @@ addMarker(){
 
 goToProfile(){
   this.router.navigate(['profile']);
+}
+openImage(image, cmd) {
+  // console.log('Open triggerd');
+  console.log(this.elementref);
+  
+  if (cmd == 'open') {
+    this.viewImage.image = image;
+    this.viewImage.open = true;
+    
+    let viewimage = this.elementref.nativeElement.children[0].children[0]
+    console.log('ggg',viewimage);
+    this.renderer.setStyle(viewimage, 'opacity', '1');
+    this.renderer.setStyle(viewimage, 'transform', 'scale(1)');
+  } else {
+    
+    this.viewImage.open = false;
+    let viewimage = this.elementref.nativeElement.children[0].children[0]
+    console.log('ggg',viewimage);
+    this.renderer.setStyle(viewimage, 'opacity', '0');
+    this.renderer.setStyle(viewimage, 'transform', 'scale(0)');
+  }
 }
 }
