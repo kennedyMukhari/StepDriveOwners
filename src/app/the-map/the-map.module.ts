@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
-
+// import { IonicImageViewerModule } from 'ionic-img-viewer';
 import { TheMapPage } from './the-map.page';
 
 
@@ -20,6 +20,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    // PhotoViewer,
+    // IonicImageViewerModule,
     RouterModule.forChild(routes)
   ],
   declarations: [TheMapPage]

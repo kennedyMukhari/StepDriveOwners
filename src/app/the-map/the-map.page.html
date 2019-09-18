@@ -4,10 +4,18 @@
     
     <div #map id="map" (click)="showTab()"></div> 
 
+    <div class="viewImage">
+        <div (click)="openImage('', 'close')" class="close"><p>x</p></div>
+        <img (click)="selectImage()" *ngIf="viewImage.image" src="{{viewImage.image}}" alt="">
+        <img *ngIf="!viewImage.image" src="https://icon-library.net/images/image-placeholder-icon/image-placeholder-icon-3.jpg" alt="">
+      </div>
+
+
+
     <div  padding class="profile" *ngFor = "let item of NewData" >
-      <ion-thumbnail (click)="goToProfile()" >
+      <ion-thumbnail (click)="goToProfile()">
           <img *ngIf="!item.image"  src="../../assets/icon2.png" class="thumbavatar">
-          <img *ngIf="item.image" src="{{item.image}}" class="thumbavatar" (click)="selectImage()">
+          <img *ngIf="item.image" src="{{item.image}}" class="thumbavatar" (click)="selectImage()" >
         
       </ion-thumbnail>
     </div>
@@ -22,18 +30,14 @@
       <div class="s-list">
         <div class="card" *ngFor="let data of NewRequeste; let i = index">
           <div class="image">
+
             <!-- <img *ngIf="data.image" src="../../assets/logo.png" alt=""> -->
+
+
             <img *ngIf="!data.image" src="https://icon-library.net/images/image-placeholder-icon/image-placeholder-icon-3.jpg" alt="">
           </div>
           <div class="details" >
-            <!-- <p><b>Need a Book?: {{data.book}} </b></p>
-            <p>Confirmation state:{{data.confirmed}}</p> -->
-
-         
-            <!-- <p>Date Created: {{data.datecreated}}</p>
-            <p>Date In: {{data.datein}}</p>
-            <p>Date Out: {{data.dateout}}</p>
-            <p>Lessons: {{data.lessons}}</p> -->
+    
             <p>Date In: {{data.doc.datein}}</p>
             <p>Date Out: {{data.doc.dateout}}</p>
           </div>

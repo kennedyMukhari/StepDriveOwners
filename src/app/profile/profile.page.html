@@ -1,23 +1,18 @@
-<ion-header>
-    
-    <!-- <ion-toolbar color="primary">
-        <ion-searchbar [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="Search for a place"></ion-searchbar>
-      </ion-toolbar>
-
-      <ion-list [hidden]="autocompleteItems.length == 0">
-        <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
-          {{ item.description }}
-        </ion-item>
-      </ion-list> -->
-
-     
-  </ion-header>
-
-
 <ion-content class="no-scroll">
-   
-<button (click)="aavg()"></button>
+    
+  
+  
+    <div class="viewImage">
+        <div (click)="openImage('', 'close')" class="close"><p>x</p></div>
+        <img (click)="selectImage()" *ngIf="viewImage.image" src="{{viewImage.image}}" alt="">
+        <img *ngIf="!viewImage.image" src="https://icon-library.net/images/image-placeholder-icon/image-placeholder-icon-3.jpg" alt="">
+      </div>
+    
+
+
   <div no-padding class="container" (click)="showTab()">
+
+    
  
       <div class="avatar-images">
         <div (click)="goToRev()" class="rev">
@@ -30,17 +25,21 @@
             Reviews
           </div>
         </div>
-        <img *ngIf="!this.businessdata.image" (click)="selectImage()" src="../../assets/icon2.png" class="thumbavatar">
-        <img *ngIf="this.businessdata.image" src="{{this.businessdata.image}}" class="thumbavatar" (click)="selectImage()">
+        <img *ngIf="!this.businessdata.image" (click)="openImage('', 'open')"  src="../../assets/icon2.png" class="thumbavatar">
+        <img *ngIf="this.businessdata.image" (click)="openImage(businessdata.image, 'open')"  src="{{this.businessdata.image}}" class="thumbavatar" (click)="selectImage()">
       </div>
+
+
+
 
       <div (click)="Logout()" class="logt">
         <ion-icon size="large" name="exit"></ion-icon>
       </div>
 
+      
+
       <div class="profile-form">
           <form [formGroup]="loginForm">
-        <!-- <p *ngIf="isuploading">Uploading</p> -->
         <div class="progress">
           <ion-progress-bar *ngIf="isuploading" color="secondary" value="{{uploadprogress}}"></ion-progress-bar>
         </div>
@@ -154,7 +153,7 @@
             <div class="inp" #inputs>
               <div class="input">
                 <p>Package name</p>
-                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="pack.name">
+                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="name">
                 <input *ngIf="businessdata.packages.length==4" disabled="true" type="text">
   
               </div>
@@ -162,17 +161,17 @@
   
               <div class="input">
                 <p>Amount</p>
-                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="pack.mount">
+                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="amount">
                 <input *ngIf="businessdata.packages.length==4" type="text" disabled="true">
               </div>
   
               <div class="input">
                 <p>Number</p>
-                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="pack.number">
+                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="number">
                 <input *ngIf="businessdata.packages.length==4" disabled="true" type="text">
               </div>
   
-              <button size="small"  (click)="addPack({name:name, amount:amount, number:number})" >
+              <button size="small"  (click)="addPack()" >
                 Add Package
               </button>
               
@@ -200,4 +199,5 @@
       </div>
 
   </div>
+  <button (click)="openImage('', 'open')">open image</button>
 </ion-content>

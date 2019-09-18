@@ -22,9 +22,14 @@ export class AppComponent {
     private statusBar: StatusBar,
     public router : Router
   ) {
+
+   
+
     this.initializeApp();
     
   }
+
+
 
   initializeApp() {
     

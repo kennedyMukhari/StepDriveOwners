@@ -79,11 +79,11 @@ options2={
   storage = firebase.storage().ref();
 
 
-  // pack = {
+ 
     amount: string = '';
     name: string = '';
     number: string = '';
-  // }
+  
 
    pack = {
     amount: this.amount,
@@ -109,7 +109,10 @@ options2={
     schooluid: '',
    
   }
-
+  viewImage = {
+    image: '',
+    open: false
+  }
   counter : number = 0;
   // now = moment().format('"hh-mm-A"');
 
@@ -178,12 +181,15 @@ options2={
      public camera: Camera,
      public alertController: AlertController,
      public popoverController: PopoverController,
-     public rendere: Renderer2, 
+     public renderer: Renderer2, 
      public tabs: TabsService,
      public platform : Platform,
+     public elementref: ElementRef, 
      ) 
 
      {
+
+    
        
 
       this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
@@ -313,27 +319,47 @@ options2={
     // console.log('Data in the package',this.amount);
   }
 
- async addPack(obj){
+  async addPack(){
+
+   console.log('Your data is in the profile', {name: this.name, amount: this.amount, number: this.number});
+   if(this.name !== '' && this.amount !== '' && this.number !== ''){
+    this.businessdata.packages.push({name: this.name, amount: this.amount, number: this.number});
+   }else{
+
+    const alert = await this.alertController.create({
+          // header: 'Alert',
+          // subHeader: 'Subtitle',
+          message: 'Fields cannot be empty!',
+          buttons: ['OK']
+        });
+        await alert.present();
+
+   }
+   
   
   
   
-    if(obj.amount !== '' && obj.name !== '' && obj.number !== '' && this.counter < 4){
-      this.businessdata.packages.push({name: obj.name, amount:obj.amount, number:obj.number});
-      // obj.name = '';
-      // obj.amount = '';
-      // obj.number = '';
-      this.counter += 1;
-      console.log('Package ',obj);
-      console.log('Package ', this.counter);
-    }else{
-      const alert = await this.alertController.create({
-        // header: 'Alert',
-        // subHeader: 'Subtitle',
-        message: 'Fields cannot be empty!',
-        buttons: ['OK']
-      });
-      await alert.present();
-    }
+  
+    // if(obj.amount !== '' && obj.name !== '' && obj.number !== '' && this.counter < 4){
+    //   this.businessdata.packages.push({name: obj.name, amount:obj.amount, number:obj.number});
+    //   // obj.name = '';
+    //   // obj.amount = '';
+    //   // obj.number = '';
+    //   this.counter += 1;
+    //   console.log('Package ',obj);
+    //   console.log('Package ', this.counter);
+    // }else{
+    //   const alert = await this.alertController.create({
+    //     // header: 'Alert',
+    //     // subHeader: 'Subtitle',
+    //     message: 'Fields cannot be empty!',
+    //     buttons: ['OK']
+    //   });
+    //   await alert.present();
+    // }
+
+
+
    
     // if (!this.pack.amount || !this.pack.name || !this.pack.number) {
     //   const alert = await this.alertController.create({
@@ -394,6 +420,10 @@ options2={
   }
   // options : GeolocationOptions;
   ngOnInit() {
+    let viewimage = this.elementref.nativeElement.children[0].children[0]
+          console.log('ggg',viewimage);
+          this.renderer.setStyle(viewimage, 'opacity', '0');
+          this.renderer.setStyle(viewimage, 'transform', 'scale(0)');
   }
 
 
@@ -457,6 +487,7 @@ options2={
   //inserting driving drivers school details to the database 
 
   showTab(){
+    
     this.platform.ready().then(() => {
       console.log('Core service init');
       const tabBar = document.getElementById('myTabBar');
@@ -590,6 +621,7 @@ options2={
           });     
           await alert.present();
         }
+        this.router.navigateByUrl('main');
       }
 
 
@@ -659,34 +691,27 @@ options2={
           this.router.navigateByUrl('/login');
         })
       }
-      // checkAddress(){
-      //   console.log(this.request.location.address);
-      //   let location = this.request.location.address;
-      //   let address = this.http.get('https://maps.googleapis.com/maps/api/geocode/json', {
-      //     params: {
-      //       address: location,
-      //       key: 'AIzaSyAT55USDnQ-tZLHJlzryDJbxseD8sLSdZE'
-      //     }
-      //   }).subscribe(res => {
-      //       console.log('Address', res.json());
-      //       if (res.json().status == 'OK') {
-      //         this.message.text = "Address Okay"
-      //         this.message.id = 1;
-      //         this.addressokay = true;
-      //         this.request.location.address = res.json().results[0].formatted_address;
-      //         this.request.location.lat = res.json().results[0].geometry.location.lat;
-      //         this.request.location.lng = res.json().results[0].geometry.location.lng;
-      //         console.log('Data: ', this.request);
-    
-      //       } else {
-      //         this.message.text = "Address not found or Invalid."
-      //         this.message.id = 0;
-      //       }
-      //   }, err => {
-      //     console.log(err);
-      //     // this.message = "Address not found or Invalid."
-      //   })
-      // }
+      openImage(image, cmd) {
+        // console.log('Open triggerd');
+        console.log(this.elementref);
+        
+        if (cmd == 'open') {
+          this.viewImage.image = image;
+          this.viewImage.open = true;
+          
+          let viewimage = this.elementref.nativeElement.children[0].children[0]
+          console.log('ggg',viewimage);
+          this.renderer.setStyle(viewimage, 'opacity', '1');
+          this.renderer.setStyle(viewimage, 'transform', 'scale(1)');
+        } else {
+          
+          this.viewImage.open = false;
+          let viewimage = this.elementref.nativeElement.children[0].children[0]
+          console.log('ggg',viewimage);
+          this.renderer.setStyle(viewimage, 'opacity', '0');
+          this.renderer.setStyle(viewimage, 'transform', 'scale(0)');
+        }
+      }
     }
 
     
