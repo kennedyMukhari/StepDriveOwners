@@ -7,6 +7,7 @@ import * as firebase from 'firebase';
 import { Router }  from '@angular/router';
 import { TabsService } from './core/tabs.service';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -24,10 +25,10 @@ export class AppComponent {
   ) {
     this.initializeApp();
     // let status bar overlay webview
-  this.statusBar.overlaysWebView(true);
-
+  // this.statusBar.overlaysWebView(true);
+    statusBar.styleBlackOpaque();
 // set status bar to white
-  this.statusBar.backgroundColorByHexString('#8B8B8B');
+  this.statusBar.backgroundColorByHexString('#2E020C');
   }
 
   initializeApp() {
@@ -42,8 +43,8 @@ export class AppComponent {
           // No user is signed in.
         }
       });
-      this.statusBar.styleDefault();
       this.splashScreen.hide();
+      
     });
   }
 }

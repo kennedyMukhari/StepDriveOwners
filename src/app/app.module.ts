@@ -19,6 +19,7 @@ import { TabsService } from './core/tabs.service';
 import { FormsModule } from '@angular/forms';
 // import { Keyboard } from '@ionic-native/keyboard/ngx';
 // import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 
 
@@ -42,6 +43,7 @@ firebase.initializeApp(FIREBASE_CONFIG);
     StatusBar,
     SplashScreen,
     Camera,
+    LocalNotifications,
     // PhotoViewer,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     NativeGeocoder,

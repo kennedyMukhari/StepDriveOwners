@@ -36,7 +36,7 @@
               <p>{{item.text}}</p>
   
               <ionic4-star-rating #rating activeIcon="ios-star" defaultIcon="ios-star-outline" activeColor="#FFD700"
-                defaultColor="#D3D3D3" readonly="false" rating="{{item.rating}}" fontSize="32px"
+                defaultColor="#D3D3D3" readonly="true" rating="{{item.rating}}" fontSize="32px"
                 (ratingChanged)="logRatingChange($event)">
               </ionic4-star-rating>
             </ion-label>

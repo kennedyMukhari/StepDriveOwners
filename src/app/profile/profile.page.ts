@@ -342,6 +342,10 @@ export class ProfilePage implements OnInit {
   }
   // options : GeolocationOptions;
   ngOnInit() {
+    let viewimage = this.elementref.nativeElement.children[0].children[0]
+          console.log('ggg',viewimage);
+          this.renderer.setStyle(viewimage, 'opacity', '0');
+          this.renderer.setStyle(viewimage, 'transform', 'scale(0)');
   }
 
 
