@@ -11,7 +11,7 @@ import { DataSavedService } from '../data-saved.service';
 // import undefined = require('firebase/empty-import');
 import { AlertController } from '@ionic/angular';
 import { Platform } from '@ionic/angular';
-
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
  
 
@@ -26,7 +26,7 @@ declare var google;
 })
 
 export class TheMapPage implements OnInit {
-
+  
   // toggles the div, goes up if true, goes down if false
   display = false;
   swipeUp() {
@@ -51,8 +51,8 @@ export class TheMapPage implements OnInit {
     image: '',
     open: false
   }
-  constructor( private geolocation : Geolocation,private platform: Platform, public alertController: AlertController, public AuthService : AuthService, public data: DataSavedService,  public router:Router, private nativeGeocoder: NativeGeocoder,  public elementref: ElementRef,public renderer: Renderer2, ) { 
-
+  constructor( private geolocation : Geolocation,private platform: Platform, public alertController: AlertController, public AuthService : AuthService, public data: DataSavedService,  public router:Router, private nativeGeocoder: NativeGeocoder,  public elementref: ElementRef,public renderer: Renderer2,private localNot: LocalNotifications ) { 
+this.pushNotification()
   }
 
 
@@ -467,5 +467,21 @@ openImage(image, cmd) {
     this.renderer.setStyle(viewimage, 'opacity', '0');
     this.renderer.setStyle(viewimage, 'transform', 'scale(0)');
   }
+ 
+}
+pushNotification() {
+  this.db.collection('bookings').where('schooluid', '==', firebase.auth().currentUser.uid).get().then(res =>{
+  // this.db.collection('bookings').where('schooluid ', '==', this.user.uid).onSnapshot(res => {
+    res.forEach(doc => {
+    
+        this.localNot.schedule({
+          id: 1,
+          title: 'StepDrive',
+          
+          text: 'you have booking request.'
+        })
+      
+    })
+  })
 }
 }

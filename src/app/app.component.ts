@@ -7,6 +7,7 @@ import * as firebase from 'firebase';
 import { Router }  from '@angular/router';
 import { TabsService } from './core/tabs.service';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -26,7 +27,13 @@ export class AppComponent {
    
 
     this.initializeApp();
-    
+
+    // let status bar overlay webview
+    this.statusBar.overlaysWebView(true);
+
+    // set status bar to white
+    this.statusBar.backgroundColorByHexString('#4C0A0A');
+
   }
 
 

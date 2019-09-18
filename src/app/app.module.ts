@@ -17,8 +17,8 @@ import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 import { TabsService } from './core/tabs.service';
 import { FormsModule } from '@angular/forms';
-import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
-import { GooglePlaceModule } from "ngx-google-places-autocomplete";
+// import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 
 
@@ -31,7 +31,6 @@ firebase.initializeApp(FIREBASE_CONFIG);
 
   imports: [
   BrowserModule,
-  GooglePlaceModule,
   FormsModule, 
   BrowserModule, 
   IonicModule.forRoot(),
@@ -46,6 +45,7 @@ firebase.initializeApp(FIREBASE_CONFIG);
     StatusBar,
     SplashScreen,
     Camera,
+    LocalNotifications,
     // PhotoViewer,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     NativeGeocoder
