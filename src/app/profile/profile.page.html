@@ -1,5 +1,7 @@
 <ion-content class="no-scroll">
     
+ 
+    
   
   
     <div class="viewImage">
@@ -10,9 +12,11 @@
     
 
 
-  <div no-padding class="container" (click)="showTab()">
+  <div no-padding class="container">
 
-    
+     
+
+
  
       <div class="avatar-images">
         <div (click)="goToRev()" class="rev">
@@ -39,11 +43,27 @@
       
 
       <div class="profile-form">
+
+          <!-- <div class="input"> -->
+          <!-- <p>Description</p> -->
+          <ion-searchbar  class="input" [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="{{address}}">
+            </ion-searchbar>
+            <ion-list [hidden]="autocompleteItems.length == 0">
+              <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
+                {{ item.description }}
+              </ion-item>
+            </ion-list>
+          <!-- </div> -->
+
+
           <form [formGroup]="loginForm">
         <div class="progress">
           <ion-progress-bar *ngIf="isuploading" color="secondary" value="{{uploadprogress}}"></ion-progress-bar>
         </div>
         
+
+       
+
 
         <div class="input">
           <p>SchoolName</p>
@@ -140,8 +160,16 @@
           </div>
         </div>
 
-
       </form>
+
+
+      
+
+      
+
+
+
+
 
       <div class="pack">
           <h2 text-center>
@@ -158,7 +186,6 @@
   
               </div>
   
-  
               <div class="input">
                 <p>Amount</p>
                 <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="amount">
@@ -171,9 +198,13 @@
                 <input *ngIf="businessdata.packages.length==4" disabled="true" type="text">
               </div>
   
-              <button size="small"  (click)="addPack()" >
+              <button size="small"  *ngIf="counter < 4"  (click)="addPack()" >
                 Add Package
               </button>
+
+              <button size="small"  *ngIf="counter == 4" disabled="true" (click)="addPack()" >
+                  Add Package
+                </button>
               
             </div>
             <div class="s-packs">
@@ -192,6 +223,7 @@
           </div>
 
       <div class="dbtn">
+          <!-- (click)="createAccount(loginForm)" -->
           <button (click)="createAccount(loginForm)">
             Done
           </button>

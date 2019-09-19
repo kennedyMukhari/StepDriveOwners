@@ -70,11 +70,11 @@ export class PastbookingsPage implements OnInit {
   // });
 
     
-  this.platform.ready().then(() => {
-    console.log('Core service init');
-    const tabBar = document.getElementById('myTabBar');
-     tabBar.style.display = 'none';
-  });
+  // this.platform.ready().then(() => {
+  //   console.log('Core service init');
+  //   const tabBar = document.getElementById('myTabBar');
+  //    tabBar.style.display = 'none';
+  // });
 
   this.Booking = [];
   this.Customer = this.data.SavedData;

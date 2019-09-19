@@ -1,3 +1,39 @@
+.viewImage {
+  transition: 0.4s;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  display: grid;
+  text-align: center;
+  align-content: center;
+  background: rgba(0, 0, 0, 0.692);
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: white;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    border-radius: 100px;
+    align-content: center;
+    p {
+      font-size: 13px;
+      margin: 0;
+      padding: 0;
+    }
+  }
+  img {
+    margin: auto;
+    width: 90%;
+    border-radius: 10px;
+  }
+}
+
+
 ion-toolbar {
     --background: rgb(76, 10, 10);
     --ion-color-base: transparent !important;

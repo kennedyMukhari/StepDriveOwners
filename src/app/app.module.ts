@@ -19,6 +19,7 @@ import { TabsService } from './core/tabs.service';
 import { FormsModule } from '@angular/forms';
 // import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { GooglePlaceModule } from "ngx-google-places-autocomplete";
 
 
 
@@ -30,6 +31,9 @@ firebase.initializeApp(FIREBASE_CONFIG);
   entryComponents: [],
 
   imports: [
+  GooglePlaceModule,
+  BrowserModule,
+  FormsModule,
   BrowserModule,
   FormsModule, 
   BrowserModule, 

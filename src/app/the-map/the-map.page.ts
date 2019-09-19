@@ -52,7 +52,7 @@ export class TheMapPage implements OnInit {
     open: false
   }
   constructor( private geolocation : Geolocation,private platform: Platform, public alertController: AlertController, public AuthService : AuthService, public data: DataSavedService,  public router:Router, private nativeGeocoder: NativeGeocoder,  public elementref: ElementRef,public renderer: Renderer2,private localNot: LocalNotifications ) { 
-this.pushNotification()
+// this.pushNotification()
   }
 
 
@@ -73,11 +73,11 @@ async presentAlert() {
 
   ionViewDidEnter(){
 
-    this.platform.ready().then(() => {
-      console.log('Core service init');
-      const tabBar = document.getElementById('myTabBar');
-       tabBar.style.display = 'none';
-    });
+    // this.platform.ready().then(() => {
+    //   console.log('Core service init');
+    //   const tabBar = document.getElementById('myTabBar');
+    //    tabBar.style.display = 'none';
+    // });
 
 
     this.db.collection('drivingschools').onSnapshot(snapshot => {
@@ -469,6 +469,7 @@ openImage(image, cmd) {
   }
  
 }
+
 pushNotification() {
   this.db.collection('bookings').where('schooluid', '==', firebase.auth().currentUser.uid).get().then(res =>{
   // this.db.collection('bookings').where('schooluid ', '==', this.user.uid).onSnapshot(res => {
@@ -484,4 +485,5 @@ pushNotification() {
     })
   })
 }
+
 }
