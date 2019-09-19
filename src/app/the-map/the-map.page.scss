@@ -1,14 +1,3 @@
-ion-toolbar {
-    --background: rgb(76, 10, 10);
-    --ion-color-base: transparent !important;
- }
-#map {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    z-index: 7;
-
-}
 .viewImage {
   transition: 0.4s;
   position: fixed;
@@ -42,6 +31,17 @@ ion-toolbar {
     width: 90%;
     border-radius: 10px;
   }
+}
+ion-toolbar {
+    --background: rgb(76, 10, 10);
+    --ion-color-base: transparent !important;
+ }
+#map {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 7;
+
 }
 .Icon{
   float: right;

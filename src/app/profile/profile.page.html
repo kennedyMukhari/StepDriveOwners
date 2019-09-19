@@ -1,5 +1,7 @@
 <ion-content class="no-scroll">
     
+  
+  
     <div class="viewImage">
         <div (click)="openImage('', 'close')" class="close"><p>x</p></div>
         <img (click)="selectImage()" *ngIf="viewImage.image" src="{{viewImage.image}}" alt="">
@@ -7,8 +9,10 @@
       </div>
     
 
-<!-- <button (click)="aavg()"></button> -->
+
   <div no-padding class="container" (click)="showTab()">
+
+    
  
       <div class="avatar-images">
         <div (click)="goToRev()" class="rev">
@@ -25,18 +29,21 @@
         <img *ngIf="this.businessdata.image" (click)="openImage(businessdata.image, 'open')"  src="{{this.businessdata.image}}" class="thumbavatar">
       </div>
 
+
+
+
       <div (click)="Logout()" class="logt">
         <ion-icon size="large" name="exit"></ion-icon>
       </div>
 
+      
+
       <div class="profile-form">
           <form [formGroup]="loginForm">
-        <!-- <p *ngIf="isuploading">Uploading</p> -->
         <div class="progress">
           <ion-progress-bar *ngIf="isuploading" color="secondary" value="{{uploadprogress}}"></ion-progress-bar>
         </div>
         
-       
 
         <div class="input">
           <p>SchoolName</p>
@@ -109,7 +116,7 @@
         </div>
 
         <div class="time">
-          <ion-item>
+          <ion-item style="background: transparent">
             <ion-label position="floating">open time</ion-label>
             <ion-datetime displayFormat="HH:mm" formControlName="open" [(ngModel)]="businessdata.open"></ion-datetime>
           </ion-item>
@@ -154,7 +161,7 @@
   
               <div class="input">
                 <p>Amount</p>
-                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="mount">
+                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="amount">
                 <input *ngIf="businessdata.packages.length==4" type="text" disabled="true">
               </div>
   

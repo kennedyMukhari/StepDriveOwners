@@ -20,6 +20,7 @@ import { FormsModule } from '@angular/forms';
 // import { Keyboard } from '@ionic-native/keyboard/ngx';
 // import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { Keyboard } from '@ionic-native/keyboard/ngx';
 
 
 
@@ -29,8 +30,11 @@ firebase.initializeApp(FIREBASE_CONFIG);
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, 
-   BrowserModule, 
+
+  imports: [
+  BrowserModule,
+  FormsModule, 
+  BrowserModule, 
   IonicModule.forRoot(),
   AppRoutingModule,
   IonicSwipeAllModule,
@@ -47,7 +51,7 @@ firebase.initializeApp(FIREBASE_CONFIG);
     // PhotoViewer,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     NativeGeocoder,
-    // Keyboard
+    Keyboard
   ],
   bootstrap: [AppComponent]
 })

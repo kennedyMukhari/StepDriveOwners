@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../app/user/auth.service';
-import { LoadingController, AlertController } from '@ionic/angular';
+import { LoadingController, AlertController, Platform } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -13,6 +13,7 @@ export class RegisterPage implements OnInit {
   public signupForm: FormGroup;
   public loading: any;
   constructor(
+    public platform : Platform,
     public authService: AuthService,
     public loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
@@ -32,7 +33,7 @@ export class RegisterPage implements OnInit {
 
   
   async signupUser(signupForm: FormGroup): Promise<void> {
-    
+
     if (!signupForm.valid) {
       console.log(
         'Need to complete the form, current value: ',
@@ -61,6 +62,8 @@ export class RegisterPage implements OnInit {
       this.loading = await this.loadingCtrl.create();
       await this.loading.present();
     }
+
+
   }
 
   goToLogin() {

@@ -17,10 +17,12 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 
 declare var google;
+
 @Component({
   selector: 'app-the-map',
   templateUrl: './the-map.page.html',
   styleUrls: ['./the-map.page.scss'],
+  
 })
 
 export class TheMapPage implements OnInit {
@@ -30,9 +32,10 @@ export class TheMapPage implements OnInit {
   swipeUp() {
     this.display = !this.display;
   }
-  options: GeolocationOptions;
-  currentPos: Geoposition;
-  @ViewChild('map', { static: false }) mapElement: ElementRef;
+  options : GeolocationOptions;
+  currentPos : Geoposition;
+  @ViewChild('map', {static: false}) mapElement: ElementRef;
+ 
   db = firebase.firestore();
   users = [];
   map: any;
@@ -49,7 +52,7 @@ export class TheMapPage implements OnInit {
     open: false
   }
   constructor(private geolocation: Geolocation, private platform: Platform, public alertController: AlertController, public AuthService: AuthService, public data: DataSavedService, public router: Router, private nativeGeocoder: NativeGeocoder, public elementref: ElementRef, public renderer: Renderer2, private localNot: LocalNotifications) {
-    this.pushNotification()
+    // this.pushNotification();
   }
 
 
@@ -126,7 +129,9 @@ export class TheMapPage implements OnInit {
   }
 
 
-  showTab() {
+
+
+  showTab(){
     this.platform.ready().then(() => {
       console.log('Core service init');
       const tabBar = document.getElementById('myTabBar');

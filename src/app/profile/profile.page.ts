@@ -12,7 +12,9 @@ import { Platform } from '@ionic/angular';
 import { Injectable } from '@angular/core';
 import { filter } from 'rxjs/operators';
 import { FormGroup, Validators,FormControl, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
-
+import { NgZone } from '@angular/core';
+import { GooglePlaceDirective } from 'ngx-google-places-autocomplete/ngx-google-places-autocomplete.directive';
+import { Address } from 'ngx-google-places-autocomplete/objects/address';
 
 
 
@@ -28,8 +30,20 @@ import { FormGroup, Validators,FormControl, FormBuilder, ReactiveFormsModule, Fo
 
 
 export class ProfilePage implements OnInit {
-  @ViewChild('inputs', {static: true}) input:ElementRef
-  
+
+  @ViewChild('inputs', {static: true}) input:ElementRef;
+  @ViewChild("placesRef", {static: true}) placesRef : GooglePlaceDirective;
+//============================
+  GoogleAutocomplete: google.maps.places.AutocompleteService;
+  autocomplete: { input: string; };
+  autocompleteItems: any[];
+  location: any;
+  placeid: any;
+//==============================
+options2={
+  types: [],
+  componentRestrictions: { country: 'UA' }
+  }
  
   display = false;
   toastCtrl: any;
@@ -65,11 +79,11 @@ export class ProfilePage implements OnInit {
   storage = firebase.storage().ref();
 
 
-  // pack = {
+ 
     amount: string = '';
     name: string = '';
-    number: number = 0;
-  // }
+    number: string = '';
+  
 
    pack = {
     amount: this.amount,
@@ -158,7 +172,9 @@ export class ProfilePage implements OnInit {
   userProfile: any;
   isuploaded: boolean;
   imageSelected: boolean;
-  constructor(public formBuilder: FormBuilder ,
+  constructor(
+    public zone: NgZone,
+    public formBuilder: FormBuilder ,
      private geolocation : Geolocation, 
      public forms: FormBuilder,
      public router:Router,
@@ -172,6 +188,14 @@ export class ProfilePage implements OnInit {
      ) 
 
      {
+
+    
+       
+
+      this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
+      this.autocomplete = { input: '' };
+      this.autocompleteItems = [];
+
     
     this.loginForm = this.forms.group({
       // image: new FormControl(this.businessdata.image, Validators.compose([Validators.required])),
@@ -224,6 +248,40 @@ export class ProfilePage implements OnInit {
 
 
   }
+  public handleAddressChange(address: Address) {
+    // Do some stuff
+    console.log(address);
+    
+}
+  //========================================
+  updateSearchResults(){
+    if (this.autocomplete.input == '') {
+      this.autocompleteItems = [];
+      return;
+    }
+    this.GoogleAutocomplete.getPlacePredictions({ input: this.autocomplete.input },
+    (predictions, status) => {
+      this.autocompleteItems = [];
+      this.zone.run(() => {
+        predictions.forEach((prediction) => {
+          this.autocompleteItems.push(prediction);
+        });
+      });
+    });
+  }
+  
+  selectSearchResult(item) {
+    console.log(item)
+    this.location = item
+    this.placeid = this.location.place_id
+    console.log('placeid'+ this.placeid)
+  }
+
+  GoTo(){
+    return window.location.href = 'https://www.google.com/maps/place/?q=place_id:'+this.placeid;
+  }
+
+  //=========================================
 
 
   ionViewDidEnter(){
@@ -261,9 +319,27 @@ export class ProfilePage implements OnInit {
     // console.log('Data in the package',this.amount);
   }
 
- async addPack(){
+  async addPack(){
+
+   console.log('Your data is in the profile', {name: this.name, amount: this.amount, number: this.number});
+   if(this.name !== '' && this.amount !== '' && this.number !== ''){
+    this.businessdata.packages.push({name: this.name, amount: this.amount, number: this.number});
+   }else{
+
+    const alert = await this.alertController.create({
+          // header: 'Alert',
+          // subHeader: 'Subtitle',
+          message: 'Fields cannot be empty!',
+          buttons: ['OK']
+        });
+        await alert.present();
+
+   }
+   
   
   this.businessdata.packages.push({name: this.name, amount:this.amount, number:this.number});
+  
+  
   
     // if(obj.amount !== '' && obj.name !== '' && obj.number !== '' && this.counter < 4){
     //   this.businessdata.packages.push({name: obj.name, amount:obj.amount, number:obj.number});
@@ -282,6 +358,9 @@ export class ProfilePage implements OnInit {
     //   });
     //   await alert.present();
     // }
+
+
+
    
     // if (!this.pack.amount || !this.pack.name || !this.pack.number) {
     //   const alert = await this.alertController.create({
@@ -409,6 +488,7 @@ export class ProfilePage implements OnInit {
   //inserting driving drivers school details to the database 
 
   showTab(){
+    
     this.platform.ready().then(() => {
       console.log('Core service init');
       const tabBar = document.getElementById('myTabBar');
@@ -542,6 +622,7 @@ export class ProfilePage implements OnInit {
           });     
           await alert.present();
         }
+        this.router.navigateByUrl('main');
       }
 
 
