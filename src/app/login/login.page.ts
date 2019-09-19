@@ -55,8 +55,13 @@ export class LoginPage implements OnInit {
     if (!loginForm.valid) {
       console.log('Form is not valid yet, current value:', loginForm.value);
     } else {
-      this.loading = await this.loadingCtrl.create();
-      this.loading.present();
+      
+      let loading = await this.loadingCtrl.create();
+      await loading.present();
+      setTimeout(() => {
+        loading.dismiss();
+      }, 3000)
+
 
       const email = loginForm.value.email;
       const password = loginForm.value.password;

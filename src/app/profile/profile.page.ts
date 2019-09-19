@@ -332,11 +332,9 @@ options2={
 
   ionViewDidEnter(){
 
-   
-
     this.counter = 0;
     this.getUserPosition();
-console.log("Your values is", this.counter);
+    console.log("Your values is", this.counter);
 
     
     // this.platform.ready().then(() => {
@@ -345,7 +343,6 @@ console.log("Your values is", this.counter);
     //    tabBar.style.display = 'none';
     // });
 
-   
   }
 
 
