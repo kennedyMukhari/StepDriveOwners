@@ -30,7 +30,7 @@ import { Address } from 'ngx-google-places-autocomplete/objects/address';
 
 
 export class ProfilePage implements OnInit {
-
+  isenabled:boolean=false;
   @ViewChild('inputs', {static: true}) input:ElementRef;
   @ViewChild("placesRef", {static: true}) placesRef : GooglePlaceDirective;
 //============================
@@ -322,7 +322,7 @@ options2={
   async addPack(){
 
    console.log('Your data is in the profile', {name: this.name, amount: this.amount, number: this.number});
-   if(this.name !== '' && this.amount !== '' && this.number !== ''){
+   if(this.name !== '' && this.amount !== '' && this.number !== '' && this.counter < 4){
     this.businessdata.packages.push({name: this.name, amount: this.amount, number: this.number});
    }else{
 
