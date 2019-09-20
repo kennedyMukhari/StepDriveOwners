@@ -162,15 +162,6 @@
 
       </form>
 
-
-      
-
-      
-
-
-
-
-
       <div class="pack">
           <h2 text-center>
             Instructor Package.
@@ -198,11 +189,11 @@
                 <input *ngIf="businessdata.packages.length==4" disabled="true" type="text">
               </div>
   
-              <button size="small"  *ngIf="counter < 4"  (click)="addPack()" >
+              <button size="small"  *ngIf="businessdata.packages.length<3"  (click)="addPack()" >
                 Add Package
               </button>
 
-              <button size="small"  *ngIf="counter == 4" disabled="true" (click)="addPack()" >
+              <button size="small" *ngIf="businessdata.packages.length==3" (click)="addPack()" >
                   Add Package
                 </button>
               
