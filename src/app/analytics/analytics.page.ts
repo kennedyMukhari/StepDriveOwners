@@ -1,7 +1,7 @@
 
 import { Router } from '@angular/router';
 import * as firebase from 'firebase';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import * as Chart from 'chart.js';
 import { Platform } from '@ionic/angular';
 
@@ -12,7 +12,10 @@ import { Platform } from '@ionic/angular';
 })
 export class AnalyticsPage implements OnInit {
 
-
+viewImage = {
+    image: '',
+    open: false
+  }
   @ViewChild('barChart', {static: false}) barChart;
 //database 
 
@@ -38,7 +41,14 @@ Drivingschool=[];
 
 charts: any;
   colorArray: any;
-  constructor(private router: Router, private platform: Platform) {
+  constructor(private router: Router,
+     private platform: Platform,
+     public renderer: Renderer2, 
+  
+     public elementref: ElementRef, 
+     ) {
+
+     
 
     this.db.collection('drivingschools').onSnapshot(snapshot => {
       this.NewDrivingschool = [];
@@ -59,16 +69,23 @@ charts: any;
       console.log('NewDrivingschool', this.NewDrivingschool);
     
     }); 
+
+    
    }
 
   ngOnInit() {
+   this.openImage('', 'close');
     firebase.auth().onAuthStateChanged(res => {
       this.user.uid = res.uid;
     })
     this.getRequests();
+
+   
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
+   
+
     this.mon = [];
     this.tue = [];
     this.wed = [];
@@ -78,11 +95,11 @@ charts: any;
     this.sun = [];
     console.log('Monday array',this.mon);
     
-    this.platform.ready().then(() => {
-      console.log('Core service init');
-      const tabBar = document.getElementById('myTabBar');
-       tabBar.style.display = 'none';
-    });
+    // this.platform.ready().then(() => {
+    //   console.log('Core service init');
+    //   const tabBar = document.getElementById('myTabBar');
+    //    tabBar.style.display = 'none';
+    // });
 
     this.db.collection('drivingschools').onSnapshot(snapshot => {
       this.Data = [];
@@ -100,8 +117,9 @@ charts: any;
               }
       })
   }); 
-
+//  this.openImage('', 'close');
   this.getRequests();
+ 
 }
 
   
@@ -109,9 +127,16 @@ charts: any;
 
   getRequests() {
 
-    this.db.collection('bookings').where('schooluid', '==',firebase.auth().currentUser.uid).get().then(res => {
+    this.db.collection('bookings').where('schooluid', '==',firebase.auth().currentUser.uid).onSnapshot(res => {
       console.log(res);
-      
+    this.mon = [];
+    this.tue = [];
+    this.wed = [];
+    console.log('wednday',  this.wed)
+    this.thu = [];
+    this.fri = [];
+    this.sat = [];
+    this.sun = [];
       res.forEach(doc => {
        
         let date = doc.data().datecreated
@@ -142,9 +167,6 @@ charts: any;
       this.createBarChart();
       console.log(this.mon);
       
-    }).catch(err => {
-      console.log(err);
-      
     })
 
   }
@@ -164,6 +186,7 @@ charts: any;
           borderWidth: 1
         }]
       },
+      
 
       options: {
         scales: {
@@ -190,5 +213,18 @@ showTab(){
   goToPastB() {
     this.router.navigate(['past-b']);
   }
-  
+
+
+  openImage(image, cmd) {
+    if (cmd == 'open') {
+      this.viewImage.image = image;
+      this.viewImage.open = true
+    } else {
+      this.viewImage.image = image;
+      this.viewImage.open = false
+    }
+    
+  } 
+
+
 }

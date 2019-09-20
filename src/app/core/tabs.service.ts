@@ -11,7 +11,7 @@ export class TabsService {
 
 
   hideTabBarPages = [
-    'profile',
+    // 'profile',
     // 'the-map',
     // 'past-b',
     // 'analytics',

@@ -33,6 +33,8 @@ export class RegisterPage implements OnInit {
 
   
   async signupUser(signupForm: FormGroup): Promise<void> {
+    console.log('Method is called');
+    
 
     if (!signupForm.valid) {
       console.log(
@@ -46,7 +48,7 @@ export class RegisterPage implements OnInit {
       this.authService.signupUser(email, password).then(
         () => {
           this.loading.dismiss().then(() => {
-            this.router.navigateByUrl('main/profile');
+            this.router.navigateByUrl('profile');
           });
         },
         error => {
