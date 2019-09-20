@@ -73,6 +73,10 @@
 
 .no-scroll .scroll-content{
     overflow: hidden;
+    height: 100%;
+ }
+ .no-scroll {
+    
  }
 .container{
     display: flex;
@@ -145,6 +149,7 @@
 
 .cards {
     height: 70vh;
+    background: red;
     overflow: hidden;
     overflow-y: auto;
     padding: 7px;
@@ -176,5 +181,20 @@
                
             }
         }
+    }
+}
+
+.graph {
+    height: 80%;
+    background:linear-gradient(rgba(255, 255, 255, 0.925)),url(../../assets/roadSigns.jpg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    .welcome-card {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
     }
 }

@@ -33,6 +33,8 @@ export class RegisterPage implements OnInit {
 
   
   async signupUser(signupForm: FormGroup): Promise<void> {
+    console.log('Method is called');
+    
 
     if (!signupForm.valid) {
       console.log(

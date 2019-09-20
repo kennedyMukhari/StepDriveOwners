@@ -95,11 +95,11 @@ charts: any;
     this.sun = [];
     console.log('Monday array',this.mon);
     
-    this.platform.ready().then(() => {
-      console.log('Core service init');
-      const tabBar = document.getElementById('myTabBar');
-       tabBar.style.display = 'none';
-    });
+    // this.platform.ready().then(() => {
+    //   console.log('Core service init');
+    //   const tabBar = document.getElementById('myTabBar');
+    //    tabBar.style.display = 'none';
+    // });
 
     this.db.collection('drivingschools').onSnapshot(snapshot => {
       this.Data = [];
