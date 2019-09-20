@@ -15,43 +15,43 @@ export class PastbookingsPage implements OnInit {
   db = firebase.firestore();
   storage = firebase.firestore();
   
- Booking= [];
- NewBooking=[];
- user=[];
+ Booking = [];
+ NewBooking = [];
+ user = [];
  Customer = [];
  SortedBookings = [];
 
-
-
+userss = [];
+newusers = [];
   constructor(public data : DataSavedService, public platform : Platform) { 
 
  
     //retriving data from booking collection
-    // this.db.collection('bookings').onSnapshot(snapshot => {
+    this.db.collection('users').onSnapshot(snapshot => {
 
-    //   snapshot.forEach(doc => {
-    //     // this.users = doc.data();
-    //     // this.addMarkersOnTheCustomersCurrentLocation(this.users.coords.lat, this.users.coords.lng);
-    //     this.Booking.push(doc.data());
-    //     console.log('My array is ',this.Booking);
+      snapshot.forEach(doc => {
+        // this.users = doc.data();
+        // this.addMarkersOnTheCustomersCurrentLocation(this.users.coords.lat, this.users.coords.lng);
+        this.Booking.push(doc.data());
+        console.log('My array is ',this.Booking);
 
      
-    //   })
+      })
 
-    //   this.Booking.forEach(Customers => {
-    //     console.log('Customers in my array', Customers);
-    //     console.log('My array is dddd ',this.Booking);
-    //     console.log('Owners UID logged in', firebase.auth().currentUser.uid);
+      this.Booking.forEach(Customers => {
+        console.log('users in my array', Customers);
+        console.log('My array is dddd ',this.Booking);
+        console.log('Owners UID logged in', firebase.auth().currentUser.uid);
         
        
-    //     if(Customers.book === true && Customers.schooluid == firebase.auth().currentUser.uid){
-    //       console.log('one');
-    //     this.NewBooking.push(Customers);
-    //     console.log('Served booking', this.NewBooking);
-    //     }
-    //   }) 
+        if(Customers.book === true && Customers.schooluid == firebase.auth().currentUser.uid){
+          console.log('one');
+        this.newusers.push(Customers);
+        console.log('Served booking', this.newusers);
+        }
+      }) 
 
-    // });
+    });
 
   
     

@@ -3,15 +3,15 @@
         <div class="dSchool" *ngFor = "let item of NewData">
 
             <div class="viewImage" [ngClass]="{'viewImage': viewImage.open, 'viewImage-inactive': !viewImage.open}">
-                <div (click)="openImage(item.image, 'close')" class="close"><p>x</p></div>
+                <div (click)="openImage(, '''close')" class="close"><p>x</p></div>
                 <img *ngIf="item.image" src="{{item.image}}" alt="">
                 <img *ngIf="!item.image" src="https://icon-library.net/images/image-placeholder-icon/image-placeholder-icon-3.jpg" alt="">
               </div> 
 
             <div class="thumb">
-              <ion-avatar (click)="openImage(item.image, 'open')">
+              <ion-avatar (click)="openImage('open')">
                 <img *ngIf="item.image" src="{{item.image}}" alt="" >
-                <!-- <img *ngIf="!item.image" src="https://icon-library.net/images/image-placeholder-icon/image-placeholder-icon-3.jpg" alt=""> -->
+              
               </ion-avatar>
             </div>
 
