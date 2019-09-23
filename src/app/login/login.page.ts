@@ -35,16 +35,26 @@ export class LoginPage implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    let loader = await this.loadingCtrl.create({
+      message: 'Just a sec'
+    })
+    // loader.present()
     firebase.auth().onAuthStateChanged(user => {
-      if (user.uid) {
+      if (user) {
+
+        loader.dismiss()
         this.db.collection('drivingschools').where('schooluid', '==', user.uid).get().then(res => {
           if (res.empty) {
+            
             this.router.navigateByUrl('profile');
           } else {
+            
             this.router.navigateByUrl('main');
           }
         })
+      } else {
+loader.dismiss()
       }
     })
   }

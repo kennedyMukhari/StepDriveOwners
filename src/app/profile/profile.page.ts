@@ -4,7 +4,7 @@ import { Camera,CameraOptions } from '@ionic-native/Camera/ngx';
 import { Router, NavigationEnd } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation'; 
-import { PopoverController } from '@ionic/angular';
+import { PopoverController, ToastController } from '@ionic/angular';
 import { PopOverComponent } from '../pop-over/pop-over.component';
 import { AlertController } from '@ionic/angular';
 import { TabsService } from '../core/tabs.service';
@@ -46,7 +46,6 @@ options2={
   }
  
   display = false;
-  toastCtrl: any;
 
   option={
     componentRestrictions: { country: 'ZA' }
@@ -86,9 +85,9 @@ options2={
   
 
    pack = {
-    amount: this.amount,
-    name: this.name,
-    number: this.number,
+    amount: '',
+    name: '',
+    number: '',
   }  
   
   opened : boolean
@@ -96,7 +95,7 @@ options2={
   businessdata = {
     schoolname: '',
     registration: '',
-    image: '',
+    image: 'https://firebasestorage.googleapis.com/v0/b/step-drive-95bbe.appspot.com/o/1.png?alt=media&token=c023a9e6-a7a0-4af9-bd13-9778f2bea46d',
     email: '',
     cellnumber: '',
     cost: '',
@@ -107,6 +106,7 @@ options2={
     closed: '',
     allday: 'true',
     schooluid: '',
+    rating: 0
    
   }
   viewImage = {
@@ -185,6 +185,7 @@ options2={
      public tabs: TabsService,
      public platform : Platform,
      public elementref: ElementRef, 
+     public toastCtrl: ToastController
      ) 
 
      {
@@ -292,7 +293,7 @@ options2={
     this.platform.ready().then(() => {
       console.log('Core service init');
       const tabBar = document.getElementById('myTabBar');
-       tabBar.style.display = 'none';
+       tabBar.style.display = 'flex';
     });
 
    
@@ -321,23 +322,36 @@ options2={
 
   async addPack(){
 
-   console.log('Your data is in the profile', {name: this.name, amount: this.amount, number: this.number});
-   if(this.name !== '' && this.amount !== '' && this.number !== '' && this.counter < 4){
-    this.businessdata.packages.push({name: this.name, amount: this.amount, number: this.number});
+   // check if the package fields are empty
+   if(this.pack.name !== '' && this.pack.amount !== '' && this.pack.number !== ''){
+     // if the length of the array is 4
+     if (this.businessdata.packages.length >= 4) {
+       const toaster = await this.toastCtrl.create({
+         message: 'You can only add 4 packages',
+         duration: 2000
+       })
+       toaster.present();
+      // if the pack fields are filled and the array is less than 4
+     } else {
+      console.log('Before pack push', this.pack);
+     
+    this.businessdata.packages.push(this.pack);
+    console.log('after pack push', this.pack);
+    console.log('Your data is in the profile', this.businessdata.packages);
+    // this.pack.amount = ''
+    // this.pack.name = ''
+    // this.pack.number = null
+     }
+     // if the pack fields are empty
    }else{
-
+    this.clearPack();
     const alert = await this.alertController.create({
-          // header: 'Alert',
-          // subHeader: 'Subtitle',
           message: 'Fields cannot be empty!',
           buttons: ['OK']
         });
         await alert.present();
 
    }
-   
-  
-  this.businessdata.packages.push({name: this.name, amount:this.amount, number:this.number});
   
   
   
@@ -413,11 +427,19 @@ options2={
 
   deletepack(index) {
     this.businessdata.packages.splice(index, 1);
+    console.log('deleted pack: ', this.businessdata.packages);
+    
   }
 
-  editpack(pack) {
-    console.log('This is your pack',pack);
-    this.pack = pack;
+  editpack(i, p) {
+    
+    this.pack = p;
+    console.log('pack to edit',this.pack);
+  }
+  clearPack() {
+    this.pack.name = '',
+    this.pack.amount = null
+    this.pack.number = null
   }
   // options : GeolocationOptions;
   ngOnInit() {

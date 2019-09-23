@@ -71,11 +71,10 @@ const routes: Routes = [
       }
     ]
   },{
-    path: 'main',
-    redirectTo: 'main/map',
+    path: 'main/the-map',
+    redirectTo: 'main/the-map',
     pathMatch: 'full'
   }
- 
 ];
 
 @NgModule({

@@ -17,7 +17,7 @@ export class HelpPage implements OnInit {
     this.platform.ready().then(() => {
       console.log('Core service init');
       const tabBar = document.getElementById('myTabBar');
-       tabBar.style.display = 'none';
+       tabBar.style.display = 'flex';
     });
   }
 

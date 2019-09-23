@@ -73,7 +73,7 @@ export class PastbookingsPage implements OnInit {
   this.platform.ready().then(() => {
     console.log('Core service init');
     const tabBar = document.getElementById('myTabBar');
-     tabBar.style.display = 'none';
+     tabBar.style.display = 'flex';
   });
 
   this.Booking = [];
@@ -148,8 +148,9 @@ showTab(){
       }
     }
   
-    await this.db.collection('bookings').where('schooluid', '==', firebase.auth().currentUser.uid).get().then( async res => {
+    await this.db.collection('bookings').where('schooluid', '==', firebase.auth().currentUser.uid).onSnapshot( async res => {
       let document = res;
+      this.Booking = [];
       await res.forEach( async doc => {
         data.request.docid = doc.id;
         // this is extreme bad programming :(

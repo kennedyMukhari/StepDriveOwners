@@ -12,19 +12,19 @@
 
 
 
-    <div class="viewImage" *ngFor = "let item of NewData">
+    <!-- <div class="viewImage" *ngFor = "let item of NewData">
         <div (click)="openImage('', 'close')" class="close"><p>x</p></div>
         <img *ngIf="item.image" src="{{item.image}}" alt="">
         <img *ngIf="!item.image" src="https://icon-library.net/images/image-placeholder-icon/image-placeholder-icon-3.jpg" alt="">
-      </div>
+      </div> -->
 
-    <div  padding class="profile"  *ngFor = "let item of NewData" >
+    <!-- <div  padding class="profile"  *ngFor = "let item of NewData" >
       <ion-thumbnail (click)="openImage('', 'open')">
           <img *ngIf="!item.image" src="../../assets/icon2.png" class="thumbavatar">
           <img *ngIf="item.image" src="{{item.image}}" class="thumbavatar" imageViewer (close)="callbackAfterImageViewerCloses()">
         
       </ion-thumbnail>
-    </div>
+    </div> -->
     <!-- <button (click)="pushNotification()">push notification</button>
     -->
 
