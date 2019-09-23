@@ -6,7 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import * as firebase from 'firebase';
 import { Router } from '@angular/router';
 import { TabsService } from './core/tabs.service';
-import { Keyboard } from '@ionic-native/keyboard/ngx';
+
 
 
 @Component({
@@ -22,8 +22,8 @@ export class AppComponent {
     public tabs: TabsService,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    public router: Router,
-    private keyboard: Keyboard
+    public router: Router
+    
   ) {
 
 
@@ -52,12 +52,6 @@ export class AppComponent {
         }
       });
       this.splashScreen.hide();
-      this.keyboard.onKeyboardShow().subscribe(() => {
-        document.body.classList.add('keyboard-is-open');
-      });
-      this.keyboard.onKeyboardHide().subscribe(() => {
-        document.body.classList.remove('keyboard-is-open');
-      });
     });
   }
 }

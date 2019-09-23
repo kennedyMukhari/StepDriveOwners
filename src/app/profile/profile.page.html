@@ -1,5 +1,7 @@
 <ion-content class="no-scroll">
     
+ 
+    
   
   
     <div class="viewImage">
@@ -13,7 +15,6 @@
 
   <div no-padding class="container" >
 
-    
  
       <div class="avatar-images">
         <div (click)="goToRev()" class="rev">
@@ -40,11 +41,27 @@
       
 
       <div class="profile-form">
+
+          <!-- <div class="input"> -->
+          <!-- <p>Description</p> -->
+          <ion-searchbar  class="input" [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="{{address}}">
+            </ion-searchbar>
+            <ion-list [hidden]="autocompleteItems.length == 0">
+              <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
+                {{ item.description }}
+              </ion-item>
+            </ion-list>
+          <!-- </div> -->
+
+
           <form [formGroup]="loginForm">
         <div class="progress">
           <ion-progress-bar *ngIf="isuploading" color="secondary" value="{{uploadprogress}}"></ion-progress-bar>
         </div>
         
+
+       
+
 
         <div class="input">
           <p>SchoolName</p>
@@ -141,7 +158,6 @@
           </div>
         </div>
 
-
       </form>
 
       <div class="pack">
@@ -159,7 +175,6 @@
   
               </div>
   
-  
               <div class="input">
                 <p>Amount</p>
                 <input type="text" [(ngModel)]="pack.amount">
@@ -171,7 +186,7 @@
                 <input  type="text" [(ngModel)]="pack.number">
               </div>
   
-              <button size="small"  (click)="addPack()" >
+              <button size="small"  *ngIf="businessdata.packages.length<3"  (click)="addPack()" >
                 Add Package
               </button>
               <button size="small"  (click)="clearPack()" >
@@ -195,6 +210,7 @@
           </div>
 
       <div class="dbtn">
+          <!-- (click)="createAccount(loginForm)" -->
           <button (click)="createAccount(loginForm)">
             Done
           </button>

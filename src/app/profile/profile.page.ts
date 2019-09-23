@@ -15,6 +15,7 @@ import { FormGroup, Validators,FormControl, FormBuilder, ReactiveFormsModule, Fo
 import { NgZone } from '@angular/core';
 import { GooglePlaceDirective } from 'ngx-google-places-autocomplete/ngx-google-places-autocomplete.directive';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
+import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 
 
 
@@ -30,7 +31,7 @@ import { Address } from 'ngx-google-places-autocomplete/objects/address';
 
 
 export class ProfilePage implements OnInit {
-  isenabled:boolean=false;
+
   @ViewChild('inputs', {static: true}) input:ElementRef;
   @ViewChild("placesRef", {static: true}) placesRef : GooglePlaceDirective;
 //============================
@@ -39,6 +40,8 @@ export class ProfilePage implements OnInit {
   autocompleteItems: any[];
   location: any;
   placeid: any;
+  myLocation: string;
+  address : string = "Enter your address";
 //==============================
 options2={
   types: [],
@@ -81,8 +84,13 @@ options2={
  
     amount: string = '';
     name: string = '';
-    number: string = '';
-  
+    number: number = 0;
+
+    town : string;
+
+    
+    longitude : string;
+    latitude : string;
 
    pack = {
     amount: '',
@@ -113,6 +121,7 @@ options2={
     image: '',
     open: false
   }
+
   counter : number = 0;
   // now = moment().format('"hh-mm-A"');
 
@@ -174,6 +183,7 @@ options2={
   imageSelected: boolean;
   constructor(
     public zone: NgZone,
+    private nativeGeocoder: NativeGeocoder,
     public formBuilder: FormBuilder ,
      private geolocation : Geolocation, 
      public forms: FormBuilder,
@@ -190,8 +200,11 @@ options2={
 
      {
 
-    
-       
+      this.platform.ready().then(() => {
+        console.log('Core service init');
+        const tabBar = document.getElementById('myTabBar');
+        tabBar.style.display = 'flex';
+      });
 
       this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
       this.autocomplete = { input: '' };
@@ -222,8 +235,6 @@ options2={
 
     // this.rendere.setStyle(this.input.nativeElement, 'opacity', 'o');
     
-
-
     this.db.collection('drivingschools').where('schooluid', '==', firebase.auth().currentUser.uid).get().then(res => {
       res.forEach(doc => {
         console.log(doc.data());
@@ -249,13 +260,24 @@ options2={
 
 
   }
+
+
+
   public handleAddressChange(address: Address) {
     // Do some stuff
     console.log(address);
     
 }
   //========================================
+
+
+
+
+
+
+
   updateSearchResults(){
+
     if (this.autocomplete.input == '') {
       this.autocompleteItems = [];
       return;
@@ -269,25 +291,51 @@ options2={
         });
       });
     });
+
   }
   
+  
   selectSearchResult(item) {
-    console.log(item)
-    this.location = item
-    this.placeid = this.location.place_id
-    console.log('placeid'+ this.placeid)
+
+    this.address = item.description;
+    console.log("Your address is",item)
+    let location = item.structured_formatting.secondary_text;
+    this.town = location.split(', ')
+    console.log('secndary text', this.town[1]);
+    
+    // this.myLocation = item.description;
+    // this.placeid = this.location.place_id;
+    console.log('placeid'+ this.placeid);
+
+    let options: NativeGeocoderOptions = {
+      useLocale: true,
+      maxResults: 5
+  };
+  
+  
+  this.nativeGeocoder.forwardGeocode(item.description, options)
+    .then((result: NativeGeocoderResult[]) => {
+      console.log('The coordinates are latitude=' + result[0].latitude + ' and longitude=' + result[0].longitude)
+      this.longitude = result[0].longitude;
+      this.latitude  =  result[0].latitude;
+    } )
+    .catch((error: any) => console.log(error));
+
+    this.autocompleteItems = [];
+
   }
 
   GoTo(){
     return window.location.href = 'https://www.google.com/maps/place/?q=place_id:'+this.placeid;
   }
-
   //=========================================
 
 
   ionViewDidEnter(){
-    
+
+    this.counter = 0;
     this.getUserPosition();
+    console.log("Your values is", this.counter);
 
     
     this.platform.ready().then(() => {
@@ -296,7 +344,6 @@ options2={
        tabBar.style.display = 'flex';
     });
 
-   
   }
 
 
@@ -455,6 +502,7 @@ options2={
   // image upload
 
   async selectImage(){
+
     let option: CameraOptions = {
       quality: 100,
       destinationType: this.camera.DestinationType.DATA_URL,
@@ -522,24 +570,26 @@ options2={
   async  createAccount(loginForm: FormGroup): Promise<void>{
     
 
-    console.log('Results in the businessdata', this.businessdata.schoolname == '');
+    console.log('Results in the businessdata', loginForm.valid);
     console.log("showTabs tab method is called");
 
       // console.log('The data',this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)  );
       //   const tabBar = document.getElementById('myTabBar');
       //   tabBar.style.display = 'flex';
-
-
       // this.businessdata.closed.slice(11, 16)  != this.businessdata.open.slice(11, 16)  && this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)
 
         if (loginForm.valid ){
           console.log('Results in the businessdata', loginForm.valid);
           if( this.businessdata.closed.slice(11, 16)  != this.businessdata.open.slice(11, 16)  && this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)){
 
+             
+         
+            this.router.navigateByUrl('main');
                if(this.businessdata.schoolname == ''){
 
                 this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
-                  address : this.businessdata.address,
+                  address :  this.address,
+                  city : this.town,
                   allday : this.businessdata.allday,
                   cellnumber : this.businessdata.cellnumber,
                   closed : this.businessdata.closed,
@@ -548,8 +598,8 @@ options2={
                   email : this.businessdata.email,
                   image : this.businessdata.image,
                   open : this.businessdata.open,
-                  coords : {lat:  this.currentPos.coords.latitude,
-                  lng:  this.currentPos.coords.longitude},
+                  coords : {lat:  this.latitude,
+                  lng:  this.longitude},
                   packages :this.businessdata.packages,
                   registration : this.businessdata.registration,
                   schoolname : this.businessdata.schoolname,
@@ -568,7 +618,7 @@ options2={
                 //   tabBar.style.display = 'flex';
                 // });
                   
-    
+               
                 const alert = await this.alertController.create({
                   // header: 'Alert',
                   // subHeader: 'Subtitle',
@@ -576,6 +626,7 @@ options2={
                   buttons: ['OK']
                 });
                 await alert.present();
+               
 
                }else{
 
@@ -644,8 +695,8 @@ options2={
           });     
           await alert.present();
         }
-        this.router.navigateByUrl('main');
-      }
+       
+}
 
 
       // async open(){
@@ -701,9 +752,13 @@ options2={
       goToRev() {
         this.router.navigate(['past-b']);
       } 
+
+
       profile() {
         this.router.navigate(['the-map']);
       } 
+
+
       Logout() {
         // this.users = [];
         // this.requests = [];
@@ -714,6 +769,8 @@ options2={
           this.router.navigateByUrl('/login');
         })
       }
+
+
       openImage(image, cmd) {
         // console.log('Open triggerd');
         console.log(this.elementref);
