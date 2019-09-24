@@ -23,6 +23,9 @@ export class PastbookingsPage implements OnInit {
 
 userss = [];
 newusers = [];
+ pic : string;
+
+
   constructor(public data : DataSavedService, public platform : Platform) { 
 
  
@@ -70,22 +73,24 @@ newusers = [];
   // });
 
     
-  // this.platform.ready().then(() => {
-  //   console.log('Core service init');
-  //   const tabBar = document.getElementById('myTabBar');
-  //    tabBar.style.display = 'none';
-  // });
+  this.platform.ready().then(() => {
+    console.log('Core service init');
+    const tabBar = document.getElementById('myTabBar');
+     tabBar.style.display = 'flex';
+  });
 
+  let date;
   this.Booking = [];
   this.Customer = this.data.SavedData;
-  console.log("Data in the profile is",this.Customer);
-  console.log("Customers data in past bookings is",this.Customer );
+  console.log("Customer", this.Customer);
+  
+ 
   this.Customer.forEach(Customers => { 
-    if(Customers.doc.schooluid === firebase.auth().currentUser.uid) {
-      this.Booking.push(Customers)
-    }        
+     this.Booking.push(Customers)          
   })
   this.SortData();
+  this.pic = this.SortedBookings[0].image
+  console.log("My sorted data", this.SortedBookings[0].image);
  }
  
 
@@ -93,7 +98,7 @@ newusers = [];
   const length = array.length;
   for(let i = 0; i < length; i++){
     for(let j = 0; j < length - 1; j++){
-      if(array[j].doc.date > array[j + 1].doc.date){
+      if(array[j].doc.datein.toString() > array[j + 1].doc.datein.toString()){
         this.swap(array, j, j + 1);
       }
     }
@@ -106,12 +111,15 @@ swap(array, a, b){
  const temp = array[a];
  array[a] = array[b];
  array[b] = temp;
+
 }
 
 
 SortData(){
      let MyArray = this.Booking;
      this.SortedBookings = this.bubbleSort(MyArray);  
+   
+     
 }
 
 showTab(){
@@ -148,8 +156,9 @@ showTab(){
       }
     }
   
-    await this.db.collection('bookings').where('schooluid', '==', firebase.auth().currentUser.uid).get().then( async res => {
+    await this.db.collection('bookings').where('schooluid', '==', firebase.auth().currentUser.uid).onSnapshot( async res => {
       let document = res;
+      this.Booking = [];
       await res.forEach( async doc => {
         data.request.docid = doc.id;
         // this is extreme bad programming :(
@@ -179,4 +188,5 @@ showTab(){
       // console.log('Reqs: ', this.Booking);
     })
   }
+
 }

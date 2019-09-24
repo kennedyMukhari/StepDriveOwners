@@ -49,8 +49,8 @@ export class TheMapPage implements OnInit {
     image: '',
     open: false
   }
-  constructor( private geolocation : Geolocation, public loadingCtrl: LoadingController, private platform: Platform, public alertController: AlertController, public AuthService : AuthService, public data: DataSavedService,  public router:Router, private nativeGeocoder: NativeGeocoder,  public elementref: ElementRef,public renderer: Renderer2,private localNot: LocalNotifications ) { 
-// this.pushNotification()
+  constructor(private geolocation: Geolocation, private platform: Platform, public alertController: AlertController, public AuthService: AuthService, public data: DataSavedService, public router: Router, private nativeGeocoder: NativeGeocoder, public elementref: ElementRef, public renderer: Renderer2, private localNot: LocalNotifications) {
+    this.pushNotification();
   }
 
 
@@ -66,52 +66,34 @@ export class TheMapPage implements OnInit {
   }
 
   ngOnInit() {
-
+    this.getUserPosition()
   }
 
-  async ionViewDidEnter() {
-
-    // this.platform.ready().then(() => {
-    //   console.log('Core service init');
-    //   const tabBar = document.getElementById('myTabBar');
-    //    tabBar.style.display = 'none';
-    // });
-
-     let loading = await this.loadingCtrl.create();
-        await loading.present();
-        setTimeout(() => {
-          loading.dismiss();
-        }, 3000)
-
-
+  ionViewDidEnter() {
+    
+    this.platform.ready().then(() => {
+      console.log('Core service init');
+      const tabBar = document.getElementById('myTabBar');
+      tabBar.style.display = 'flex';
+    });
     this.db.collection('drivingschools').onSnapshot(snapshot => {
       this.Data = [];
-
       snapshot.forEach(Element => {
-
         this.Data.push(Element.data());
       });
       this.Data.forEach(item => {
-
         if (item.schooluid === firebase.auth().currentUser.uid) {
           this.NewData.push(item);
           console.log('NewDrivingschool', this.NewData);
-
         }
       })
-
-
-
     });
-
     // this.platform.ready().then(() => {
     //   console.log('Core service init');
     //   const tabBar = document.getElementById('myTabBar');
     //    tabBar.style.display = 'none';
     // });
-
-    this.getUserPosition();
-
+    
 
     this.db.collection('bookings').onSnapshot(snapshot => {
       this.NewRequeste = [];
@@ -121,21 +103,21 @@ export class TheMapPage implements OnInit {
         }
       });
 
+
       this.NewRequeste.forEach(Customers => {
         console.log('Owners UID logged in', firebase.auth().currentUser.uid);
-        if (Customers.doc.schooluid === firebase.auth().currentUser.uid) {
+        if (Customers.doc.schooluid === firebase.auth().currentUser.uid  ) {
+
           this.addMarkersOnTheCustomersCurrentLocation(Customers.doc.location.lat, Customers.doc.location.lng);
         }
       })
-
     });
-
   }
 
 
   showTab(){
     this.platform.ready().then(() => {
-      console.log('Core service init');
+    
       const tabBar = document.getElementById('myTabBar');
       tabBar.style.display = 'flex';
     });
@@ -143,21 +125,29 @@ export class TheMapPage implements OnInit {
 
 
   Accept(Customer, i, docid) {
-    this.db.collection('bookings').doc(docid).set({ confirmed: 'accepted' }, { merge: true });
-    this.data.SavedData.push(Customer);
+    this.db.collection('bookings').doc(docid).set(
+      { confirmed: 'accepted' }, { merge: true }
+      );
+
+      this.db.collection('users').onSnapshot(SnapShots => {
+        SnapShots.forEach(doc => {
+          if(doc.data().uid === Customer.doc.uid){
+            this.data.SavedData.push({Customer : Customer, image : doc.data().image});
+            console.log('Core service init', this.data.SavedData, i);
+          }
+        })
+      })
+    
     this.NewRequeste.splice(i, 1);
     console.log('Accepted array', this.NewRequeste);
 
     this.presentAlert();
   }
 
-
   // ngOnInit() {
-  //   // this.add()
+
+  // //   // this.add()
   // }
-
-
-
 
   Decline(doc, docid, i) {
 
@@ -191,18 +181,6 @@ export class TheMapPage implements OnInit {
     console.log('The current user is', firebase.auth().currentUser.uid);
 
   }
-
-
-
-
-
-
-
-
-
-
-
-
 
   add() {
 
@@ -245,28 +223,21 @@ export class TheMapPage implements OnInit {
   }
 
 
-
-
   getUserPosition() {
+    let count  = 0
     this.options = {
-      enableHighAccuracy: true
+      enableHighAccuracy: false
     };
 
-    this.geolocation.getCurrentPosition(this.options).then((pos: Geoposition) => {
+    this.geolocation.getCurrentPosition().then((pos: Geoposition) => {
+      count = count + 1;
+      console.log(count);
+      
 
       this.currentPos = pos;
-      console.log(pos);
+      // console.log(pos);
       this.addMap(pos.coords.latitude, pos.coords.longitude);
-      console.log('Current Location', pos);
-
-      // let latLng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-      // let mapOptions = {
-      // center: latLng,
-      // zoom: 15,
-      // disableDefaultUI: true,
-      // mapTypeId: google.maps.MapTypeId.ROADMAP
-      // }
-      // this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+      // console.log('Current Location', pos);
       this.addMarker();
     }, (err: PositionError) => {
       console.log("error : " + err.message);
@@ -276,7 +247,8 @@ export class TheMapPage implements OnInit {
 
 
   addMap(lat: number, long: number) {
-
+    console.log('Map Loader');
+    
     let latLng = new google.maps.LatLng(lat, long);
 
     var grayStyles = [
@@ -303,6 +275,8 @@ export class TheMapPage implements OnInit {
   //=====================
 
   loadMap() {
+    console.log('Map loader');
+    
     let latLng = new google.maps.LatLng(48.8513735, 2.3861292);
 
     let mapOptions = {
@@ -311,7 +285,7 @@ export class TheMapPage implements OnInit {
       mapTypeId: google.maps.MapTypeId.ROADMAP
     }
 
-    this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+    // this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
 
     var locations = [
       ['Bondi Beach', -33.890542, 151.274856, 4],
@@ -422,7 +396,7 @@ export class TheMapPage implements OnInit {
       position: this.map.getCenter()
     });
 
-    let content = "<p>The Driving School Owner's location!</p>";
+    let content = "<p>You!</p>";
     let infoWindow = new google.maps.InfoWindow({
       content: content
     });
@@ -468,14 +442,18 @@ export class TheMapPage implements OnInit {
     }
   }
   pushNotification() {
-    this.db.collection('bookings').where('schooluid', '==', firebase.auth().currentUser.uid).get().then(res => {
+    let count =0;
+    this.db.collection('bookings').where('schooluid', '==', firebase.auth().currentUser.uid).onSnapshot(res => {
       // this.db.collection('bookings').where('schooluid ', '==', this.user.uid).onSnapshot(res => {
       res.forEach(doc => {
-        this.localNot.schedule({
-          id: 1,
-          title: 'StepDrive',
-          text: 'you have booking request.'
-        })
+        count += 1;
+        if (doc.data().confirmed == 'waiting' && count == 0) {
+          this.localNot.schedule({
+            id: 1,
+            title: 'StepDrive',
+            text: 'You have booking request.'
+          })
+        }
       })
     })
   }

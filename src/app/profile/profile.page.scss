@@ -1,3 +1,4 @@
+
 .viewImage {
   transition: 0.4s;
   position: fixed;
@@ -46,6 +47,15 @@
     height: 100%;
     overflow: hidden;
     background:linear-gradient(rgba(255, 255, 255, 0.925)),url(../../assets/coverbg.jpg);
+    .item {
+      padding: 0 !important;
+      margin: 0 !important;
+      background: red;
+    }
+    .item-highlight {
+      background: none;
+      
+    }
     .logt{
       position: absolute;
       top: 0;
@@ -264,7 +274,7 @@
       }
     }
     .time {
-
+    
       ion-item{
         border-bottom: 2px dotted var(--ion-color-medium);
         //text-align: center;
@@ -288,4 +298,9 @@
 
 
 
+}
+
+.inputs{
+ width: 80%;
+ margin: auto;
 }

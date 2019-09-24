@@ -35,16 +35,26 @@ export class LoginPage implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    let loader = await this.loadingCtrl.create({
+      message: 'Just a sec'
+    })
+    // loader.present()
     firebase.auth().onAuthStateChanged(user => {
-      if (user.uid) {
+      if (user) {
+
+        loader.dismiss()
         this.db.collection('drivingschools').where('schooluid', '==', user.uid).get().then(res => {
           if (res.empty) {
+            
             this.router.navigateByUrl('profile');
           } else {
+            
             this.router.navigateByUrl('main');
           }
         })
+      } else {
+loader.dismiss()
       }
     })
   }
@@ -60,7 +70,7 @@ export class LoginPage implements OnInit {
       await loading.present();
       setTimeout(() => {
         loading.dismiss();
-      }, 3000)
+      }, 2000)
 
 
       const email = loginForm.value.email;
@@ -75,11 +85,11 @@ export class LoginPage implements OnInit {
             if (user.uid) {
               this.db.collection('drivingschools').where('schooluid', '==', user.uid).get().then(res => {
                 if (res.empty) {
-                  this.loading.dismiss();
+                  // this.loading.dismiss();
                   this.router.navigateByUrl('profile');
                   
                 } else {
-                  this.loading.dismiss()
+                  // this.loading.dismiss()
                   this.router.navigateByUrl('main');
                 }
               })
