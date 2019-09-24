@@ -121,9 +121,11 @@ export class TheMapPage implements OnInit {
         }
       });
 
+
       this.NewRequeste.forEach(Customers => {
         console.log('Owners UID logged in', firebase.auth().currentUser.uid);
-        if (Customers.doc.schooluid === firebase.auth().currentUser.uid) {
+        if (Customers.doc.schooluid === firebase.auth().currentUser.uid  ) {
+
           this.addMarkersOnTheCustomersCurrentLocation(Customers.doc.location.lat, Customers.doc.location.lng);
         }
       })
@@ -135,7 +137,7 @@ export class TheMapPage implements OnInit {
 
   showTab(){
     this.platform.ready().then(() => {
-      console.log('Core service init');
+    
       const tabBar = document.getElementById('myTabBar');
       tabBar.style.display = 'flex';
     });
@@ -143,8 +145,19 @@ export class TheMapPage implements OnInit {
 
 
   Accept(Customer, i, docid) {
-    this.db.collection('bookings').doc(docid).set({ confirmed: 'accepted' }, { merge: true });
-    this.data.SavedData.push(Customer);
+    this.db.collection('bookings').doc(docid).set(
+      { confirmed: 'accepted' }, { merge: true }
+      );
+
+      this.db.collection('users').onSnapshot(SnapShots => {
+        SnapShots.forEach(doc => {
+          if(doc.data().uid === Customer.doc.uid){
+            this.data.SavedData.push({Customer : Customer, image : doc.data().image});
+            console.log('Core service init', this.data.SavedData, i);
+          }
+        })
+      })
+    
     this.NewRequeste.splice(i, 1);
     console.log('Accepted array', this.NewRequeste);
 

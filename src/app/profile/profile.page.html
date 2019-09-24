@@ -46,8 +46,17 @@
 
           <!-- <div class="input"> -->
           <!-- <p>Description</p> -->
-          <ion-searchbar  class="input" [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="{{address}}">
+
+        
+
+          <ion-searchbar  class="inputs" [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="{{address}}">
             </ion-searchbar>
+
+        <div class="input">
+          <p>Address</p>
+          <input type="text" placeholder={{MyAddress}}>
+        </div>
+            
             <ion-list [hidden]="autocompleteItems.length == 0">
               <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
                 {{ item.description }}
@@ -112,10 +121,10 @@
 
 
 
-        <div class="input">
+        <!-- <div class="input">
           <p>Address</p>
           <input type="cost" formControlName="address" [(ngModel)]="businessdata.address">
-        </div>
+        </div> -->
 
         <div class="error" *ngFor="let validate of validation_messages.content">
           <div class="messages"

@@ -86,17 +86,25 @@ export class LoginPage implements OnInit {
             }
           })
         },
-        error => {
-          this.loading.dismiss().then(async () => {
-            const alert = await this.alertCtrl.create({
-              message: error.message,
-              buttons: [{ text: 'Ok', role: 'cancel' }]
-            });
-            await alert.present();
+        async (error) => {
+          // this.loading.dismiss().then(async () => {
+          //   const alert = await this.alertCtrl.create({
+          //     message: error.message,
+          //     buttons: [{ text: 'Ok', role: 'cancel' }]
+          //   });
+          //   await alert.present();
+          // });
+
+          const alert = await this.alertCtrl.create({
+            message: error.message,
+            buttons: [{ text: 'Ok', role: 'cancel' }]
           });
+          await alert.present();
         }
       );
     }
+
+    
   }
 
   
