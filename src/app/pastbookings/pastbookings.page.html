@@ -8,7 +8,7 @@
     <div class="profile" *ngFor="let data of SortedBookings">
       <div class="image">
      <div class="img">
-        <img src="{{data.image}}" alt="Pic not found">
+        <img *ngIf = "data.image" src="{{data.image}}" alt="Pic not found">
      </div>
       </div>
       <div class="details" >
