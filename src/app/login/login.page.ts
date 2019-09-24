@@ -61,7 +61,6 @@ loader.dismiss()
 
   async loginUser(loginForm: FormGroup): Promise<void> {
 
-    
     if (!loginForm.valid) {
       console.log('Form is not valid yet, current value:', loginForm.value);
     } else {
