@@ -4,10 +4,10 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import * as firebase from 'firebase';
-import { Router } from '@angular/router';
+
 import { TabsService } from './core/tabs.service';
 
-
+import { Router, CanActivate, ActivatedRouteSnapshot } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +24,10 @@ export class AppComponent {
     private statusBar: StatusBar,
     public router: Router
     
-  ) {
+  ) 
+  
+  
+  {
 
 
 
@@ -45,13 +48,35 @@ export class AppComponent {
       firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
           // User is signed in.
-
+          this.router.navigateByUrl('/main');
+          
           console.log('Current user in', user.uid);
         } else {
           // No user is signed in.
+       
+          
+          this.router.navigateByUrl('/');
         }
       });
       this.splashScreen.hide();
     });
   }
+
+  canActivate(route: ActivatedRouteSnapshot): boolean {
+
+    console.log(route);
+
+    let authInfo = {
+        authenticated: false
+    };
+
+    if (!authInfo.authenticated) {
+        this.router.navigate(['login']);
+        return false;
+    }
+
+    return true;
+
+}
+
 }

@@ -1,4 +1,3 @@
-
 import { Router } from '@angular/router';
 import * as firebase from 'firebase';
 import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
@@ -128,7 +127,7 @@ charts: any;
   getRequests() {
 
     this.db.collection('bookings').where('schooluid', '==',firebase.auth().currentUser.uid).onSnapshot(res => {
-      console.log(res);
+    console.log(res);
     this.mon = [];
     this.tue = [];
     this.wed = [];

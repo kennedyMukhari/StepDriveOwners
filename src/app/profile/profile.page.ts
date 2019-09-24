@@ -85,11 +85,9 @@ options2={
  
     amount: string = '';
     name: string = '';
-    number: number = 0;
-
+    number: string = '';
     town : string;
-
-    
+    MyAddress : string;
     longitude : string;
     latitude : string;
 
@@ -117,6 +115,9 @@ options2={
     schooluid: '',
    
   }
+
+  DrivingSchoolOwnerDetails = [];
+
   viewImage = {
     image: '',
     open: false
@@ -325,7 +326,9 @@ options2={
   }
 
   GoTo(){
-    return window.location.href = 'https://www.google.com/maps/place/?q=place_id:'+this.placeid;
+    // return window.location.href = 'https://www.google.com/maps/place/?q=place_id:'+this.placeid;
+    console.log("AssssaaaA".toString() < "aA".toString());
+    
   }
   //=========================================
 
@@ -336,6 +339,21 @@ options2={
     this.getUserPosition();
     console.log("Your values is", this.counter);
 
+
+    this.db.collection('drivingschools').onSnapshot(snapshot => {
+      this.DrivingSchoolOwnerDetails = [];
+      snapshot.forEach(doc => {
+       
+        if (doc.data().schooluid === firebase.auth().currentUser.uid) {
+          console.log("My data is", doc.data().address);
+          this.MyAddress = doc.data().address
+          this.DrivingSchoolOwnerDetails.push({ docid: doc.id, doc: doc.data() });
+        }
+      });
+    });
+
+  
+    
     
     // this.platform.ready().then(() => {
     //   console.log('Core service init');
@@ -368,15 +386,15 @@ options2={
 
   async addPack(){
 
-    
-  
-    
    console.log('Your data is in the profile', {name: this.name, amount: this.amount, number: this.number});
-   if(this.name !== '' && this.amount !== '' && this.number !== 0){
+   if(this.name !== '' && this.amount !== '' && this.number !== ''){
     
     this.businessdata.packages.push({name: this.name, amount: this.amount, number: this.number});
     this.counter += 1;
     console.log("The counter is", this.counter);
+    this.name = "";
+    this.number = "";
+    this.amount = ""
    }else{
 
     const alert = await this.alertController.create({
@@ -460,8 +478,7 @@ options2={
       await alert.present();
     }
      
-      
-    }
+}
 
   deletepack(index) {
     this.businessdata.packages.splice(index, 1);
@@ -570,9 +587,11 @@ options2={
 
              
          
-            this.router.navigateByUrl('main');
+               this.router.navigateByUrl('main');
                if(this.businessdata.schoolname == ''){
 
+                console.log("Adding data to the database");
+                
                 this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
                   address :  this.address,
                   city : this.town,
@@ -613,13 +632,11 @@ options2={
                 });
                 await alert.present();
                
-
+               this.router.navigateByUrl('main');
                }else{
 
-              
-
                 this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
-                  address : this.businessdata.address,
+                  address : this.address,
                   allday : this.businessdata.allday,
                   cellnumber : this.businessdata.cellnumber,
                   closed : this.businessdata.closed,
@@ -628,8 +645,8 @@ options2={
                   email : this.businessdata.email,
                   image : this.businessdata.image,
                   open : this.businessdata.open,
-                  coords : {lat:  this.currentPos.coords.latitude,
-                  lng:  this.currentPos.coords.longitude},
+                  coords : {lat:  this.latitude,
+                  lng:  this.longitude},
                   packages :this.businessdata.packages,
                   registration : this.businessdata.registration,
                   schoolname : this.businessdata.schoolname,
