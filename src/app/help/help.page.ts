@@ -14,13 +14,11 @@ export class HelpPage implements OnInit {
   }
 
   ionViewDidEnter(){
-
-    // this.platform.ready().then(() => {
-    //   console.log('Core service init');
-    //   const tabBar = document.getElementById('myTabBar');
-    //    tabBar.style.display = 'none';
-    // });
-
+    this.platform.ready().then(() => {
+      console.log('Core service init');
+      const tabBar = document.getElementById('myTabBar');
+       tabBar.style.display = 'flex';
+    });
   }
 
   showTab(){

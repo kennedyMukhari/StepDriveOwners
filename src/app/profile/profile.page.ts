@@ -4,7 +4,7 @@ import { Camera,CameraOptions } from '@ionic-native/Camera/ngx';
 import { Router, NavigationEnd } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation'; 
-import { PopoverController, IonItemSliding } from '@ionic/angular';
+import { PopoverController, ToastController } from '@ionic/angular';
 import { PopOverComponent } from '../pop-over/pop-over.component';
 import { AlertController } from '@ionic/angular';
 import { TabsService } from '../core/tabs.service';
@@ -49,7 +49,6 @@ options2={
   }
  
   display = false;
-  toastCtrl: any;
 
   option={
     componentRestrictions: { country: 'ZA' }
@@ -92,9 +91,9 @@ options2={
     latitude : string;
 
    pack = {
-    amount: this.amount,
-    name: this.name,
-    number: this.number,
+    amount: '',
+    name: '',
+    number: '',
   }  
   
   opened : boolean
@@ -102,7 +101,7 @@ options2={
   businessdata = {
     schoolname: '',
     registration: '',
-    image: '',
+    image: 'https://firebasestorage.googleapis.com/v0/b/step-drive-95bbe.appspot.com/o/1.png?alt=media&token=c023a9e6-a7a0-4af9-bd13-9778f2bea46d',
     email: '',
     cellnumber: '',
     cost: '',
@@ -113,6 +112,7 @@ options2={
     closed: '',
     allday: 'true',
     schooluid: '',
+    rating: 0
    
   }
 
@@ -196,6 +196,7 @@ options2={
      public tabs: TabsService,
      public platform : Platform,
      public elementref: ElementRef, 
+     public toastCtrl: ToastController
      ) 
 
      {
@@ -355,11 +356,11 @@ options2={
   
     
     
-    // this.platform.ready().then(() => {
-    //   console.log('Core service init');
-    //   const tabBar = document.getElementById('myTabBar');
-    //    tabBar.style.display = 'none';
-    // });
+    this.platform.ready().then(() => {
+      console.log('Core service init');
+      const tabBar = document.getElementById('myTabBar');
+       tabBar.style.display = 'flex';
+    });
 
   }
 
@@ -396,18 +397,14 @@ options2={
     this.number = "";
     this.amount = ""
    }else{
-
+    this.clearPack();
     const alert = await this.alertController.create({
-          // header: 'Alert',
-          // subHeader: 'Subtitle',
           message: 'Fields cannot be empty!',
           buttons: ['OK']
         });
         await alert.present();
 
    }
-   
-  
   
   
   
@@ -482,14 +479,19 @@ options2={
 
   deletepack(index) {
     this.businessdata.packages.splice(index, 1);
-    this.counter -= 1;
-    console.log("Your value is", this.counter);
+    console.log('deleted pack: ', this.businessdata.packages);
     
   }
 
-  editpack(pack) {
-    console.log('This is your pack',pack);
-    this.pack = pack;
+  editpack(i, p) {
+    
+    this.pack = p;
+    console.log('pack to edit',this.pack);
+  }
+  clearPack() {
+    this.pack.name = '',
+    this.pack.amount = null
+    this.pack.number = null
   }
   // options : GeolocationOptions;
   ngOnInit() {

@@ -6,16 +6,14 @@
   
     <div class="viewImage">
         <div (click)="openImage('', 'close')" class="close"><p>x</p></div>
-        <img (click)="selectImage()" *ngIf="viewImage.image" src="{{viewImage.image}}" alt="">
-        <img *ngIf="!viewImage.image" src="https://firebasestorage.googleapis.com/v0/b/step-drive-95bbe.appspot.com/o/1.png?alt=media&token=c023a9e6-a7a0-4af9-bd13-9778f2bea46d" alt="">
+        <img  *ngIf="viewImage.image" src="{{viewImage.image}}" alt="">
+        <img *ngIf="!viewImage.image" src="{{businessdata.image}}" alt="">
+       
       </div>
     
 
 
-  <div no-padding class="container">
-
-     
-
+  <div no-padding class="container" >
 
  
       <div class="avatar-images">
@@ -145,9 +143,9 @@
         </div>
 
         <div class="time">
-          <ion-item style="background: transparent">
+          <ion-item style="background: none !important">
             <ion-label position="floating">open time</ion-label>
-            <ion-datetime displayFormat="HH:mm" formControlName="open" [(ngModel)]="businessdata.open"></ion-datetime>
+            <ion-datetime style="background: none !important;" displayFormat="HH:mm" formControlName="open" [(ngModel)]="businessdata.open"></ion-datetime>
           </ion-item>
           <div class="error" *ngFor="let validate of validation_messages.open">
             <div class="messages"
@@ -181,37 +179,35 @@
             <div class="inp" #inputs>
               <div class="input">
                 <p>Package name</p>
-                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="name">
-                <input *ngIf="businessdata.packages.length==4" disabled="true" type="text">
+                <input  type="text" [(ngModel)]="pack.name">
+
   
               </div>
   
               <div class="input">
                 <p>Amount</p>
-                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="amount">
-                <input *ngIf="businessdata.packages.length==4" type="text" disabled="true">
+                <input type="text" [(ngModel)]="pack.amount">
+
               </div>
   
               <div class="input">
                 <p>Number</p>
-                <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="number">
-                <input *ngIf="businessdata.packages.length==4" disabled="true" type="text">
+                <input  type="text" [(ngModel)]="pack.number">
               </div>
   
               <button size="small"  *ngIf="businessdata.packages.length<3"  (click)="addPack()" >
                 Add Package
               </button>
-
-              <button size="small" *ngIf="businessdata.packages.length==3" (click)="addPack()" >
-                  Add Package
-                </button>
+              <button size="small"  (click)="clearPack()" >
+                Clear
+              </button>
               
             </div>
             <div class="s-packs">
   
               <div>
                 <p text-center *ngIf="!businessdata.packages[0]"><strong>No packages yet</strong></p>
-                <div class="pack-l" *ngFor="let p of businessdata.packages; let i = index" (click)="editpack(p)">
+                <div class="pack-l" *ngFor="let p of businessdata.packages; let i = index" (click)="editpack(i, p)">
                   <p *ngIf="p.name"><b>{{p.name}}</b></p>
                   <p *ngIf="p.number"> {{p.number}} Lessons R{{p.amount}}.00</p>
                   <div class="dele" (click)="deletepack(i)">
