@@ -4,7 +4,7 @@ import { Camera,CameraOptions } from '@ionic-native/Camera/ngx';
 import { Router, NavigationEnd } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation'; 
-import { PopoverController, ToastController } from '@ionic/angular';
+import { PopoverController, IonItemSliding } from '@ionic/angular';
 import { PopOverComponent } from '../pop-over/pop-over.component';
 import { AlertController } from '@ionic/angular';
 import { TabsService } from '../core/tabs.service';
@@ -32,6 +32,7 @@ import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@io
 
 export class ProfilePage implements OnInit {
 
+  public unsubscribeBackEvent: any;
   @ViewChild('inputs', {static: true}) input:ElementRef;
   @ViewChild("placesRef", {static: true}) placesRef : GooglePlaceDirective;
 //============================
@@ -49,6 +50,7 @@ options2={
   }
  
   display = false;
+  toastCtrl: any;
 
   option={
     componentRestrictions: { country: 'ZA' }
@@ -81,7 +83,7 @@ options2={
   storage = firebase.storage().ref();
 
 
- 
+  
     amount: string = '';
     name: string = '';
     number: string = '';
@@ -91,9 +93,9 @@ options2={
     latitude : string;
 
    pack = {
-    amount: '',
-    name: '',
-    number: '',
+    amount: this.amount,
+    name: this.name,
+    number: this.number,
   }  
   
   opened : boolean
@@ -101,7 +103,7 @@ options2={
   businessdata = {
     schoolname: '',
     registration: '',
-    image: 'https://firebasestorage.googleapis.com/v0/b/step-drive-95bbe.appspot.com/o/1.png?alt=media&token=c023a9e6-a7a0-4af9-bd13-9778f2bea46d',
+    image: '',
     email: '',
     cellnumber: '',
     cost: '',
@@ -112,7 +114,6 @@ options2={
     closed: '',
     allday: 'true',
     schooluid: '',
-    rating: 0
    
   }
 
@@ -196,7 +197,6 @@ options2={
      public tabs: TabsService,
      public platform : Platform,
      public elementref: ElementRef, 
-     public toastCtrl: ToastController
      ) 
 
      {
@@ -225,7 +225,7 @@ options2={
 
       desc: new FormControl(this.businessdata.desc, Validators.compose([Validators.required])),
 
-      address: new FormControl(this.businessdata.address, Validators.compose([Validators.required])),
+      // address: new FormControl(this.businessdata.address, Validators.compose([Validators.required])),
 
       open: new FormControl(this.businessdata.open, Validators.compose([Validators.required])),
 
@@ -274,7 +274,34 @@ options2={
 
 
 
+  ngOnInit() {
+    let viewimage = this.elementref.nativeElement.children[0].children[0]
+          console.log('ggg',viewimage);
+          this.renderer.setStyle(viewimage, 'opacity', '0');
+          this.renderer.setStyle(viewimage, 'transform', 'scale(0)');
+          this.initializeBackButtonCustomHandler();
+  }
 
+  ionViewWillLeave() {
+    // Unregister the custom back button action for this page
+    this.unsubscribeBackEvent && this.unsubscribeBackEvent();
+  }
+
+  initializeBackButtonCustomHandler(): void {
+
+    this.platform.backButton.subscribeWithPriority(1, () => {
+      alert("Do you want to exit the App");
+      navigator['app'].exitApp();
+});
+  
+
+  // this.unsubscribeBackEvent = this.platform.backButton.subscribeWithPriority(999999,  () => {
+  //     // alert("back pressed home" + this.constructor.name);
+     
+  // });
+  /* here priority 101 will be greater then 100 
+  if we have registerBackButtonAction in app.component.ts */
+}
 
 
   updateSearchResults(){
@@ -292,13 +319,12 @@ options2={
         });
       });
     });
-
   }
   
   
   selectSearchResult(item) {
 
-    this.address = item.description;
+    this.MyAddress = item.description;
     console.log("Your address is",item)
     let location = item.structured_formatting.secondary_text;
     this.town = location.split(', ')
@@ -356,11 +382,11 @@ options2={
   
     
     
-    this.platform.ready().then(() => {
-      console.log('Core service init');
-      const tabBar = document.getElementById('myTabBar');
-       tabBar.style.display = 'flex';
-    });
+    // this.platform.ready().then(() => {
+    //   console.log('Core service init');
+    //   const tabBar = document.getElementById('myTabBar');
+    //    tabBar.style.display = 'none';
+    // });
 
   }
 
@@ -397,14 +423,18 @@ options2={
     this.number = "";
     this.amount = ""
    }else{
-    this.clearPack();
+
     const alert = await this.alertController.create({
+          // header: 'Alert',
+          // subHeader: 'Subtitle',
           message: 'Fields cannot be empty!',
           buttons: ['OK']
         });
         await alert.present();
 
    }
+   
+  
   
   
   
@@ -479,27 +509,17 @@ options2={
 
   deletepack(index) {
     this.businessdata.packages.splice(index, 1);
-    console.log('deleted pack: ', this.businessdata.packages);
+    this.counter -= 1;
+    console.log("Your value is", this.counter);
     
   }
 
-  editpack(i, p) {
-    
-    this.pack = p;
-    console.log('pack to edit',this.pack);
-  }
-  clearPack() {
-    this.pack.name = '',
-    this.pack.amount = null
-    this.pack.number = null
+  editpack(pack) {
+    console.log('This is your pack',pack);
+    this.pack = pack;
   }
   // options : GeolocationOptions;
-  ngOnInit() {
-    let viewimage = this.elementref.nativeElement.children[0].children[0]
-          console.log('ggg',viewimage);
-          this.renderer.setStyle(viewimage, 'opacity', '0');
-          this.renderer.setStyle(viewimage, 'transform', 'scale(0)');
-  }
+
 
 
 
@@ -574,7 +594,6 @@ options2={
  
   async  createAccount(loginForm: FormGroup): Promise<void>{
     
-
     console.log('Results in the businessdata', loginForm.valid);
     console.log("showTabs tab method is called");
 
@@ -797,6 +816,7 @@ options2={
           this.renderer.setStyle(viewimage, 'transform', 'scale(0)');
         }
       }
+
     }
 
     

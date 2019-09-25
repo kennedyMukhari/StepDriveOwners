@@ -17,6 +17,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 
 
+
 declare var google;
 @Component({
   selector: 'app-the-map',
@@ -26,6 +27,7 @@ declare var google;
 
 export class TheMapPage implements OnInit {
 
+  public unsubscribeBackEvent: any;
   // toggles the div, goes up if true, goes down if false
   display = false;
   swipeUp() {
@@ -41,6 +43,7 @@ export class TheMapPage implements OnInit {
   longitude: number;
   NewUseArray = {};
   schools = [];
+  NewRequesteWithPictures = [];
   requests = [];
   NewRequeste = [];
   Data = [];
@@ -49,6 +52,7 @@ export class TheMapPage implements OnInit {
     image: '',
     open: false
   }
+
   constructor(private geolocation: Geolocation, private platform: Platform, public alertController: AlertController, public AuthService: AuthService, public data: DataSavedService, public router: Router, private nativeGeocoder: NativeGeocoder, public elementref: ElementRef, public renderer: Renderer2, private localNot: LocalNotifications) {
     this.pushNotification();
   }
@@ -66,8 +70,31 @@ export class TheMapPage implements OnInit {
   }
 
   ngOnInit() {
-    this.getUserPosition()
+    this.getUserPosition();
+    this.initializeBackButtonCustomHandler();
   }
+
+  ionViewWillLeave() {
+    // Unregister the custom back button action for this page
+    this.unsubscribeBackEvent && this.unsubscribeBackEvent();
+  }
+
+  initializeBackButtonCustomHandler(): void {
+
+    this.platform.backButton.subscribeWithPriority(1, () => {
+      alert("Do you want to exit the App");
+      navigator['app'].exitApp();
+});
+  
+
+  // this.unsubscribeBackEvent = this.platform.backButton.subscribeWithPriority(999999,  () => {
+  //     // alert("back pressed home" + this.constructor.name);
+     
+  // });
+  /* here priority 101 will be greater then 100 
+  if we have registerBackButtonAction in app.component.ts */
+}
+
 
   ionViewDidEnter() {
     
@@ -100,9 +127,9 @@ export class TheMapPage implements OnInit {
       snapshot.forEach(doc => {
         if (doc.data().schooluid === firebase.auth().currentUser.uid && doc.data().confirmed === 'waiting') {
           this.NewRequeste.push({ docid: doc.id, doc: doc.data() });
+         
         }
       });
-
 
       this.NewRequeste.forEach(Customers => {
         console.log('Owners UID logged in', firebase.auth().currentUser.uid);
@@ -112,12 +139,26 @@ export class TheMapPage implements OnInit {
         }
       })
     });
+
+    // this.db.collection('users').onSnapshot(snapshot => {
+    //   snapshot.forEach(item => {
+    //     this.NewRequeste.forEach(Element => {
+    //       if(item.data().doc.uid === Element.data().doc.uid){
+    //         this.NewRequesteWithPictures.push({Customer : Element, image : item.data().image});
+    //         console.log("this is my new Array with images", this.NewRequesteWithPictures);
+            
+    //       }
+    //     })
+    //   })
+    // })
+
+
+
   }
 
 
   showTab(){
     this.platform.ready().then(() => {
-    
       const tabBar = document.getElementById('myTabBar');
       tabBar.style.display = 'flex';
     });

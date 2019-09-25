@@ -16,6 +16,8 @@ import { TabsService } from './core/tabs.service';
 })
 export class AppComponent {
 
+ 
+
   db = firebase.firestore()
   constructor(
     private platform: Platform,

@@ -21,7 +21,7 @@ export class PastbookingsPage implements OnInit {
  Customer = [];
  SortedBookings = [];
  pic : string;
-
+ public unsubscribeBackEvent: any;
 
   constructor(public data : DataSavedService, public platform : Platform) { 
 
@@ -86,16 +86,41 @@ export class PastbookingsPage implements OnInit {
      this.Booking.push(Customers)          
   })
   this.SortData();
-  this.pic = this.SortedBookings[0].image
-  console.log("My sorted data", this.SortedBookings[0].image);
+  
+  
  }
+
+ ngOnInit() {
+  this.initializeBackButtonCustomHandler();
+}
+
+ionViewWillLeave() {
+  // Unregister the custom back button action for this page
+  this.unsubscribeBackEvent && this.unsubscribeBackEvent();
+}
+
+initializeBackButtonCustomHandler(): void {
+
+  this.platform.backButton.subscribeWithPriority(1, () => {
+    alert("Do you want to exit the App");
+    navigator['app'].exitApp();
+});
+
+
+// this.unsubscribeBackEvent = this.platform.backButton.subscribeWithPriority(999999,  () => {
+//     // alert("back pressed home" + this.constructor.name);
+   
+// });
+/* here priority 101 will be greater then 100 
+if we have registerBackButtonAction in app.component.ts */
+}
  
 
  bubbleSort(array){
   const length = array.length;
   for(let i = 0; i < length; i++){
     for(let j = 0; j < length - 1; j++){
-      if(array[j].doc.datein.toString() > array[j + 1].doc.datein.toString()){
+      if(array[j].Customer.doc.datein.toString() > array[j + 1].Customer.doc.datein.toString()){
         this.swap(array, j, j + 1);
       }
     }
@@ -114,9 +139,7 @@ swap(array, a, b){
 
 SortData(){
      let MyArray = this.Booking;
-     this.SortedBookings = this.bubbleSort(MyArray);  
-   
-     
+     this.SortedBookings = this.bubbleSort(MyArray);    
 }
 
 showTab(){
@@ -124,14 +147,11 @@ showTab(){
     console.log('Core service init');
     const tabBar = document.getElementById('myTabBar');
     tabBar.style.display = 'flex';
-  });
-    
+  }); 
 }
 
 
-  ngOnInit() {
   
-  }
 
 
   async getBooking(){

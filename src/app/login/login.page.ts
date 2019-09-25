@@ -89,7 +89,7 @@ loader.dismiss()
                   
                 } else {
                   // this.loading.dismiss()
-                  this.router.navigateByUrl('main');
+                  this.router.navigateByUrl('main/the-map');
                 }
               })
             }
