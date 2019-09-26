@@ -89,8 +89,8 @@ loader.dismiss()
                   this.router.navigateByUrl('profile');
                   
                 } else {
-                  // this.loading.dismiss();
-                  // this.router.navigateByUrl('main');
+                  // this.loading.dismiss()
+                  this.router.navigateByUrl('main/the-map');
                 }
               })
             }

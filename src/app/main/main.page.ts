@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Routes } from '@angular/router';
 
+
 @Component({
   selector: 'app-main',
   templateUrl: './main.page.html',
@@ -8,9 +9,22 @@ import { Routes } from '@angular/router';
 })
 export class MainPage implements OnInit {
   
-  constructor() { }
+
+ 
+
+  constructor() {    }
 
   ngOnInit() {
+   
   }
+
+  ionViewDidLoad(){
+ 
+  }
+
+ 
+
+
+ 
 
 }

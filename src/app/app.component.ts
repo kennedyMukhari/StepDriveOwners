@@ -16,6 +16,8 @@ import { Router, CanActivate, ActivatedRouteSnapshot } from '@angular/router';
 })
 export class AppComponent {
 
+ 
+
   db = firebase.firestore()
   constructor(
     private platform: Platform,

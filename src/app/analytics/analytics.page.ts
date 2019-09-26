@@ -18,6 +18,8 @@ viewImage = {
   @ViewChild('barChart', {static: false}) barChart;
 //database 
 
+public unsubscribeBackEvent: any;
+
 db = firebase.firestore();
 user = {
   uid: ''
@@ -43,7 +45,6 @@ charts: any;
   constructor(private router: Router,
      private platform: Platform,
      public renderer: Renderer2, 
-  
      public elementref: ElementRef, 
      ) {
 
@@ -78,9 +79,30 @@ charts: any;
       this.user.uid = res.uid;
     })
     this.getRequests();
-
+    this.initializeBackButtonCustomHandler();
    
   }
+
+  ionViewWillLeave() {
+    // Unregister the custom back button action for this page
+    this.unsubscribeBackEvent && this.unsubscribeBackEvent();
+  }
+
+  initializeBackButtonCustomHandler(): void {
+
+    this.platform.backButton.subscribeWithPriority(1, () => {
+      alert("Do you want to exit the App");
+      navigator['app'].exitApp();
+});
+  
+
+  // this.unsubscribeBackEvent = this.platform.backButton.subscribeWithPriority(999999,  () => {
+  //     // alert("back pressed home" + this.constructor.name);
+     
+  // });
+  /* here priority 101 will be greater then 100 
+  if we have registerBackButtonAction in app.component.ts */
+}
 
   ionViewWillEnter() {
    
