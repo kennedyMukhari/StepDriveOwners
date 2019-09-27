@@ -4,17 +4,18 @@
     <img src="../../assets/blacklogo.svg" alt="">
   </div>
   <div class="container">
+    
     <div class="form">
       <h1>SIGN IN</h1>
       <div>
-        <form [formGroup]="loginForm" class="login">
+        <form [formGroup] = "loginForm" class="login">
           <div class="input">
             <p>Email</p>
             <input type="email" formControlName="email" [class.invalid]="!loginForm.controls['email'].valid &&
-          loginForm.controls['email'].touched">
+            loginForm.controls['email'].touched">
           </div>
           <div class="error" *ngIf="!loginForm.controls['email'].valid &&
-        loginForm.controls['email'].touched">
+          loginForm.controls['email'].touched">
             <div class="messages">
               Please enter a valid email address.
             </div>
@@ -22,10 +23,10 @@
           <div class="input">
             <p>Password</p>
             <input type="email" type="password" formControlName="password"
-              [class.invalid]="!loginForm.controls['password'].valid&& loginForm.controls['password'].touched">
+            [class.invalid]="!loginForm.controls['password'].valid&& loginForm.controls['password'].touched">
           </div>
           <div *ngIf="!loginForm.controls['password'].valid
-        && loginForm.controls['password'].touched" class="error">
+          && loginForm.controls['password'].touched" class="error">
             <div class="messages">
               Your password is incorrect.
             </div>
@@ -38,7 +39,9 @@
           </div>
           <br>
           <div class="button">
-            <button (click)="loginUser(loginForm)" expand="block" [disabled]="!loginForm.valid">Login</button>
+            <button (click)="loginUser(loginForm)" 
+            expand="block" 
+            [disabled]="!loginForm.valid">Login</button>
           </div>
         </form>
       </div>

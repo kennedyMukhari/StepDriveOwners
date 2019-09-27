@@ -13,29 +13,29 @@ export class HelpPage implements OnInit {
   constructor( private platform: Platform ) { }
 
    ngOnInit() {
-    this.initializeBackButtonCustomHandler();
+    // this.initializeBackButtonCustomHandler();
   }
 
   ionViewWillLeave() {
     // Unregister the custom back button action for this page
-    this.unsubscribeBackEvent && this.unsubscribeBackEvent();
+    // this.unsubscribeBackEvent && this.unsubscribeBackEvent();
   }
 
-  initializeBackButtonCustomHandler(): void {
+//   initializeBackButtonCustomHandler(): void {
 
-    this.platform.backButton.subscribeWithPriority(1, () => {
-      alert("Do you want to exit the App");
-      navigator['app'].exitApp();
-});
+//     this.platform.backButton.subscribeWithPriority(1, () => {
+//       alert("Do you want to exit the App");
+//       navigator['app'].exitApp();
+// });
   
 
-  // this.unsubscribeBackEvent = this.platform.backButton.subscribeWithPriority(999999,  () => {
-  //     // alert("back pressed home" + this.constructor.name);
+//   // this.unsubscribeBackEvent = this.platform.backButton.subscribeWithPriority(999999,  () => {
+//   //     // alert("back pressed home" + this.constructor.name);
      
-  // });
-  /* here priority 101 will be greater then 100 
-  if we have registerBackButtonAction in app.component.ts */
-}
+//   // });
+//   /* here priority 101 will be greater then 100 
+//   if we have registerBackButtonAction in app.component.ts */
+// }
 
   ionViewDidEnter(){
     this.platform.ready().then(() => {

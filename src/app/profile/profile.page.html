@@ -44,14 +44,9 @@
         <!-- <div class="input"> -->
         <!-- <p>Description</p> -->
 ​
-      
-​
-        <ion-searchbar class="input"   [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="{{address}}">
-          </ion-searchbar>
-​
       <div class="input">
         <p>Address</p>
-        <input type="text" placeholder={{MyAddress}}>
+        <input #autocomplete id="autocomplete" (ionFocus)="geolocate()" type="text" placeholder={{MyAddress}}>
       </div>
           
           <ion-list [hidden]="autocompleteItems.length == 0">
@@ -180,6 +175,11 @@
 ​
       <div class="packs">
           <div class="inp" #inputs>
+              <div class="input">
+                  <p>Code</p>
+                  <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="code">
+                  <input *ngIf="businessdata.packages.length==4" disabled="true" type="text">
+                </div>
             <div class="input">
               <p>Package name</p>
               <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="name">
@@ -214,6 +214,7 @@
             <div>
               <p text-center *ngIf="!businessdata.packages[0]"><strong>No packages yet</strong></p>
               <div class="pack-l" *ngFor="let p of businessdata.packages; let i = index" (click)="editpack(p)">
+                <p *ngIf="p.code"><b>{{p.code}}</b></p>
                 <p *ngIf="p.name"><b>{{p.name}}</b></p>
                 <p *ngIf="p.number"> {{p.number}} Lessons R{{p.amount}}.00</p>
                 <div class="dele" (click)="deletepack(i)">

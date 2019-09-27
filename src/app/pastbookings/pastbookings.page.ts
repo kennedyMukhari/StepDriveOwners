@@ -15,11 +15,14 @@ export class PastbookingsPage implements OnInit {
   db = firebase.firestore();
   storage = firebase.firestore();
   
- Booking= [];
- NewBooking=[];
- user=[];
+ Booking = [];
+ NewBooking = [];
+ user = [];
  Customer = [];
  SortedBookings = [];
+
+userss = [];
+newusers = [];
  pic : string;
  public unsubscribeBackEvent: any;
 
@@ -27,31 +30,31 @@ export class PastbookingsPage implements OnInit {
 
  
     //retriving data from booking collection
-    // this.db.collection('bookings').onSnapshot(snapshot => {
+    this.db.collection('users').onSnapshot(snapshot => {
 
-    //   snapshot.forEach(doc => {
-    //     // this.users = doc.data();
-    //     // this.addMarkersOnTheCustomersCurrentLocation(this.users.coords.lat, this.users.coords.lng);
-    //     this.Booking.push(doc.data());
-    //     console.log('My array is ',this.Booking);
+      snapshot.forEach(doc => {
+        // this.users = doc.data();
+        // this.addMarkersOnTheCustomersCurrentLocation(this.users.coords.lat, this.users.coords.lng);
+        this.Booking.push(doc.data());
+        console.log('My array is ',this.Booking);
 
      
-    //   })
+      })
 
-    //   this.Booking.forEach(Customers => {
-    //     console.log('Customers in my array', Customers);
-    //     console.log('My array is dddd ',this.Booking);
-    //     console.log('Owners UID logged in', firebase.auth().currentUser.uid);
+      this.Booking.forEach(Customers => {
+        console.log('users in my array', Customers);
+        console.log('My array is dddd ',this.Booking);
+        console.log('Owners UID logged in', firebase.auth().currentUser.uid);
         
        
-    //     if(Customers.book === true && Customers.schooluid == firebase.auth().currentUser.uid){
-    //       console.log('one');
-    //     this.NewBooking.push(Customers);
-    //     console.log('Served booking', this.NewBooking);
-    //     }
-    //   }) 
+        if(Customers.book === true && Customers.schooluid == firebase.auth().currentUser.uid){
+          console.log('one');
+        this.newusers.push(Customers);
+        console.log('Served booking', this.newusers);
+        }
+      }) 
 
-    // });
+    });
 
   
     
@@ -91,29 +94,29 @@ export class PastbookingsPage implements OnInit {
  }
 
  ngOnInit() {
-  this.initializeBackButtonCustomHandler();
+  // this.initializeBackButtonCustomHandler();
 }
 
-ionViewWillLeave() {
-  // Unregister the custom back button action for this page
-  this.unsubscribeBackEvent && this.unsubscribeBackEvent();
-}
+// ionViewWillLeave() {
+//   // Unregister the custom back button action for this page
+//   this.unsubscribeBackEvent && this.unsubscribeBackEvent();
+// }
 
-initializeBackButtonCustomHandler(): void {
+// initializeBackButtonCustomHandler(): void {
 
-  this.platform.backButton.subscribeWithPriority(1, () => {
-    alert("Do you want to exit the App");
-    navigator['app'].exitApp();
-});
-
-
-// this.unsubscribeBackEvent = this.platform.backButton.subscribeWithPriority(999999,  () => {
-//     // alert("back pressed home" + this.constructor.name);
-   
+//   this.platform.backButton.subscribeWithPriority(1, () => {
+//     alert("Do you want to exit the App");
+//     navigator['app'].exitApp();
 // });
-/* here priority 101 will be greater then 100 
-if we have registerBackButtonAction in app.component.ts */
-}
+
+
+// // this.unsubscribeBackEvent = this.platform.backButton.subscribeWithPriority(999999,  () => {
+// //     // alert("back pressed home" + this.constructor.name);
+   
+// // });
+// /* here priority 101 will be greater then 100 
+// if we have registerBackButtonAction in app.component.ts */
+// }
  
 
  bubbleSort(array){
