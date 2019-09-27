@@ -9,13 +9,13 @@
         <div class="viewImage" [ngClass]="{'viewImage': viewImage.open, 'viewImage-inactive': !viewImage.open}">
           <div (click)="openImage(d.image, 'close')" class="close"><p>x</p></div>
           <img *ngIf="d.image" src="{{d.image}}" alt="">
-          <img *ngIf="!d.image" src="https://icon-library.net/images/image-placeholder-icon/image-placeholder-icon-3.jpg" alt="">
+          <img *ngIf="!d.image"  src="https://firebasestorage.googleapis.com/v0/b/step-drive-95bbe.appspot.com/o/1.png?alt=media&token=c023a9e6-a7a0-4af9-bd13-9778f2bea46d" alt="">
         </div> 
 
       <div class="thumb">
         <ion-avatar (click)="openImage(d.image, 'open')">
           <img *ngIf="d.image" src="{{d.image}}" alt="" >
-          <img *ngIf="!d.image" src="https://icon-library.net/images/image-placeholder-icon/image-placeholder-icon-3.jpg" alt="">
+          <img *ngIf="!d.image"  src="https://firebasestorage.googleapis.com/v0/b/step-drive-95bbe.appspot.com/o/1.png?alt=media&token=c023a9e6-a7a0-4af9-bd13-9778f2bea46d"alt="">
           
         </ion-avatar>
       </div>
