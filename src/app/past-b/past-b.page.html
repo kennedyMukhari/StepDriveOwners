@@ -20,16 +20,13 @@
   
   
       <div padding class="cards">
-  
-  
-  
         <div class="card" *ngFor="let item of reviews">
           <div class="ava">
             <ion-avatar slot="start">
               <img src={{item.image}}>
             </ion-avatar>
           </div>
-  
+
           <div class="comments">
             <ion-label>
               <h1>{{item.username}}</h1>
@@ -41,8 +38,14 @@
               </ionic4-star-rating>
             </ion-label>
           </div>
+
         </div>
-  
+        <!-- <div *ngIf="reviews" class="non">
+          <h1 color="danger">
+            No Reviews yet.
+          </h1>
+      </div> -->
+
     </div>
   
   

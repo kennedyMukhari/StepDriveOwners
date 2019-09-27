@@ -78,14 +78,26 @@
     }
 }
 .cards {
-    height: 70vh;
+    height: 80vh;
+    background:linear-gradient(rgba(255, 255, 255, 0.925)),url(../../assets/coverbg.jpg);
     overflow: hidden;
     overflow-y: auto;
     padding: 7px;
-    position: fixed;
+    position: relative;
     width: 100%;
     overflow: hidden;
     overflow: scroll;
+    .non {
+        display: flex;
+        height: 80vh;
+        justify-content: center;
+        align-items: center;
+        h1{
+            font-weight: bold;
+            color: rgb(82, 74, 74);
+        }
+
+    }
     .card{
         display: flex;
         height: 25%;

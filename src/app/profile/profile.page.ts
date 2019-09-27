@@ -4,7 +4,7 @@ import { Camera,CameraOptions } from '@ionic-native/Camera/ngx';
 import { Router, NavigationEnd } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation'; 
-import { PopoverController, ToastController } from '@ionic/angular';
+import { PopoverController, IonItemSliding } from '@ionic/angular';
 import { PopOverComponent } from '../pop-over/pop-over.component';
 import { AlertController } from '@ionic/angular';
 import { TabsService } from '../core/tabs.service';
@@ -32,6 +32,7 @@ import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@io
 
 export class ProfilePage implements OnInit {
 
+  public unsubscribeBackEvent: any;
   @ViewChild('inputs', {static: true}) input:ElementRef;
   @ViewChild("placesRef", {static: true}) placesRef : GooglePlaceDirective;
 //============================
@@ -49,6 +50,7 @@ options2={
   }
  
   display = false;
+  toastCtrl: any;
 
   option={
     componentRestrictions: { country: 'ZA' }
@@ -81,21 +83,19 @@ options2={
   storage = firebase.storage().ref();
 
 
- 
+  
     amount: string = '';
     name: string = '';
-    number: number = 0;
-
+    number: string = '';
     town : string;
-
-    
+    MyAddress : string;
     longitude : string;
     latitude : string;
 
    pack = {
-    amount: '',
-    name: '',
-    number: '',
+    amount: this.amount,
+    name: this.name,
+    number: this.number,
   }  
   
   opened : boolean
@@ -103,7 +103,7 @@ options2={
   businessdata = {
     schoolname: '',
     registration: '',
-    image: 'https://firebasestorage.googleapis.com/v0/b/step-drive-95bbe.appspot.com/o/1.png?alt=media&token=c023a9e6-a7a0-4af9-bd13-9778f2bea46d',
+    image: '',
     email: '',
     cellnumber: '',
     cost: '',
@@ -114,9 +114,11 @@ options2={
     closed: '',
     allday: 'true',
     schooluid: '',
-    rating: 0
    
   }
+
+  DrivingSchoolOwnerDetails = [];
+
   viewImage = {
     image: '',
     open: false
@@ -195,7 +197,6 @@ options2={
      public tabs: TabsService,
      public platform : Platform,
      public elementref: ElementRef, 
-     public toastCtrl: ToastController
      ) 
 
      {
@@ -224,7 +225,7 @@ options2={
 
       desc: new FormControl(this.businessdata.desc, Validators.compose([Validators.required])),
 
-      address: new FormControl(this.businessdata.address, Validators.compose([Validators.required])),
+      // address: new FormControl(this.businessdata.address, Validators.compose([Validators.required])),
 
       open: new FormControl(this.businessdata.open, Validators.compose([Validators.required])),
 
@@ -273,7 +274,34 @@ options2={
 
 
 
+  ngOnInit() {
+    let viewimage = this.elementref.nativeElement.children[0].children[0]
+          console.log('ggg',viewimage);
+          this.renderer.setStyle(viewimage, 'opacity', '0');
+          this.renderer.setStyle(viewimage, 'transform', 'scale(0)');
+          this.initializeBackButtonCustomHandler();
+  }
 
+  ionViewWillLeave() {
+    // Unregister the custom back button action for this page
+    this.unsubscribeBackEvent && this.unsubscribeBackEvent();
+  }
+
+  initializeBackButtonCustomHandler(): void {
+
+    this.platform.backButton.subscribeWithPriority(1, () => {
+      alert("Do you want to exit the App");
+      navigator['app'].exitApp();
+});
+  
+
+  // this.unsubscribeBackEvent = this.platform.backButton.subscribeWithPriority(999999,  () => {
+  //     // alert("back pressed home" + this.constructor.name);
+     
+  // });
+  /* here priority 101 will be greater then 100 
+  if we have registerBackButtonAction in app.component.ts */
+}
 
 
   updateSearchResults(){
@@ -291,13 +319,12 @@ options2={
         });
       });
     });
-
   }
   
   
   selectSearchResult(item) {
 
-    this.address = item.description;
+    this.MyAddress = item.description;
     console.log("Your address is",item)
     let location = item.structured_formatting.secondary_text;
     this.town = location.split(', ')
@@ -326,7 +353,9 @@ options2={
   }
 
   GoTo(){
-    return window.location.href = 'https://www.google.com/maps/place/?q=place_id:'+this.placeid;
+    // return window.location.href = 'https://www.google.com/maps/place/?q=place_id:'+this.placeid;
+    console.log("AssssaaaA".toString() < "aA".toString());
+    
   }
   //=========================================
 
@@ -337,12 +366,27 @@ options2={
     this.getUserPosition();
     console.log("Your values is", this.counter);
 
-    
-    this.platform.ready().then(() => {
-      console.log('Core service init');
-      const tabBar = document.getElementById('myTabBar');
-       tabBar.style.display = 'flex';
+
+    this.db.collection('drivingschools').onSnapshot(snapshot => {
+      this.DrivingSchoolOwnerDetails = [];
+      snapshot.forEach(doc => {
+       
+        if (doc.data().schooluid === firebase.auth().currentUser.uid) {
+          console.log("My data is", doc.data().address);
+          this.MyAddress = doc.data().address
+          this.DrivingSchoolOwnerDetails.push({ docid: doc.id, doc: doc.data() });
+        }
+      });
     });
+
+  
+    
+    
+    // this.platform.ready().then(() => {
+    //   console.log('Core service init');
+    //   const tabBar = document.getElementById('myTabBar');
+    //    tabBar.style.display = 'none';
+    // });
 
   }
 
@@ -369,36 +413,28 @@ options2={
 
   async addPack(){
 
-   // check if the package fields are empty
-   if(this.pack.name !== '' && this.pack.amount !== '' && this.pack.number !== ''){
-     // if the length of the array is 4
-     if (this.businessdata.packages.length >= 4) {
-       const toaster = await this.toastCtrl.create({
-         message: 'You can only add 4 packages',
-         duration: 2000
-       })
-       toaster.present();
-      // if the pack fields are filled and the array is less than 4
-     } else {
-      console.log('Before pack push', this.pack);
-     
-    this.businessdata.packages.push(this.pack);
-    console.log('after pack push', this.pack);
-    console.log('Your data is in the profile', this.businessdata.packages);
-    // this.pack.amount = ''
-    // this.pack.name = ''
-    // this.pack.number = null
-     }
-     // if the pack fields are empty
+   console.log('Your data is in the profile', {name: this.name, amount: this.amount, number: this.number});
+   if(this.name !== '' && this.amount !== '' && this.number !== ''){
+    
+    this.businessdata.packages.push({name: this.name, amount: this.amount, number: this.number});
+    this.counter += 1;
+    console.log("The counter is", this.counter);
+    this.name = "";
+    this.number = "";
+    this.amount = ""
    }else{
-    this.clearPack();
+
     const alert = await this.alertController.create({
+          // header: 'Alert',
+          // subHeader: 'Subtitle',
           message: 'Fields cannot be empty!',
           buttons: ['OK']
         });
         await alert.present();
 
    }
+   
+  
   
   
   
@@ -469,32 +505,21 @@ options2={
       await alert.present();
     }
      
-      
-    }
+}
 
   deletepack(index) {
     this.businessdata.packages.splice(index, 1);
-    console.log('deleted pack: ', this.businessdata.packages);
+    this.counter -= 1;
+    console.log("Your value is", this.counter);
     
   }
 
-  editpack(i, p) {
-    
-    this.pack = p;
-    console.log('pack to edit',this.pack);
-  }
-  clearPack() {
-    this.pack.name = '',
-    this.pack.amount = null
-    this.pack.number = null
+  editpack(pack) {
+    console.log('This is your pack',pack);
+    this.pack = pack;
   }
   // options : GeolocationOptions;
-  ngOnInit() {
-    let viewimage = this.elementref.nativeElement.children[0].children[0]
-          console.log('ggg',viewimage);
-          this.renderer.setStyle(viewimage, 'opacity', '0');
-          this.renderer.setStyle(viewimage, 'transform', 'scale(0)');
-  }
+
 
 
 
@@ -569,7 +594,6 @@ options2={
  
   async  createAccount(loginForm: FormGroup): Promise<void>{
     
-
     console.log('Results in the businessdata', loginForm.valid);
     console.log("showTabs tab method is called");
 
@@ -584,9 +608,11 @@ options2={
 
              
          
-            this.router.navigateByUrl('main');
+               this.router.navigateByUrl('main');
                if(this.businessdata.schoolname == ''){
 
+                console.log("Adding data to the database");
+                
                 this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
                   address :  this.address,
                   city : this.town,
@@ -627,13 +653,11 @@ options2={
                 });
                 await alert.present();
                
-
+               this.router.navigateByUrl('main');
                }else{
 
-              
-
                 this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
-                  address : this.businessdata.address,
+                  address : this.address,
                   allday : this.businessdata.allday,
                   cellnumber : this.businessdata.cellnumber,
                   closed : this.businessdata.closed,
@@ -642,8 +666,8 @@ options2={
                   email : this.businessdata.email,
                   image : this.businessdata.image,
                   open : this.businessdata.open,
-                  coords : {lat:  this.currentPos.coords.latitude,
-                  lng:  this.currentPos.coords.longitude},
+                  coords : {lat:  this.latitude,
+                  lng:  this.longitude},
                   packages :this.businessdata.packages,
                   registration : this.businessdata.registration,
                   schoolname : this.businessdata.schoolname,
@@ -792,6 +816,7 @@ options2={
           this.renderer.setStyle(viewimage, 'transform', 'scale(0)');
         }
       }
+
     }
 
     

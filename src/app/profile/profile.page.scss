@@ -11,6 +11,7 @@
   text-align: center;
   align-content: center;
   background: rgba(0, 0, 0, 0.692);
+  overflow: hidden;
   .close {
     position: absolute;
     top: 10px;
@@ -28,6 +29,7 @@
     }
   }
   img {
+    padding: 0;
     margin: auto;
     width: 90%;
     border-radius: 10px;
@@ -36,7 +38,7 @@
 .no-scroll .scroll-content{
   overflow: hidden;
 }
-.container {
+.contain {
     display: flex;
     flex-direction: column;
     top: 0;
@@ -86,9 +88,7 @@
         flex-direction: column;
         top: 0;
         left: 0;
-        padding-right: 2px;
         .views {
-          top: 10px;
           right: 0;
           color: white;
           display: flex;
@@ -103,7 +103,6 @@
         }
         .stars {
           // border: 1px solid white;
-          top: 10px;
           right: 0;
           color: white;
           display: flex;
@@ -140,12 +139,12 @@
     //         width: 80%;
     //     }
     // }
-    .item.item-trns {
-        background: rgba(226, 223, 223, 0) !important;
-    }
-    ion-list {
-        background: transparent;
-    }
+    // .item.item-trns {
+    //     background: rgba(226, 223, 223, 0) !important;
+    // }
+    // ion-list {
+    //     background: transparent;
+    // }
     .packs {
       width: 100%;
       display: flex;
@@ -159,15 +158,21 @@
         .input {
           p {
             font-size: 80%;
-        background: linear-gradient(#4C0A0A,#790B0B);
-        color: white;
-        width: 50%;
-        padding: 2px;
-        border-radius: 200px;
-        position: absolute;
-        top: -9px;
-        left: 20px;
-        margin: 0;
+            background: linear-gradient(#4C0A0A,#790B0B);
+            color: white;
+            width: 50%;
+            padding: 2px;
+            border-radius: 200px;
+            position: absolute;
+            top: -9px;
+            left: 20px;
+            margin: 0;
+          }
+          input {
+            margin-bottom: 10px;
+            background: none;
+            color: #4C0A0A;
+            border-radius: 200px;
           }
         }
       }
@@ -202,7 +207,6 @@
             text-align: center;
             height: 20px;
             overflow: hidden;
-            background: red;
             border-radius: 500px;
             color: white;
             p {
@@ -221,7 +225,7 @@
       text-align: center;
       width: 100%;
       position: relative;
-      margin: 20px 0px;
+      // margin: 20px 0px;
       p{
         font-size: 80%;
         background: linear-gradient(#4C0A0A,#790B0B);
@@ -238,7 +242,7 @@
         width: 97%;
         padding: 15px 10px;
         border: none;
-        border:  1px solid var( --ion-color-primary);
+        border:  1px solid #4C0A0A;
         background: none;
         color: #4C0A0A;
         border-radius: 200px;
@@ -252,6 +256,12 @@
      height: 60vh;
      overflow: hidden;
      overflow: scroll;
+
+     ion-searchbar {
+      --icon-color: rgb(119, 49, 49);
+        background: transparent;
+     }
+
      .progress{
        display: flex;
        justify-content: center;
@@ -276,8 +286,8 @@
     .time {
     
       ion-item{
-        border-bottom: 2px dotted var(--ion-color-medium);
-        //text-align: center;
+        margin: 0;
+        padding: 0;
       }
     }
    }
@@ -298,4 +308,9 @@
 
 
 
+}
+
+.inputs{
+ width: 80%;
+ margin: auto;
 }

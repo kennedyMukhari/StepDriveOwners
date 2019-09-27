@@ -61,7 +61,6 @@ loader.dismiss()
 
   async loginUser(loginForm: FormGroup): Promise<void> {
 
-    
     if (!loginForm.valid) {
       console.log('Form is not valid yet, current value:', loginForm.value);
     } else {
@@ -70,7 +69,7 @@ loader.dismiss()
       await loading.present();
       setTimeout(() => {
         loading.dismiss();
-      }, 3000)
+      }, 2000)
 
 
       const email = loginForm.value.email;
@@ -85,28 +84,36 @@ loader.dismiss()
             if (user.uid) {
               this.db.collection('drivingschools').where('schooluid', '==', user.uid).get().then(res => {
                 if (res.empty) {
-                  this.loading.dismiss();
+                  // this.loading.dismiss();
                   this.router.navigateByUrl('profile');
                   
                 } else {
-                  this.loading.dismiss()
-                  this.router.navigateByUrl('main');
+                  // this.loading.dismiss()
+                  this.router.navigateByUrl('main/the-map');
                 }
               })
             }
           })
         },
-        error => {
-          this.loading.dismiss().then(async () => {
-            const alert = await this.alertCtrl.create({
-              message: error.message,
-              buttons: [{ text: 'Ok', role: 'cancel' }]
-            });
-            await alert.present();
+        async (error) => {
+          // this.loading.dismiss().then(async () => {
+          //   const alert = await this.alertCtrl.create({
+          //     message: error.message,
+          //     buttons: [{ text: 'Ok', role: 'cancel' }]
+          //   });
+          //   await alert.present();
+          // });
+
+          const alert = await this.alertCtrl.create({
+            message: error.message,
+            buttons: [{ text: 'Ok', role: 'cancel' }]
           });
+          await alert.present();
         }
       );
     }
+
+    
   }
 
   
