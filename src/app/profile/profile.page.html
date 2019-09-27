@@ -1,13 +1,22 @@
 <ion-content>
   <div class="viewImage">
-    <div (click)="openImage('', 'close')" class="close">
-      <p>x</p>
+      <div (click)="openImage('', 'close')" class="close"><p>x</p></div>
+      <img  *ngIf="viewImage.image" src="{{viewImage.image}}" alt="">
+      <img *ngIf="!viewImage.image" src="https://firebasestorage.googleapis.com/v0/b/step-drive-95bbe.appspot.com/o/1.png?alt=media&token=c023a9e6-a7a0-4af9-bd13-9778f2bea46d" alt="">
+
+      <ion-fab vertical="bottom" horizontal="end" (click)="selectImage()">
+
+
+      <ion-fab-button side="top" size="small">
+          <ion-icon name="create"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
     </div>
+
     <img (click)="selectImage()" *ngIf="viewImage.image" src="{{viewImage.image}}" alt="">
     <img *ngIf="!viewImage.image"
       src="https://firebasestorage.googleapis.com/v0/b/step-drive-95bbe.appspot.com/o/1.png?alt=media&token=c023a9e6-a7a0-4af9-bd13-9778f2bea46d"
       alt="">
-  </div>
   
 <div class="contain">
     <div class="avatar-images">
@@ -27,7 +36,7 @@
       </div>
 
       <img *ngIf="!this.businessdata.image" (click)="openImage('', 'open')"  src="https://firebasestorage.googleapis.com/v0/b/step-drive-95bbe.appspot.com/o/1.png?alt=media&token=c023a9e6-a7a0-4af9-bd13-9778f2bea46d" class="thumbavatar">
-      <img *ngIf="this.businessdata.image" (click)="openImage(businessdata.image, 'open')"  src="{{this.businessdata.image}}" class="thumbavatar" (click)="selectImage()">
+      <img *ngIf="this.businessdata.image" (click)="openImage(businessdata.image, 'open')"  src="{{this.businessdata.image}}" class="thumbavatar" >
     </div>
 ​
     <div class="profile-form">

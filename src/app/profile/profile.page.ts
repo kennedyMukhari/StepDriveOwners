@@ -288,8 +288,9 @@ options2={
   }
 
   initializeBackButtonCustomHandler(): void {
-
+    
     this.platform.backButton.subscribeWithPriority(1, () => {
+      if (this.router.url != '/profile')
       alert("Do you want to exit the App");
       navigator['app'].exitApp();
 });
