@@ -1,3 +1,6 @@
+input:focus{
+  outline: none;
+}
 
 .viewImage {
   transition: 0.4s;
@@ -16,7 +19,7 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    background: #4C0A0A;
+    background: linear-gradient(#4C0A0A, #790B0B);
     width: 40px;
     height: 40px;
     display: grid;
@@ -274,9 +277,9 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-top: 5px;
+      // margin-top: 3px;
           button {
-          height: 50px;
+          height: 45px;
           width: 60%;
           border-bottom-left-radius: 10px;
           border-bottom-right-radius: 10px;
