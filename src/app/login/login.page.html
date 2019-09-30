@@ -10,6 +10,7 @@
     <h1>SIGN IN</h1>
     <div>
       <form [formGroup] = "loginForm" class="login">
+        
         <div class="input">
           <p>Email</p>
           <input type="email" formControlName="email" [class.invalid]="!loginForm.controls['email'].valid &&
@@ -21,6 +22,7 @@
             Please enter a valid email address.
           </div>
         </div>
+
         <div class="input">
           <p>Password</p>
           <input type="email" type="password" formControlName="password"

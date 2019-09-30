@@ -88,9 +88,10 @@ options2={
     name: string = '';
     number: string = '';
     town : string;
-    MyAddress : string;
+    Address : string = '';
     longitude : string;
     latitude : string;
+    Mylocation : string = "";
 
    pack = {
     amount: this.amount,
@@ -275,11 +276,14 @@ options2={
 
 
   ngOnInit() {
-    let viewimage = this.elementref.nativeElement.children[0].children[0]
+          let viewimage = this.elementref.nativeElement.children[0].children[0]
           console.log('ggg',viewimage);
           this.renderer.setStyle(viewimage, 'opacity', '0');
-          this.renderer.setStyle(viewimage, 'transform', 'scale(0)');
-          this.initializeBackButtonCustomHandler();
+          this.renderer.setStyle(viewimage, 'transform', 'scale(0)');     
+  }
+  
+  ionViewDidLoad(){
+    this.initializeBackButtonCustomHandler();
   }
 
   ionViewWillLeave() {
@@ -287,15 +291,34 @@ options2={
     this.unsubscribeBackEvent && this.unsubscribeBackEvent();
   }
 
-  initializeBackButtonCustomHandler(): void {
-    
-    this.platform.backButton.subscribeWithPriority(1, () => {
-      if (this.router.url != '/profile')
-      alert("Do you want to exit the App");
-      navigator['app'].exitApp();
-});
-  
+  async initializeBackButtonCustomHandler(){
+    this.platform.backButton.subscribeWithPriority(1, async () => {
 
+      const alert = await this.alertController.create({
+        header: '',
+        message: 'Do you want to exit the App/',
+        buttons: [
+          {
+            text: 'No',
+            role: '',
+            cssClass: '',
+            handler: (blah) => {
+              console.log('Confirm Cancel: blah');
+            }
+          }, {
+            text: 'Yes',
+            handler: () => {
+              navigator['app'].exitApp();
+            }
+          }
+        ]
+      });
+  
+      await alert.present();
+      // alert("Do you want to exit the App");
+     
+
+  });
   // this.unsubscribeBackEvent = this.platform.backButton.subscribeWithPriority(999999,  () => {
   //     // alert("back pressed home" + this.constructor.name);
      
@@ -325,11 +348,11 @@ options2={
   
   selectSearchResult(item) {
 
-    this.MyAddress = item.description;
-    console.log("Your address is",item)
-    let location = item.structured_formatting.secondary_text;
-    this.town = location.split(', ')
-    console.log('secndary text', this.town[1]);
+    this.Address = item.description;
+    console.log("Your address is",item.terms[1].value)
+    this.Mylocation = item.terms[1].value;
+    // this.town = location.split(', ')
+    // console.log('secndary text', this.town[1]);
     
     // this.myLocation = item.description;
     // this.placeid = this.location.place_id;
@@ -355,7 +378,7 @@ options2={
 
   GoTo(){
     // return window.location.href = 'https://www.google.com/maps/place/?q=place_id:'+this.placeid;
-    console.log("AssssaaaA".toString() < "aA".toString());
+    console.log("".toString() < "aA".toString());
     
   }
   //=========================================
@@ -374,7 +397,7 @@ options2={
        
         if (doc.data().schooluid === firebase.auth().currentUser.uid) {
           console.log("My data is", doc.data().address);
-          this.MyAddress = doc.data().address
+          this.Address = doc.data().address
           this.DrivingSchoolOwnerDetails.push({ docid: doc.id, doc: doc.data() });
         }
       });
@@ -573,6 +596,7 @@ options2={
       console.log("Something went wrong: ", err);
     })
     this.imageSelected = true;
+
   }
   
 
@@ -612,11 +636,26 @@ options2={
                this.router.navigateByUrl('main');
                if(this.businessdata.schoolname == ''){
 
-                console.log("Adding data to the database");
+                console.log("Adding data to the database", {address :  this.address,
+                  city : this.Mylocation,
+                  allday : this.businessdata.allday,
+                  cellnumber : this.businessdata.cellnumber,
+                  closed : this.businessdata.closed,
+                  cost : this.businessdata.cost,
+                  desc : this.businessdata.desc,
+                  email : this.businessdata.email,
+                  image : this.businessdata.image,
+                  open : this.businessdata.open,
+                  coords : {lat:  this.latitude,
+                  lng:  this.longitude},
+                  packages :this.businessdata.packages,
+                  registration : this.businessdata.registration,
+                  schoolname : this.businessdata.schoolname,
+                  schooluid : firebase.auth().currentUser.uid  });
                 
                 this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
                   address :  this.address,
-                  city : this.town,
+                  city : this.Mylocation,
                   allday : this.businessdata.allday,
                   cellnumber : this.businessdata.cellnumber,
                   closed : this.businessdata.closed,
@@ -659,6 +698,7 @@ options2={
 
                 this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
                   address : this.address,
+                  city : this.Mylocation,
                   allday : this.businessdata.allday,
                   cellnumber : this.businessdata.cellnumber,
                   closed : this.businessdata.closed,

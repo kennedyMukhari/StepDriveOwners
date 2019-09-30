@@ -58,11 +58,11 @@
       
 ​
         <ion-searchbar  class="inputs" [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="{{address}}">
-          </ion-searchbar>
+        </ion-searchbar>
 ​
       <div class="input">
         <p>Address</p>
-        <input type="text" placeholder={{MyAddress}}>
+        <input type="text" placeholder={{Address}}>
       </div>
           
           <ion-list [hidden]="autocompleteItems.length == 0">
