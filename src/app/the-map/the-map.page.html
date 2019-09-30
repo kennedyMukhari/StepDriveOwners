@@ -3,30 +3,7 @@
 <ion-content>
     
     <div #map id="map" (click)="showTab()"></div> 
-<!-- 
-    <div class="viewImage">
-        <div (click)="openImage('', 'close')" class="close"><p>x</p></div>
-        <img (click)="selectImage()" *ngIf="viewImage.image" src="{{viewImage.image}}" alt="">
-        <img *ngIf="!viewImage.image" src="https://icon-library.net/images/image-placeholder-icon/image-placeholder-icon-3.jpg" alt="">
-      </div> -->
 
-
-
-    <!-- <div class="viewImage" *ngFor = "let item of NewData">
-        <div (click)="openImage('', 'close')" class="close"><p>x</p></div>
-        <img *ngIf="item.image" src="{{item.image}}" alt="">
-        <img *ngIf="!item.image" src="https://icon-library.net/images/image-placeholder-icon/image-placeholder-icon-3.jpg" alt="">
-      </div> -->
-
-    <!-- <div  padding class="profile"  *ngFor = "let item of NewData" >
-      <ion-thumbnail (click)="openImage('', 'open')">
-          <img *ngIf="!item.image" src="../../assets/icon2.png" class="thumbavatar">
-          <img *ngIf="item.image" src="{{item.image}}" class="thumbavatar" imageViewer (close)="callbackAfterImageViewerCloses()">
-        
-      </ion-thumbnail>
-    </div> -->
-    <!-- <button (click)="pushNotification()">push notification</button>
-    -->
 
     <div #list  [ngClass]="{'list': display, 'listinactive': !display}">
       <div (click)="swipeUp()" class="toggler">
@@ -36,8 +13,6 @@
       <div class="s-list">
         <div class="card" *ngFor="let data of NewRequeste; let i = index">
           <div class="image">
-
-            <!-- <img *ngIf="data.image" src="../../assets/logo.png" alt=""> -->
 
 
             <img *ngIf="!data.image" src="https://icon-library.net/images/image-placeholder-icon/image-placeholder-icon-3.jpg" alt="">
@@ -59,6 +34,4 @@
         </div>
       </div>
     </div>
-    <!-- <div #map id="map"></div>   -->
 </ion-content>
-<!-- ion-button round small  -->
