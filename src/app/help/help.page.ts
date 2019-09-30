@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { OnboardingPage } from '../onboarding/onboarding.page';
 
 @Component({
   selector: 'app-help',
@@ -10,7 +12,7 @@ export class HelpPage implements OnInit {
 
   public unsubscribeBackEvent: any;
 
-  constructor( private platform: Platform ) { }
+  constructor( private platform: Platform,  private router: Router, ) { }
 
    ngOnInit() {
     // this.initializeBackButtonCustomHandler();
@@ -52,5 +54,7 @@ export class HelpPage implements OnInit {
       tabBar.style.display = 'flex';
     });   
   }
-
+instruct(){
+  this.router.navigateByUrl('Onboarding');
+}
 }

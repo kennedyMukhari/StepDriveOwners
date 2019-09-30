@@ -46,7 +46,7 @@
 ​
       <div class="input">
         <p>Address</p>
-        <input #autocomplete id="autocomplete" (ionFocus)="geolocate()" type="text" placeholder={{MyAddress}}>
+        <input #autocomplete id="autocomplete" (ionFocus)="geolocate()" type="text" [(ngModel)]="businessdata.address">
       </div>
           
           <ion-list [hidden]="autocompleteItems.length == 0">
