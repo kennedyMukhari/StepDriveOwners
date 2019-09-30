@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase';
 import { Platform } from '@ionic/angular';
@@ -19,6 +19,10 @@ export class PastBPage implements OnInit {
   avgRating = 0;
   ratingTotal = 0;
 
+  viewImage = {
+    image: '',
+    open: false
+  }
 
 
   constructor(private router: Router, public platform : Platform) { 
@@ -45,7 +49,7 @@ export class PastBPage implements OnInit {
        
   }
   ionViewWillEnter(){
-
+ this.openImage('', 'close');
     // this.platform.ready().then(() => {
     //   console.log('Core service init');
     //   const tabBar = document.getElementById('myTabBar');
@@ -85,5 +89,15 @@ export class PastBPage implements OnInit {
   }
   goToGraph() {
     this.router.navigate(['graphs']);
+  }
+  openImage(image, cmd) {
+    if (cmd == 'open') {
+      this.viewImage.image = image;
+      this.viewImage.open = true
+    } else {
+      this.viewImage.image = image;
+      this.viewImage.open = false
+    }
+    
   }
 }

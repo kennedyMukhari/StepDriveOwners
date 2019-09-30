@@ -1,9 +1,4 @@
-<ion-content class="no-scroll">
-    
- 
-    
-  
-  
+<ion-content>
   <div class="viewImage">
       <div (click)="openImage('', 'close')" class="close"><p>x</p></div>
       <img  *ngIf="viewImage.image" src="{{viewImage.image}}" alt="">
@@ -17,15 +12,13 @@
       </ion-fab-button>
     </ion-fab>
     </div>
-  
-​
-​
-<div no-padding class="container">
-​
-   
-​
-​
 
+    <img (click)="selectImage()" *ngIf="viewImage.image" src="{{viewImage.image}}" alt="">
+    <img *ngIf="!viewImage.image"
+      src="https://firebasestorage.googleapis.com/v0/b/step-drive-95bbe.appspot.com/o/1.png?alt=media&token=c023a9e6-a7a0-4af9-bd13-9778f2bea46d"
+      alt="">
+  
+<div class="contain">
     <div class="avatar-images">
       <div (click)="goToRev()" class="rev">
         <div class="stars">
@@ -37,32 +30,23 @@
           Reviews
         </div>
       </div>
+
+      <div (click)="Logout()" class="logt">
+        <ion-icon size="large" name="exit"></ion-icon>
+      </div>
+
       <img *ngIf="!this.businessdata.image" (click)="openImage('', 'open')"  src="https://firebasestorage.googleapis.com/v0/b/step-drive-95bbe.appspot.com/o/1.png?alt=media&token=c023a9e6-a7a0-4af9-bd13-9778f2bea46d" class="thumbavatar">
       <img *ngIf="this.businessdata.image" (click)="openImage(businessdata.image, 'open')"  src="{{this.businessdata.image}}" class="thumbavatar" >
     </div>
-​
-​
-​
-​
-    <div (click)="Logout()" class="logt">
-      <ion-icon size="large" name="exit"></ion-icon>
-    </div>
-​
-    
 ​
     <div class="profile-form">
 ​
         <!-- <div class="input"> -->
         <!-- <p>Description</p> -->
 ​
-      
-​
-        <ion-searchbar  class="inputs" [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="{{address}}">
-        </ion-searchbar>
-​
       <div class="input">
         <p>Address</p>
-        <input type="text" placeholder={{Address}}>
+        <input #autocomplete id="autocomplete" (ionFocus)="geolocate()" type="text" [(ngModel)]="businessdata.address">
       </div>
           
           <ion-list [hidden]="autocompleteItems.length == 0">
@@ -70,10 +54,9 @@
               {{ item.description }}
             </ion-item>
           </ion-list>
-        <!-- </div> -->
 ​
 ​
-        <form [formGroup]="loginForm">
+      <form [formGroup]="loginForm">
       <div class="progress">
         <ion-progress-bar *ngIf="isuploading" color="secondary" value="{{uploadprogress}}"></ion-progress-bar>
       </div>
@@ -158,7 +141,7 @@
       </div>
 ​
       <div class="time">
-        <ion-item style="background: transparent">
+        <ion-item>
           <ion-label position="floating">open time</ion-label>
           <ion-datetime displayFormat="HH:mm" formControlName="open" [(ngModel)]="businessdata.open"></ion-datetime>
         </ion-item>
@@ -192,6 +175,11 @@
 ​
       <div class="packs">
           <div class="inp" #inputs>
+              <div class="input">
+                  <p>Code</p>
+                  <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="code">
+                  <input *ngIf="businessdata.packages.length==4" disabled="true" type="text">
+                </div>
             <div class="input">
               <p>Package name</p>
               <input *ngIf="businessdata.packages.length<4" type="text" [(ngModel)]="name">
@@ -220,11 +208,13 @@
               </button>
             
           </div>
+          
           <div class="s-packs">
 
             <div>
               <p text-center *ngIf="!businessdata.packages[0]"><strong>No packages yet</strong></p>
               <div class="pack-l" *ngFor="let p of businessdata.packages; let i = index" (click)="editpack(p)">
+                <p *ngIf="p.code"><b>{{p.code}}</b></p>
                 <p *ngIf="p.name"><b>{{p.name}}</b></p>
                 <p *ngIf="p.number"> {{p.number}} Lessons R{{p.amount}}.00</p>
                 <div class="dele" (click)="deletepack(i)">
@@ -236,13 +226,11 @@
         </div>
 ​
     <div class="dbtn">
-        <!-- (click)="createAccount(loginForm)" -->
         <button (click)="createAccount(loginForm)">
           Done
         </button>
       </div>
     </div>
-​
+
 </div>
-<button (click)="openImage('', 'open')">open image</button>
 </ion-content>
