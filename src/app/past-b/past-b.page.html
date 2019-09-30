@@ -32,7 +32,8 @@
     </div>
   
   
-      <div padding class="cards">
+      <div padding class="cards"  >
+          <p text-center *ngIf="reviews.length==0"><strong>No reviews yet</strong></p>
         <div class="card" *ngFor="let item of reviews">
           <div class="ava">
             <ion-avatar slot="start">

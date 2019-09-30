@@ -1,21 +1,5 @@
 <ion-content class="no-scroll">
 
-<<<<<<< HEAD
-
-<div class="logo">
-  <img src="../../assets/blacklogo.svg" alt="">
-</div>
-<div class="container">
-  
-  <div class="form">
-    <h1>SIGN IN</h1>
-    <div>
-      <form [formGroup] = "loginForm" class="login">
-        
-        <div class="input">
-          <p>Email</p>
-          <input type="email" formControlName="email" [class.invalid]="!loginForm.controls['email'].valid &&
-=======
   <div class="logo">
     <img src="../../assets/blacklogo.svg" alt="">
   </div>
@@ -31,7 +15,6 @@
             loginForm.controls['email'].touched">
           </div>
           <div class="error" *ngIf="!loginForm.controls['email'].valid &&
->>>>>>> df9e8c0a1b8958bc67ecb44d2f47e516d62350ba
           loginForm.controls['email'].touched">
             <div class="messages">
               Please enter a valid email address.
@@ -54,25 +37,11 @@
           <div class="create">
             <button routerLink="/register">Create Account</button>
           </div>
-<<<<<<< HEAD
-        </div>
-
-        <div class="input">
-          <p>Password</p>
-          <input type="email" type="password" formControlName="password"
-          [class.invalid]="!loginForm.controls['password'].valid&& loginForm.controls['password'].touched">
-        </div>
-        <div *ngIf="!loginForm.controls['password'].valid
-        && loginForm.controls['password'].touched" class="error">
-          <div class="messages">
-            Your password is incorrect.
-=======
           <br>
           <div class="button">
             <button (click)="loginUser(loginForm)" 
             expand="block" 
             [disabled]="!loginForm.valid">Login</button>
->>>>>>> df9e8c0a1b8958bc67ecb44d2f47e516d62350ba
           </div>
         </form>
       </div>
