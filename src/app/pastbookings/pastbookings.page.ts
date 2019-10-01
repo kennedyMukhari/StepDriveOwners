@@ -30,42 +30,39 @@ newusers = [];
 
  
     //retriving data from booking collection
-    this.db.collection('users').onSnapshot(snapshot => {
+    // this.db.collection('users').onSnapshot(snapshot => {
 
-      snapshot.forEach(doc => {
-        // this.users = doc.data();
-        // this.addMarkersOnTheCustomersCurrentLocation(this.users.coords.lat, this.users.coords.lng);
-        this.Booking.push(doc.data());
-        console.log('My array is ',this.Booking);
+    //   snapshot.forEach(doc => {
+    //     // this.users = doc.data();
+    //     // this.addMarkersOnTheCustomersCurrentLocation(this.users.coords.lat, this.users.coords.lng);
+    //     this.Booking.push(doc.data());
+    //     console.log('My array is ',this.Booking);
 
      
-      })
+    //   })
 
-      this.Booking.forEach(Customers => {
-        console.log('users in my array', Customers);
-        console.log('My array is dddd ',this.Booking);
-        console.log('Owners UID logged in', firebase.auth().currentUser.uid);
+    //   this.Booking.forEach(Customers => {
+    //     console.log('users in my array', Customers);
+    //     console.log('My array is dddd ',this.Booking);
+    //     console.log('Owners UID logged in', firebase.auth().currentUser.uid);
         
        
-        if(Customers.book === true && Customers.schooluid == firebase.auth().currentUser.uid){
-          console.log('one');
-        this.newusers.push(Customers);
-        console.log('Served booking', this.newusers);
-        }
-      }) 
+    //     if(Customers.book === true && Customers.schooluid == firebase.auth().currentUser.uid){
+    //       console.log('one');
+    //     this.newusers.push(Customers);
+    //     console.log('Served booking', this.newusers);
+    //     }
+    //   }) 
 
-    });
-
-  
-    
-
-
+    // });
 
   }
 
   
  ionViewDidEnter(){
 
+
+ 
   // this.platform.ready().then(() => {
   //   console.log('Core service init');
   //   const tabBar = document.getElementById('myTabBar');
@@ -81,7 +78,7 @@ newusers = [];
 
   let date;
   this.Booking = [];
-  this.Customer = this.data.SavedData;
+  this.Booking = this.data.SavedData;
   console.log("Customer", this.Customer);
   
  
@@ -123,7 +120,7 @@ newusers = [];
   const length = array.length;
   for(let i = 0; i < length; i++){
     for(let j = 0; j < length - 1; j++){
-      if(array[j].Customer.doc.datein.toString() > array[j + 1].Customer.doc.datein.toString()){
+      if(array[j].datein.toString() > array[j + 1].datein.toString()){
         this.swap(array, j, j + 1);
       }
     }
@@ -141,8 +138,11 @@ swap(array, a, b){
 
 
 SortData(){
-     let MyArray = this.Booking;
-     this.SortedBookings = this.bubbleSort(MyArray);    
+   
+    
+     this.SortedBookings = this.bubbleSort(this.Booking);   
+     console.log('iiiiiiiiiii', this.SortedBookings);
+       
 }
 
 showTab(){

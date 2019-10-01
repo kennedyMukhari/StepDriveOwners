@@ -44,6 +44,7 @@ export class TheMapPage implements OnInit {
   NewUseArray = {};
   schools = [];
   NewRequesteWithPictures = [];
+  tempUsersArray = [];
   requests = [];
   NewRequeste = [];
   Data = [];
@@ -55,6 +56,7 @@ export class TheMapPage implements OnInit {
 
   constructor(private geolocation: Geolocation, private platform: Platform, public alertController: AlertController, public AuthService: AuthService, public data: DataSavedService, public router: Router, private nativeGeocoder: NativeGeocoder, public elementref: ElementRef, public renderer: Renderer2, private localNot: LocalNotifications) {
     this.pushNotification();
+    console.log('notification' ,this.pushNotification)
   }
 
 
@@ -126,8 +128,7 @@ export class TheMapPage implements OnInit {
       this.NewRequeste = [];
       snapshot.forEach(doc => {
         if (doc.data().schooluid === firebase.auth().currentUser.uid && doc.data().confirmed === 'waiting') {
-          this.NewRequeste.push({ docid: doc.id, doc: doc.data() });
-         
+          this.NewRequeste.push({ docid: doc.id, doc: doc.data()});  
         }
       });
 
@@ -135,10 +136,37 @@ export class TheMapPage implements OnInit {
         console.log('Owners UID logged in', firebase.auth().currentUser.uid);
         if (Customers.doc.schooluid === firebase.auth().currentUser.uid  ) {
 
-          this.addMarkersOnTheCustomersCurrentLocation(Customers.doc.location.lat, Customers.doc.location.lng);
+          this.addMarkersOnTheCustomersCurrentLocation(Customers.doc.location.lat, Customers.doc.location.lng, Customers.doc.location.address);
         }
       })
     });
+
+    this.db.collection('users').onSnapshot(snapshots => {
+      snapshots.forEach(data => {
+        this.tempUsersArray.push(data.data());
+        this.NewRequeste.forEach(element => {
+      if( element.doc.uid === data.data().uid ){
+        let obj = {
+          image : data.data().image,
+          datein : element.doc.datein,
+          dateout : element.doc.dateout,
+          book :  element.doc.book,
+          location :  element.doc.location.address,
+          time : element.doc.time,
+          packageName : element.doc.package.name,
+          docid : element.docid
+        }
+        this.NewRequesteWithPictures = []
+       this.NewRequesteWithPictures.push(obj)
+      }
+    })
+      
+      })
+    })
+
+    // this.NewRequeste.forEach(element => {
+    //   console.log("My temporary array", element);
+    // })
 
     // this.db.collection('users').onSnapshot(snapshot => {
     //   snapshot.forEach(item => {
@@ -152,9 +180,45 @@ export class TheMapPage implements OnInit {
     //   })
     // })
 
-
-
   }
+
+
+
+ 
+
+    //addMarkers method adds the customer's location 
+    addMarkersOnTheCustomersCurrentLocation(lat, lng, address) {
+      console.log('Called ');
+      // let marker = new google.maps.Marker({
+      //   map: this.map,
+      //   animation: google.maps.Animation.DROP,
+      //   position: this.map.getCenter()
+  
+      // });
+  
+      // -26.260901, 27.949600699999998
+      //here
+      const icon = {
+        url: '../../assets/icon/icon.png', // image url
+        scaledSize: new google.maps.Size(50, 50), // scaled size
+        origin: new google.maps.Point(0, 0), // origin
+        anchor: new google.maps.Point(0, 0) // anchor
+      };
+  
+      let marker = new google.maps.Marker({
+        map: this.map,
+        animation: google.maps.Animation.DROP,
+        position: new google.maps.LatLng(lat, lng),
+        icon: icon
+      });
+  
+  
+      // let content = "<p>Customer's Location!</p>";
+      // let content: `<h5 style="margin:0;padding:0;">${} </h5>`+address
+  
+      this.addInfoWindow(marker, address);
+  
+    }
 
 
   showTab(){
@@ -166,22 +230,23 @@ export class TheMapPage implements OnInit {
 
 
   Accept(Customer, i, docid) {
+ 
     this.db.collection('bookings').doc(docid).set(
       { confirmed: 'accepted' }, { merge: true }
       );
 
-      this.db.collection('users').onSnapshot(SnapShots => {
-        SnapShots.forEach(doc => {
-          if(doc.data().uid === Customer.doc.uid){
-            this.data.SavedData.push({Customer : Customer, image : doc.data().image});
-            console.log('Core service init', this.data.SavedData, i);
-          }
-        })
-      })
-    
-    this.NewRequeste.splice(i, 1);
-    console.log('Accepted array', this.NewRequeste);
+      this.data.SavedData.push(Customer)
 
+      // this.db.collection('users').onSnapshot(SnapShots => {
+      //   SnapShots.forEach(doc => {
+      //     if(doc.data().uid === Customer.doc.uid){
+      //       this.data.SavedData.push({Customer : Customer, image : doc.data().image});
+      //       console.log('Core service init', this.data.SavedData, i);
+      //     }
+      //   })
+      // })
+    
+    this.NewRequesteWithPictures.splice(i, 1);
     this.presentAlert();
   }
 
@@ -356,39 +421,7 @@ export class TheMapPage implements OnInit {
   }
 
   //==============================
-  //addMarkers method adds the customer's location 
-  addMarkersOnTheCustomersCurrentLocation(lat, lng) {
-    console.log('Called ');
-    // let marker = new google.maps.Marker({
-    //   map: this.map,
-    //   animation: google.maps.Animation.DROP,
-    //   position: this.map.getCenter()
 
-    // });
-
-    // -26.260901, 27.949600699999998
-    //here
-    const icon = {
-      url: '../../assets/icon/icon.png', // image url
-      scaledSize: new google.maps.Size(50, 50), // scaled size
-      origin: new google.maps.Point(0, 0), // origin
-      anchor: new google.maps.Point(0, 0) // anchor
-    };
-
-    let marker = new google.maps.Marker({
-      map: this.map,
-      animation: google.maps.Animation.DROP,
-      position: new google.maps.LatLng(lat, lng),
-      icon: icon
-    });
-
-
-    let content = "<p>Customer's Location!</p>";
-
-
-    this.addInfoWindow(marker, content);
-
-  }
 
 
   //getGeolocation method gets the surrent location of the device
@@ -415,10 +448,11 @@ export class TheMapPage implements OnInit {
   // }
 
 
-  addInfoWindow(marker, content) {
+  addInfoWindow(marker, address) {
 
     let infoWindow = new google.maps.InfoWindow({
-      content: content
+      content: `<h5 style="margin:0;padding:0;">${address} </h5>`
+
     });
 
     google.maps.event.addListener(marker, 'click', () => {
@@ -488,11 +522,12 @@ export class TheMapPage implements OnInit {
       // this.db.collection('bookings').where('schooluid ', '==', this.user.uid).onSnapshot(res => {
       res.forEach(doc => {
         count += 1;
-        if (doc.data().confirmed == 'waiting' && count == 0) {
+        if (doc.data().confirmed == 'waiting') {
           this.localNot.schedule({
             id: 1,
             title: 'StepDrive',
             text: 'You have booking request.'
+            
           })
         }
       })

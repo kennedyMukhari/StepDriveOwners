@@ -54,14 +54,14 @@ export class AppComponent {
         
         if (user) {
           // User is signed in.
-          this.router.navigateByUrl('/main');
+          this.router.navigateByUrl('main/the-map');
           
           console.log('Current user in', user.uid);
         } else {
           // No user is signed in.
        
           
-          this.router.navigateByUrl('/');
+          // this.router.navigateByUrl('/');
         }
       });
       this.splashScreen.hide();
