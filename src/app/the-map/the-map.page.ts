@@ -56,7 +56,7 @@ export class TheMapPage implements OnInit {
   }
 
   constructor(private geolocation: Geolocation, private platform: Platform, public alertController: AlertController, public AuthService: AuthService, public data: DataSavedService, public router: Router, private nativeGeocoder: NativeGeocoder, public elementref: ElementRef, public renderer: Renderer2, private localNot: LocalNotifications) {
-    this.pushNotification();
+    // this.pushNotification();
     console.log('notification' ,this.pushNotification)
   }
 

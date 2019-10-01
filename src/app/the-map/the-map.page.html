@@ -5,7 +5,7 @@
 
   <div #list [ngClass]="{'list': display, 'listinactive': !display}">
     <div (click)="swipeUp()" class="toggler">
-      <ion-icon *ngIf="display" class="arrow" name="arrow-dropdown"></ion-icon>
+      <ion-icon *ngIf="display" color="light" class="arrow" name="arrow-dropdown"></ion-icon>
       <ion-icon *ngIf="!display" class="arrow" name="arrow-dropup"></ion-icon>
     </div>
     <div class="s-list">

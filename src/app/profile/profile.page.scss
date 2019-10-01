@@ -56,7 +56,7 @@ input:focus{
     .item {
       padding: 0 !important;
       margin: 0 !important;
-      background: red;
+      // background: red;
     }
     .item-highlight {
       background: none;
@@ -288,10 +288,15 @@ input:focus{
       }
     }
     .time {
-    
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
       ion-item{
         margin: 0;
         padding: 0;
+        width: 40%;
+        text-align: center;
+        --background:transparent;
       }
     }
    }
