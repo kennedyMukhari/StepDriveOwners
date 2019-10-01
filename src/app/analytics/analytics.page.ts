@@ -199,7 +199,7 @@ charts: any;
       data: {
         labels: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
         datasets: [{
-          label: 'Lessons offered per week',
+          label: 'Lessons offered per day',
           // data: [this.mon.length, this.tue.length, this.wed.length, this.thu.length, this.fri.length, this.sat.length, this.sun.length],
            data: [this.mon.length, this.tue.length, this.wed.length, this.thu.length, this.fri.length, this.sat.length, this.sun.length],
           backgroundColor: 'rgb(38, 194, 129)', // array should have same number of elements as number of dataset
