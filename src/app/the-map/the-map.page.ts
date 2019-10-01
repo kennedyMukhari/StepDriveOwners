@@ -32,6 +32,7 @@ export class TheMapPage implements OnInit {
   display = false;
   swipeUp() {
     this.display = !this.display;
+    console.log('Clicked');
   }
   options : GeolocationOptions;
   currentPos : Geoposition;
