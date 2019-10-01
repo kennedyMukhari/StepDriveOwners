@@ -18,6 +18,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 
 
+
 declare var google;
 @Component({
   selector: 'app-the-map',
@@ -54,8 +55,9 @@ export class TheMapPage implements OnInit {
     open: false
   }
 
-  constructor(private geolocation: Geolocation, private platform: Platform, public alertController: AlertController, public AuthService: AuthService, public data: DataSavedService, public router: Router, private nativeGeocoder: NativeGeocoder, public elementref: ElementRef, public renderer: Renderer2, private localNot: LocalNotifications) {
-    this.pushNotification();
+  constructor(private geolocation: Geolocation, private platform: Platform, public alertController: AlertController, public AuthService: AuthService, public data: DataSavedService, public router: Router, private nativeGeocoder: NativeGeocoder, public elementref: ElementRef, public renderer: Renderer2, private localNot: LocalNotifications,
+    public loadingCtrl: LoadingController) {
+    // this.pushNotification();
     console.log('notification' ,this.pushNotification)
   }
 
@@ -98,8 +100,14 @@ export class TheMapPage implements OnInit {
 // }
 
 
-  ionViewDidEnter() {
+  async ionViewDidEnter() {
     
+     let loading = await this.loadingCtrl.create();
+    await loading.present();
+    setTimeout(() => {
+      loading.dismiss();
+    }, 2000)
+
     this.platform.ready().then(() => {
       console.log('Core service init');
       const tabBar = document.getElementById('myTabBar');
@@ -269,36 +277,13 @@ export class TheMapPage implements OnInit {
 
   Decline(doc, docid, i) {
 
-    console.log('Accepted array before', this.NewRequeste);
     this.db.collection('bookings').doc(docid).set({ confirmed: 'rejected' }, { merge: true });
 
     this.NewRequeste.splice(i, 1)
-    console.log('Accepted array after', this.NewRequeste);
-    //   //  console.log('Decline method is called', obj);
-    //   //  var docRef = firebase.firestore().collection("users").doc(obj.uid);
-    //   //  docRef.update({confirmed: false});
-    //   //  let documentRef = this.db.firestore.doc('col/doc');
-
-    //   //  documentRef.update({foo: 'bar'}).then(res => {
-    //   //    console.log(`Document updated at ${res.updateTime}`);
-    //   //  });
-
+ 
   }
 
 
-  Logout() {
-    this.users = [];
-    this.requests = [];
-    this.NewRequeste = [];
-    console.log('You are logged out');
-    firebase.auth().signOut().then((res) => {
-      console.log(res);
-      this.router.navigateByUrl('/login');
-    })
-
-    console.log('The current user is', firebase.auth().currentUser.uid);
-
-  }
 
   add() {
 
