@@ -1,12 +1,26 @@
-.no-scroll .scroll-content{
+// .no-scroll .scroll-content{
+//   
+//   z-index: -10;
+// }
+.no-scroll {
   overflow: hidden;
-  z-index: -10;
+  position: fixed;
+  height: 100%;
+  width: 100%;
 }
 input:focus{
   outline: none;
 }
 ion-footer {
-  top: 25px;
+  // top: 5%;
+  width: 100vw !important;
+  height: 30vw !important;
+  background: url(../../assets/MaskFooter.svg);
+  position: fixed;
+  bottom: 0;
+  background-size: 100% auto;
+  z-index: 1;
+  border: none;
   img {
     width: 100%;
     object-fit: cover;
@@ -14,43 +28,34 @@ ion-footer {
   }
 }
 .logo{
-position: fixed;
-top: 0;
-left: 0;
-right: 0;
-bottom: auto;
-overflow: hidden;
-text-align: center;
-padding: 20px;
-text-align: center;
-img{
-  width: 50%;
+  // position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: auto;
+  overflow: hidden;
+  text-align: center;
+  padding: 20px;
+  text-align: center;
+  img{
+    width: 50%;
+  }
 }
-}
-// .footer {
-//   position: fixed;
-//   object-fit: cover;
-//   border: 1px solid red;
-//   bottom: 0;
-//   img {
-//       background-size: cover;
-//       object-fit: cover;
-//       width: 100%;
-//   }
-// }
 .container {
-width: 100%;
-background-attachment: fixed;
-background-size: auto 100%;
-background-position: center;
-background-repeat: no-repeat;
-display: grid;
-display: flex;
-justify-content: center;
-align-items: center;
-align-content: center;
-padding: 0 !important;
-margin-top: 36%;
+  width: 100%;
+  background-attachment: fixed;
+  background-size: auto 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: grid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  padding: 0 !important;
+  position: relative;
+  z-index: 20;
+  background:white;
 .form{
   position: fixed;
   width: 90%;
@@ -149,6 +154,17 @@ margin-top: 36%;
 }
 
 }
+
+// @media only screen and (max-height: 1000px) {
+//   ion-footer {
+//     top: 18%;
+//     img {
+//       width: 100%;
+//       object-fit: cover;
+//       background-size: cover;
+//     }
+//   }
+// }
 
 @media only screen and (max-width: 300px) {
 .logo{
