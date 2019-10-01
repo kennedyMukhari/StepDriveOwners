@@ -126,6 +126,7 @@ export class TheMapPage implements OnInit {
     
 
     this.db.collection('bookings').onSnapshot(snapshot => {
+
       this.NewRequeste = [];
       snapshot.forEach(doc => {
         if (doc.data().schooluid === firebase.auth().currentUser.uid && doc.data().confirmed === 'waiting') {
@@ -140,7 +141,33 @@ export class TheMapPage implements OnInit {
           this.addMarkersOnTheCustomersCurrentLocation(Customers.doc.location.lat, Customers.doc.location.lng, Customers.doc.location.address);
         }
       })
+
+      this.fillArrayWithData();
+
     });
+
+   
+
+    // this.NewRequeste.forEach(element => {
+    //   console.log("My temporary array", element);
+    // })
+
+    // this.db.collection('users').onSnapshot(snapshot => {
+    //   snapshot.forEach(item => {
+    //     this.NewRequeste.forEach(Element => {
+    //       if(item.data().doc.uid === Element.data().doc.uid){
+    //         this.NewRequesteWithPictures.push({Customer : Element, image : item.data().image});
+    //         console.log("this is my new Array with images", this.NewRequesteWithPictures);
+            
+    //       }
+    //     })
+    //   })
+    // })
+
+  }
+  
+
+  fillArrayWithData(){
 
     this.db.collection('users').onSnapshot(snapshots => {
       snapshots.forEach(data => {
@@ -164,22 +191,6 @@ export class TheMapPage implements OnInit {
       
       })
     })
-
-    // this.NewRequeste.forEach(element => {
-    //   console.log("My temporary array", element);
-    // })
-
-    // this.db.collection('users').onSnapshot(snapshot => {
-    //   snapshot.forEach(item => {
-    //     this.NewRequeste.forEach(Element => {
-    //       if(item.data().doc.uid === Element.data().doc.uid){
-    //         this.NewRequesteWithPictures.push({Customer : Element, image : item.data().image});
-    //         console.log("this is my new Array with images", this.NewRequesteWithPictures);
-            
-    //       }
-    //     })
-    //   })
-    // })
 
   }
 
@@ -224,6 +235,7 @@ export class TheMapPage implements OnInit {
 
   showTab(){
     this.platform.ready().then(() => {
+      console.log("Showtab method is called");
       const tabBar = document.getElementById('myTabBar');
       tabBar.style.display = 'flex';
     });

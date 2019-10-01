@@ -20,11 +20,11 @@ export class PastbookingsPage implements OnInit {
  user = [];
  Customer = [];
  SortedBookings = [];
-
-userss = [];
-newusers = [];
+ userss = [];
+ newusers = [];
  pic : string;
  public unsubscribeBackEvent: any;
+ value : string = '';
 
   constructor(public data : DataSavedService, public platform : Platform) { 
 
@@ -60,9 +60,6 @@ newusers = [];
 
   
  ionViewDidEnter(){
-
-
- 
   // this.platform.ready().then(() => {
   //   console.log('Core service init');
   //   const tabBar = document.getElementById('myTabBar');
@@ -80,13 +77,16 @@ newusers = [];
   this.Booking = [];
   this.Booking = this.data.SavedData;
   console.log("Customer", this.Customer);
-  
+  if(this.Booking.length > 0){
+      this.value = "Booking List"
+  }else{
+    this.value = "List is currently empty"
+  }
  
   this.Customer.forEach(Customers => { 
      this.Booking.push(Customers)          
   })
   this.SortData();
-  
   
  }
 

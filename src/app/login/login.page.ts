@@ -43,6 +43,8 @@ export class LoginPage implements OnInit {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
 
+        console.log("The current user id is", user.uid);
+
         loader.dismiss()
         this.db.collection('drivingschools').where('schooluid', '==', user.uid).get().then(res => {
           if (res.empty) {
