@@ -33,6 +33,7 @@ export class TheMapPage implements OnInit {
   display = false;
   swipeUp() {
     this.display = !this.display;
+    console.log('Clicked');
   }
   options : GeolocationOptions;
   currentPos : Geoposition;
@@ -57,7 +58,7 @@ export class TheMapPage implements OnInit {
 
   constructor(private geolocation: Geolocation, private platform: Platform, public alertController: AlertController, public AuthService: AuthService, public data: DataSavedService, public router: Router, private nativeGeocoder: NativeGeocoder, public elementref: ElementRef, public renderer: Renderer2, private localNot: LocalNotifications,
     public loadingCtrl: LoadingController) {
-    // this.pushNotification();
+    this.pushNotification();
     console.log('notification' ,this.pushNotification)
   }
 
@@ -275,12 +276,9 @@ export class TheMapPage implements OnInit {
   // //   // this.add()
   // }
 
-  Decline(doc, docid, i) {
-
+  Decline(docid, i) {
     this.db.collection('bookings').doc(docid).set({ confirmed: 'rejected' }, { merge: true });
-
-    this.NewRequeste.splice(i, 1)
- 
+    this.NewRequesteWithPictures.splice(i, 1)
   }
 
 
