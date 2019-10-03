@@ -16,9 +16,7 @@ import { NgZone } from '@angular/core';
 import { GooglePlaceDirective } from 'ngx-google-places-autocomplete/ngx-google-places-autocomplete.directive';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
-
-
-
+import { LoadingController } from '@ionic/angular';
 
 
 @Component({
@@ -185,9 +183,9 @@ options2={
   isuploaded: boolean;
   imageSelected: boolean;
   constructor(
-    public zone: NgZone,
-    private nativeGeocoder: NativeGeocoder,
-    public formBuilder: FormBuilder ,
+     public zone: NgZone,
+     private nativeGeocoder: NativeGeocoder,
+     public formBuilder: FormBuilder ,
      private geolocation : Geolocation, 
      public forms: FormBuilder,
      public router:Router,
@@ -198,6 +196,7 @@ options2={
      public tabs: TabsService,
      public platform : Platform,
      public elementref: ElementRef, 
+     public alert : LoadingController
      ) 
 
      {
@@ -535,7 +534,6 @@ options2={
     this.businessdata.packages.splice(index, 1);
     this.counter -= 1;
     console.log("Your value is", this.counter);
-    
   }
 
   editpack(pack) {
@@ -810,8 +808,6 @@ options2={
 
 
       getProfile() {
-        
-      
       }
 
       goToRev() {
@@ -824,16 +820,37 @@ options2={
       } 
 
 
-      Logout() {
+     async Logout() {
         // this.users = [];
         // this.requests = [];
         // this.NewRequeste = [];
-        console.log('You are logged out');
-        firebase.auth().signOut().then((res) => {
-         console.log(res);
-          this.router.navigateByUrl('/login');
-        })
-      }
+
+        const alert = await this.alertController.create({
+          header: '',
+          message: 'Do you want to Logout?',
+          buttons: [
+            {
+              text: 'No',
+              role: '',
+              cssClass: '',
+              handler: (blah) => {
+                
+              }
+            }, {
+              text: 'Yes',
+              handler: () => {
+                console.log('You are logged out');
+                firebase.auth().signOut().then((res) => {
+                 console.log(res);
+                  this.router.navigateByUrl('/login');
+                })
+              }
+            }
+          ]
+        });
+    
+        await alert.present();
+    }
 
 
       openImage(image, cmd) {

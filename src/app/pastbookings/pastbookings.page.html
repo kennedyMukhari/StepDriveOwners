@@ -2,10 +2,10 @@
 
 <div class="container" (click)="showTab()">
   <div class="title">
-      <h1>Booking List</h1>
+      <h1>{{value}}</h1>
   </div>
   <div class="list">
-    <div class="profile" *ngFor="let data of SortedBookings">
+    <div class="profile" *ngFor="let data of SortedBookings; let i = index">
       
       <div class="image">
      <div class="img">
@@ -27,12 +27,13 @@
 
 
 
-        <h4>Address: {{data.location}}</h4><br />
-        <h4>Date in: {{data.datein}}</h4><br />
-        <h4>Time in: {{data.time}}</h4><br />
-        <h4>PackageName: {{data.packageName}}</h4><br />
-        <h4>Want a book?: {{data.book}}</h4>
-  
+        <p>Address:   {{data.location}}</p><br />
+        <p>Date in:   {{data.datein}}</p><br />
+        <p>Time in:   {{data.time}}</p><br />
+        <p>PackageName:  {{data.packageName}}</p><br />
+        <p>Want a book?:  {{data.book}}</p>
+
+  <button (click)="DeleteItem(i)" class="DeleteButton">Delete</button>
         <!-- <p id="package">Packge:<b>{{data.package.amount}}</b></p>
         <p id="package"><b>{{data.package.number}}</b></p>
         <p id="package"><b>{{data.package.name}}</b></p> -->

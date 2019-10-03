@@ -1,9 +1,9 @@
 ion-tab-bar {
-      --background: rgb(76, 10, 10);
+      --background: linear-gradient(#4C0A0A,#790B0B);
       --border-radius: 8px;
       --color: white;
       ion-tab-button {
-            --background:  rgb(76, 10, 10);
+            --background: linear-gradient(#4C0A0A,#790B0B);
             --background-focused: #BA0B0B;
             --color: #ffffff;
             --color-selected: #ff9b9b;

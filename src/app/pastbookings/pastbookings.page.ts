@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as firebase from 'firebase';
 import { DataSavedService } from '../data-saved.service';
 import { Platform } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 
 
 
@@ -20,13 +21,13 @@ export class PastbookingsPage implements OnInit {
  user = [];
  Customer = [];
  SortedBookings = [];
-
-userss = [];
-newusers = [];
+ userss = [];
+ newusers = [];
  pic : string;
  public unsubscribeBackEvent: any;
+ value : string = '';
 
-  constructor(public data : DataSavedService, public platform : Platform) { 
+  constructor(public data : DataSavedService, public alertController: AlertController, public platform : Platform) { 
 
  
     //retriving data from booking collection
@@ -60,9 +61,6 @@ newusers = [];
 
   
  ionViewDidEnter(){
-
-
- 
   // this.platform.ready().then(() => {
   //   console.log('Core service init');
   //   const tabBar = document.getElementById('myTabBar');
@@ -80,14 +78,23 @@ newusers = [];
   this.Booking = [];
   this.Booking = this.data.SavedData;
   console.log("Customer", this.Customer);
-  
+  this.CheckArrayLength();
  
   this.Customer.forEach(Customers => { 
      this.Booking.push(Customers)          
   })
   this.SortData();
   
-  
+ }
+
+ CheckArrayLength(){
+
+  if(this.Booking.length > 0){
+    this.value = "Booking List"
+}else{
+  this.value = "List is currently empty"
+}
+
  }
 
  ngOnInit() {
@@ -115,6 +122,24 @@ newusers = [];
 // if we have registerBackButtonAction in app.component.ts */
 // }
  
+DeleteItem(i){
+
+this.SortedBookings.splice(i, 1);
+this.CheckArrayLength();
+this.presentAlert();
+
+}
+
+async presentAlert() {
+  const alert = await this.alertController.create({
+    header: 'Deleted Successfully.',
+    subHeader: '',
+    message: '',
+    buttons: ['OK']
+  });
+
+  await alert.present();
+}
 
  bubbleSort(array){
   const length = array.length;
