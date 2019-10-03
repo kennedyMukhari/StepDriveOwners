@@ -21,7 +21,7 @@ import { FormsModule } from '@angular/forms';
 // import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { GooglePlaceModule } from "ngx-google-places-autocomplete";
-
+import { OneSignal } from '@ionic-native/onesignal/ngx';
 
 
 
@@ -53,7 +53,8 @@ firebase.initializeApp(FIREBASE_CONFIG);
     LocalNotifications,
     // PhotoViewer,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    NativeGeocoder
+    NativeGeocoder,
+    OneSignal
   
   ],
   bootstrap: [AppComponent]
