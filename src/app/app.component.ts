@@ -8,13 +8,16 @@ import * as firebase from 'firebase';
 import { TabsService } from './core/tabs.service';
 
 import { Router, CanActivate, ActivatedRouteSnapshot } from '@angular/router';
-
+import { OneSignal } from '@ionic-native/onesignal/ngx';
+ 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
+signal_app_id:string ='d0d13732-1fec-4508-b72b-86eaa0c62aa4';
+firbase_id:string='580007341136';
 
   public unsubscribeBackEvent: any;
 
@@ -25,8 +28,8 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     public router: Router,
-    public alertCtrl: AlertController
-
+    public alertCtrl: AlertController,
+    public oneSignal: OneSignal
     
   ) 
   
@@ -46,27 +49,46 @@ export class AppComponent {
 
 
 
-  initializeApp() {
+//   initializeApp() {
 
-    this.platform.ready().then(() => {
-        this.backButton()
-      firebase.auth().onAuthStateChanged(function (user) {
+//     this.platform.ready().then(() => {
+//         this.backButton()
+//       firebase.auth().onAuthStateChanged(function (user) {
         
-        if (user) {
-          // User is signed in.
-          this.router.navigateByUrl('main/the-map');
+//         if (user) {
+//           // User is signed in.
+//           this.router.navigateByUrl('main/the-map');
           
-          console.log('Current user in', user.uid);
-        } else {
-          // No user is signed in.
+//           console.log('Current user in', user.uid);
+//         } else {
+//           // No user is signed in.
        
           
-          // this.router.navigateByUrl('/');
-        }
-      });
-      this.splashScreen.hide();
-    });
-  }
+//           // this.router.navigateByUrl('/');
+//         }
+// if(this.platform.is('cordova')){
+//   this.setupPush();
+// }
+
+
+//       });
+//       this.splashScreen.hide();
+//     });
+//   }
+
+initializeApp() {
+  this.platform.ready().then(() => {
+    this.backButton()
+    this.statusBar.styleDefault();
+    this.splashScreen.hide();
+
+    if (this.platform.is('cordova')) {
+      this.setupPush();
+    }
+  });
+}
+
+
   async backButton() {
     this.platform.backButton.subscribeWithPriority(1, async () => {
       console.log(this.router.url);
@@ -130,5 +152,47 @@ initializeBackButtonCustomHandler(): void {
 // });
 /* here priority 101 will be greater then 100 
 if we have registerBackButtonAction in app.component.ts */
+}
+
+setupPush() {
+  // I recommend to put these into your environment.ts
+  this.oneSignal.startInit('d0d13732-1fec-4508-b72b-86eaa0c62aa4', '580007341136');
+
+  this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
+
+  // Notifcation was received in general
+  this.oneSignal.handleNotificationReceived().subscribe(data => {
+    let msg = data.payload.body;
+    let title = data.payload.title;
+    let additionalData = data.payload.additionalData;
+    this.showAlert(title, msg, additionalData.task);
+  });
+
+  // Notification was really clicked/opened
+  this.oneSignal.handleNotificationOpened().subscribe(data => {
+    console.log(data)
+    // Just a note that the data is a different place here!
+    let additionalData = data.notification.payload.additionalData;
+
+    this.showAlert('Notification opened', 'You already read this before', additionalData.task);
+  });
+
+  this.oneSignal.endInit();
+}
+
+async showAlert(title, msg, task) {
+  const alert = await this.alertCtrl.create({
+    header: title,
+    subHeader: msg,
+    buttons: [
+      {
+        text: `Action: ${task}`,
+        handler: () => {
+          // E.g: Navigate to a specific screen
+        }
+      }
+    ]
+  })
+  alert.present();
 }
 }
