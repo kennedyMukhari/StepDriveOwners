@@ -33,6 +33,9 @@ export class LoginPage implements OnInit {
         Validators.compose([Validators.required, Validators.minLength(6)])
       ]
     });
+
+
+    
   }
 
   async ngOnInit() {
@@ -71,7 +74,7 @@ loader.dismiss()
       await loading.present();
       setTimeout(() => {
         loading.dismiss();
-      }, 2000)
+      }, 1000)
 
 
       const email = loginForm.value.email;
@@ -116,5 +119,7 @@ loader.dismiss()
     }
   }
 
-  
+  forgetpassword() {
+    this.router.navigate(['reset-password']);
+  }
 }

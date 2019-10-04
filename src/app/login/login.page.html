@@ -10,7 +10,7 @@
     <div class="form">
       <h1>SIGN IN</h1>
       <div>
-        <form [formGroup] = "loginForm" class="login">
+        <form (ngSubmit)="login(loginForm.value)"  [formGroup]= "loginForm" class="login">
           <div class="input">
             <p>Email</p>
             <input type="email" formControlName="email" [class.invalid]="!loginForm.controls['email'].valid &&
@@ -34,17 +34,19 @@
             </div>
           </div>
           <div class="forgot">
-            <button routerLink="/reset-password">Forgot Password?</button>
+            <button>Forgot Password?</button>
           </div>
           <div class="create">
-            <button routerLink="/register">Create Account</button>
+            <button (click)="goRegister()">Create Account</button>
           </div>
+         
           <br>
           <div class="button">
-            <button (click)="loginUser(loginForm)" 
+            <button  type="submit"  (click)="loginUser(loginForm)" 
             expand="block" 
             [disabled]="!loginForm.valid">Login</button>
           </div>
+          
         </form>
       </div>
     </div>
