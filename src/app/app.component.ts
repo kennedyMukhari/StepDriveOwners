@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 
 import { Platform, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -80,7 +80,7 @@ initializeApp() {
   this.platform.ready().then(() => {
     this.backButton()
     this.statusBar.styleDefault();
-    this.splashScreen.hide();
+
    
 
 
@@ -196,5 +196,11 @@ async showAlert(title, msg, task) {
     ]
   })
   alert.present();
+}
+@HostListener('document:readystatechange', ['$event'])
+onReadyStateChanged(event) {
+    if (event.target.readyState === 'complete') {
+        this.splashScreen.hide();
+    }
 }
 }

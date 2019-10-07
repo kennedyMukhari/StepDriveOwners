@@ -107,7 +107,7 @@ export class TheMapPage implements OnInit {
     await loading.present();
     setTimeout(() => {
       loading.dismiss();
-    }, 2000)
+    }, 1000)
 
     this.platform.ready().then(() => {
       console.log('Core service init');

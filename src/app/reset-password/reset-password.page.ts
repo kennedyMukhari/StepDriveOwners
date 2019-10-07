@@ -21,7 +21,10 @@ export class ResetPasswordPage implements OnInit {
       email: ['', Validators.compose([Validators.required, Validators.email])]
     });
   }
-
+  public onSubmit(): void {
+    // ...
+    // ...
+  }
   ngOnInit() {}
   goToLogin(){
     this.router.navigate(['login'])
