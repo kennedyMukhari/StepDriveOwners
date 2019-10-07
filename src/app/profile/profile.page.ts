@@ -15,8 +15,11 @@ import { FormGroup, Validators,FormControl, FormBuilder, ReactiveFormsModule, Fo
 import { NgZone } from '@angular/core';
 import { GooglePlaceDirective } from 'ngx-google-places-autocomplete/ngx-google-places-autocomplete.directive';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
-import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import { LoadingController } from '@ionic/angular';
+
+
+
+
 
 
 @Component({
@@ -25,7 +28,7 @@ import { LoadingController } from '@ionic/angular';
   styleUrls: ['./profile.page.scss'],
 })
 
-
+// NativeGeocoderResult
 
 
 export class ProfilePage implements OnInit {
@@ -33,18 +36,25 @@ export class ProfilePage implements OnInit {
   public unsubscribeBackEvent: any;
   @ViewChild('inputs', {static: true}) input:ElementRef;
   @ViewChild("placesRef", {static: true}) placesRef : GooglePlaceDirective;
+  autocomplete : any;
+  MyAddress : string;
+  town_1 : string;
+  myLatitude : number;
+  myLongitude : number;
+  textInButton : string;
+
 //============================
-  GoogleAutocomplete: google.maps.places.AutocompleteService;
-  autocomplete: { input: string; };
-  autocompleteItems: any[];
-  location: any;
-  placeid: any;
-  myLocation: string;
-  address : string = "Enter your address";
+  // GoogleAutocomplete: google.maps.places.AutocompleteService;
+  // autocomplete: { input: string; };
+  // autocompleteItems: any[];
+  // location: any;
+  // placeid: any;
+  // myLocation: string;
+  // address : string = "Enter your address";
 //==============================
 options2={
   types: [],
-  componentRestrictions: { country: 'UA' }
+  componentRestrictions: { country: 'ZA' }
   }
  
   display = false;
@@ -173,6 +183,7 @@ options2={
   ]
   }
 
+  
 
   profileForm: FormGroup
   profileImage: string;
@@ -182,9 +193,12 @@ options2={
   userProfile: any;
   isuploaded: boolean;
   imageSelected: boolean;
+ tempData : string;
+ showButton : boolean;
+ showButton1 : boolean;
+
   constructor(
      public zone: NgZone,
-     private nativeGeocoder: NativeGeocoder,
      public formBuilder: FormBuilder ,
      private geolocation : Geolocation, 
      public forms: FormBuilder,
@@ -197,19 +211,21 @@ options2={
      public platform : Platform,
      public elementref: ElementRef, 
      public alert : LoadingController
+
      ) 
 
      {
 
+         this.initAutocomplete();
       this.platform.ready().then(() => {
         console.log('Core service init');
         const tabBar = document.getElementById('myTabBar');
         tabBar.style.display = 'flex';
       });
 
-      this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
-      this.autocomplete = { input: '' };
-      this.autocompleteItems = [];
+      // this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
+      // this.autocomplete = { input: '' };
+      // this.autocompleteItems = [];
 
     
     this.loginForm = this.forms.group({
@@ -236,9 +252,58 @@ options2={
 
     // this.rendere.setStyle(this.input.nativeElement, 'opacity', 'o');
     
+  
+    
+  }
+
+
+
+  public handleAddressChange(address: Address) {
+    // Do some stuff
+    console.log(address);
+    
+}
+  //========================================
+
+//=====================================
+
+
+  ngOnInit() {
+    
+    this.initAutocomplete();
+          let viewimage = this.elementref.nativeElement.children[0].children[0]
+          console.log('ggg',viewimage);
+          this.renderer.setStyle(viewimage, 'opacity', '0');
+          this.renderer.setStyle(viewimage, 'transform', 'scale(0)');    
+          
+          
+  }
+  
+  ionViewDidLoad(){
+    this.initAutocomplete();
+    this.initializeBackButtonCustomHandler();
+    this.tempData = this.businessdata.schoolname;
+    
+  }
+
+  ionViewWillLeave() {
+    // Unregister the custom back button action for this page
+    this.unsubscribeBackEvent && this.unsubscribeBackEvent();
+  }
+
+  ionViewWillEnter(){
+
+    this.initAutocomplete();
+
+    this.counter = 0;
+    this.getUserPosition();
+
+
     this.db.collection('drivingschools').where('schooluid', '==', firebase.auth().currentUser.uid).get().then(res => {
+    
       res.forEach(doc => {
         console.log(doc.data());
+        this.tempData = doc.data().schoolname;
         this.businessdata.image = doc.data().image
         this.businessdata.schoolname = doc.data().schoolname
         this.businessdata.registration = doc.data().registration
@@ -251,44 +316,102 @@ options2={
         this.businessdata.closed = doc.data().closed
         this.businessdata.packages = doc.data().packages
       })
+
      this.pack = this.businessdata.packages[0];
      console.log(this.businessdata);
+     this.tempData = this.businessdata.schoolname;
+     console.log("Your values is", this.tempData === '');
+     if(this.tempData === ''){
+       this.showButton = true;
+       this.textInButton = "Done";
+       this.tempData = '';
+     }else{
+      this.showButton1 = true;
+      this.textInButton = "Update";
+      this.tempData = '';
+     }
+    
      
     }).catch(err => {
       console.log(err);
       
     })
 
-
-  }
-
-
-
-  public handleAddressChange(address: Address) {
-    // Do some stuff
-    console.log(address);
-    
-}
-  //========================================
-
-
-
-
-  ngOnInit() {
-          let viewimage = this.elementref.nativeElement.children[0].children[0]
-          console.log('ggg',viewimage);
-          this.renderer.setStyle(viewimage, 'opacity', '0');
-          this.renderer.setStyle(viewimage, 'transform', 'scale(0)');     
-  }
+   
   
-  ionViewDidLoad(){
-    this.initializeBackButtonCustomHandler();
+
+    // this.db.collection('drivingschools').onSnapshot(snapshot => {
+    //   this.DrivingSchoolOwnerDetails = [];
+    //   snapshot.forEach(doc => {
+       
+    //     if (doc.data().schooluid === firebase.auth().currentUser.uid) {
+    //       console.log("My data is", doc.data().address);
+    //       this.Address = doc.data().address
+    //       this.DrivingSchoolOwnerDetails.push({ docid: doc.id, doc: doc.data() });
+    //     }
+    //   });
+    // });
+
+     
+    // if(this.DrivingSchoolOwnerDetails.length === 0){
+    //   this.textInButton = "Done";
+    //   console.log("Your length is vvv", this.DrivingSchoolOwnerDetails);  
+    // }else{
+    //   this.textInButton = "Update";
+    //   console.log("Your length is aa", this.DrivingSchoolOwnerDetails);
+    // }
+
   }
 
-  ionViewWillLeave() {
-    // Unregister the custom back button action for this page
-    this.unsubscribeBackEvent && this.unsubscribeBackEvent();
+  ionViewDidEnter(){
+    this.initAutocomplete();
+  
+  
+
+    // this.platform.ready().then(() => {
+    //   console.log('Core service init');
+    //   const tabBar = document.getElementById('myTabBar');
+    //    tabBar.style.display = 'none';
+    // });
+
   }
+
+
+
+
+  //============================
+
+ initAutocomplete() {
+  // Create the autocomplete object, restricting the search predictions to
+  // geographical location types.
+  this.autocomplete = new google.maps.places.Autocomplete(
+    <HTMLInputElement>document.getElementById('autocomplete'), {types: ['geocode']});
+   
+   
+  // Avoid paying for data that you don't need by restricting the set of
+  // place fields that are returned to just the address components.
+  // this.autocomplete.setFields(['address_component']);
+
+  // When the user selects an address from the drop-down, populate the
+  // address fields in the form.
+  this.autocomplete.addListener('place_changed',()=> {this.fillInAddress()});
+}
+
+ fillInAddress() {
+
+  // Get the place details from the autocomplete object.
+  let place = this.autocomplete.getPlace();
+ this.MyAddress = place.formatted_address;
+  this.town_1 = place.address_components[2].long_name;
+  this.myLatitude =  place.geometry.location.lat();
+  this.myLongitude =  place.geometry.location.lng();
+}
+
+// Bias the autocomplete object to the user's geographical location,
+// as supplied by the browser's 'navigator.geolocation' object.
+ geolocate() {
+}
+  //============================
 
   async initializeBackButtonCustomHandler(){
     this.platform.backButton.subscribeWithPriority(1, async () => {
@@ -327,53 +450,53 @@ options2={
 }
 
 
-  updateSearchResults(){
+  // updateSearchResults(){
 
-    if (this.autocomplete.input == '') {
-      this.autocompleteItems = [];
-      return;
-    }
-    this.GoogleAutocomplete.getPlacePredictions({ input: this.autocomplete.input },
-    (predictions, status) => {
-      this.autocompleteItems = [];
-      this.zone.run(() => {
-        predictions.forEach((prediction) => {
-          this.autocompleteItems.push(prediction);
-        });
-      });
-    });
-  }
+  //   if (this.autocomplete.input == '') {
+  //     this.autocompleteItems = [];
+  //     return;
+  //   }
+  //   this.GoogleAutocomplete.getPlacePredictions({ input: this.autocomplete.input },
+  //   (predictions, status) => {
+  //     this.autocompleteItems = [];
+  //     this.zone.run(() => {
+  //       predictions.forEach((prediction) => {
+  //         this.autocompleteItems.push(prediction);
+  //       });
+  //     });
+  //   });
+  // }
   
   
-  selectSearchResult(item) {
+  // selectSearchResult(item) {
 
-    this.Address = item.description;
-    console.log("Your address is",item.terms[1].value)
-    this.Mylocation = item.terms[1].value;
-    // this.town = location.split(', ')
-    // console.log('secndary text', this.town[1]);
+  //   this.Address = item.description;
+  //   console.log("Your address is",item.terms[1].value)
+  //   this.Mylocation = item.terms[1].value;
+  //   // this.town = location.split(', ')
+  //   // console.log('secndary text', this.town[1]);
     
-    // this.myLocation = item.description;
-    // this.placeid = this.location.place_id;
-    console.log('placeid'+ this.placeid);
+  //   // this.myLocation = item.description;
+  //   // this.placeid = this.location.place_id;
+  //   console.log('placeid'+ this.placeid);
 
-    let options: NativeGeocoderOptions = {
-      useLocale: true,
-      maxResults: 5
-  };
+  //   let options: NativeGeocoderOptions = {
+  //     useLocale: true,
+  //     maxResults: 5
+  // };
   
   
-  this.nativeGeocoder.forwardGeocode(item.description, options)
-    .then((result: NativeGeocoderResult[]) => {
-      console.log('The coordinates are latitude=' + result[0].latitude + ' and longitude=' + result[0].longitude)
-      this.longitude = result[0].longitude;
-      this.latitude  =  result[0].latitude;
-    } )
-    .catch((error: any) => console.log(error));
+  // this.nativeGeocoder.forwardGeocode(item.description, options)
+  //   .then((result: NativeGeocoderResult[]) => {
+  //     console.log('The coordinates are latitude=' + result[0].latitude + ' and longitude=' + result[0].longitude)
+  //     this.longitude = result[0].longitude;
+  //     this.latitude  =  result[0].latitude;
+  //   } )
+  //   .catch((error: any) => console.log(error));
 
-    this.autocompleteItems = [];
+  //   this.autocompleteItems = [];
 
-  }
+  // }
 
   GoTo(){
     // return window.location.href = 'https://www.google.com/maps/place/?q=place_id:'+this.placeid;
@@ -383,40 +506,13 @@ options2={
   //=========================================
 
 
-  ionViewDidEnter(){
 
-    this.counter = 0;
-    this.getUserPosition();
-    console.log("Your values is", this.counter);
-
-
-    this.db.collection('drivingschools').onSnapshot(snapshot => {
-      this.DrivingSchoolOwnerDetails = [];
-      snapshot.forEach(doc => {
-       
-        if (doc.data().schooluid === firebase.auth().currentUser.uid) {
-          console.log("My data is", doc.data().address);
-          this.Address = doc.data().address
-          this.DrivingSchoolOwnerDetails.push({ docid: doc.id, doc: doc.data() });
-        }
-      });
-    });
-
-  
-    
-    
-    // this.platform.ready().then(() => {
-    //   console.log('Core service init');
-    //   const tabBar = document.getElementById('myTabBar');
-    //    tabBar.style.display = 'none';
-    // });
-
-  }
 
 
 
   
   getUserPosition(){
+
     this.options = {
         enableHighAccuracy : true
     };
@@ -427,6 +523,7 @@ options2={
     },(err : PositionError)=>{
         console.log("error : " + err.message);
     });
+
 }
 
 
@@ -614,11 +711,141 @@ options2={
     });
       
   }
+
+  async  updateMyAccount(loginForm: FormGroup): Promise<void>{
+ 
+    if(loginForm.valid){
+     
+     if(this.businessdata.closed.slice(11, 16)  != this.businessdata.open.slice(11, 16)  && this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)){
+
+         if(this.MyAddress !== undefined){
+          console.log("ssssssssssssssssssssss", this.MyAddress);
+       
+    
+          this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
+            address: this.MyAddress,
+            city : this.town_1,
+            allday : this.businessdata.allday,
+            cellnumber : this.businessdata.cellnumber,
+            closed : this.businessdata.closed,
+            cost : this.businessdata.cost,
+            desc : this.businessdata.desc,
+            email : this.businessdata.email,
+            image : this.businessdata.image,
+            open : this.businessdata.open,
+            coords : {lat:  this.myLatitude,
+              lng:  this.myLongitude},
+            packages :this.businessdata.packages,
+            schoolname : this.businessdata.schoolname,
+            schooluid : firebase.auth().currentUser.uid           
+          }, { merge: true }).then(res => {           
+           console.log(res);
+          }).catch(error => {
+            console.log('Error');
+          });
+                
+          const alert = await this.alertController.create({
+            message: 'Profile updated successfully!',
+            buttons: ['OK']
+          });
+          await alert.present();
+         
+         this.router.navigateByUrl('main');
+         }else{
+
+          const alert = await this.alertController.create({
+            message: 'Please Enter the correct address!',
+            buttons: ['OK']
+          });     
+          await alert.present();
+
+         }
+      
+     }else{
+
+       const alert = await this.alertController.create({
+         message: 'Please Enter the correct time!',
+         buttons: ['OK']
+       });     
+       await alert.present();
+
+     }
+    }else{
+
+     const alert = await this.alertController.create({
+       message: 'Fields cannot be empty!',
+       buttons: ['OK']
+     });     
+     await alert.present();
+
+    }
+
+}
+
+
+  async  createMyAccount(loginForm: FormGroup): Promise<void>{
+ 
+       if(loginForm.valid){
+        
+        if(this.businessdata.closed.slice(11, 16)  != this.businessdata.open.slice(11, 16)  && this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)){
+
+          console.log("ssssssssssssssssssssss", this.MyAddress);
+          
+       
+          this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
+            address: this.MyAddress,
+            city : this.town_1,
+            allday : this.businessdata.allday,
+            cellnumber : this.businessdata.cellnumber,
+            closed : this.businessdata.closed,
+            cost : this.businessdata.cost,
+            desc : this.businessdata.desc,
+            email : this.businessdata.email,
+            image : this.businessdata.image,
+            open : this.businessdata.open,
+            coords : {lat:  this.myLatitude,
+              lng:  this.myLongitude},
+            packages :this.businessdata.packages,
+            schoolname : this.businessdata.schoolname,
+            schooluid : firebase.auth().currentUser.uid           
+          }).then(res => {           
+           console.log(res);
+          }).catch(error => {
+            console.log('Error');
+          });
+                
+          const alert = await this.alertController.create({
+            message: 'Profile successfully created!',
+            buttons: ['OK']
+          });
+          await alert.present();
+         
+         this.router.navigateByUrl('main');
+        }else{
+
+          const alert = await this.alertController.create({
+            message: 'Please Enter the correct time!',
+            buttons: ['OK']
+          });     
+          await alert.present();
+
+        }
+       }else{
+
+        const alert = await this.alertController.create({
+          message: 'Fields cannot be empty!',
+          buttons: ['OK']
+        });     
+        await alert.present();
+
+       }
+
+  }
  
   async  createAccount(loginForm: FormGroup): Promise<void>{
     
-    console.log('Results in the businessdata', loginForm.valid);
-    console.log("showTabs tab method is called");
+    console.log('Results in the businessdata', firebase.auth().currentUser.uid);
+    
 
       // console.log('The data',this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)  );
       //   const tabBar = document.getElementById('myTabBar');
@@ -626,34 +853,17 @@ options2={
       // this.businessdata.closed.slice(11, 16)  != this.businessdata.open.slice(11, 16)  && this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)
 
         if (loginForm.valid ){
-          console.log('Results in the businessdata', loginForm.valid);
           if( this.businessdata.closed.slice(11, 16)  != this.businessdata.open.slice(11, 16)  && this.businessdata.closed.slice(11, 16)  > this.businessdata.open.slice(11, 16)){
 
              
          
-               this.router.navigateByUrl('main');
-               if(this.businessdata.schoolname == ''){
+              //  this.router.navigateByUrl('main');
+               if(this.businessdata.schoolname === ''){
 
-                console.log("Adding data to the database", {address :  this.address,
-                  city : this.Mylocation,
-                  allday : this.businessdata.allday,
-                  cellnumber : this.businessdata.cellnumber,
-                  closed : this.businessdata.closed,
-                  cost : this.businessdata.cost,
-                  desc : this.businessdata.desc,
-                  email : this.businessdata.email,
-                  image : this.businessdata.image,
-                  open : this.businessdata.open,
-                  coords : {lat:  this.latitude,
-                  lng:  this.longitude},
-                  packages :this.businessdata.packages,
-                  registration : this.businessdata.registration,
-                  schoolname : this.businessdata.schoolname,
-                  schooluid : firebase.auth().currentUser.uid  });
-                
+
                 this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
-                  address :  this.address,
-                  city : this.Mylocation,
+                  address: this.MyAddress,
+                  city : this.town_1,
                   allday : this.businessdata.allday,
                   cellnumber : this.businessdata.cellnumber,
                   closed : this.businessdata.closed,
@@ -662,8 +872,8 @@ options2={
                   email : this.businessdata.email,
                   image : this.businessdata.image,
                   open : this.businessdata.open,
-                  coords : {lat:  this.latitude,
-                  lng:  this.longitude},
+                  coords : {lat:  this.myLatitude,
+                    lng:  this.myLongitude},
                   packages :this.businessdata.packages,
                   registration : this.businessdata.registration,
                   schoolname : this.businessdata.schoolname,
@@ -694,9 +904,11 @@ options2={
                this.router.navigateByUrl('main');
                }else{
 
+                console.log("ddddddddddddddddddddddddddddddddddddddddd");
+                
                 this.db.collection('drivingschools').doc(firebase.auth().currentUser.uid).set({
-                  address : this.address,
-                  city : this.Mylocation,
+                  address: this.MyAddress,
+                  city : this.town_1,
                   allday : this.businessdata.allday,
                   cellnumber : this.businessdata.cellnumber,
                   closed : this.businessdata.closed,
@@ -705,8 +917,8 @@ options2={
                   email : this.businessdata.email,
                   image : this.businessdata.image,
                   open : this.businessdata.open,
-                  coords : {lat:  this.latitude,
-                  lng:  this.longitude},
+                  coords : {lat:  this.myLatitude,
+                    lng:  this.myLongitude},
                   packages :this.businessdata.packages,
                   registration : this.businessdata.registration,
                   schoolname : this.businessdata.schoolname,
@@ -729,6 +941,7 @@ options2={
                 });
                 await alert.present();
 
+                this.router.navigateByUrl('main');
 
                 // this.platform.ready().then(() => {
                 //   console.log('Core service init');
@@ -821,9 +1034,10 @@ options2={
 
 
      async Logout() {
-        // this.users = [];
-        // this.requests = [];
-        // this.NewRequeste = [];
+
+console.log('My value from the profile is ', this.tempData);
+      this.tempData = '';
+      console.log('My value from the profile is ', this.tempData);
 
         const alert = await this.alertController.create({
           header: '',
