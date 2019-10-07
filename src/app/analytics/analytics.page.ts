@@ -129,7 +129,10 @@ charts: any;
       snapshot.forEach(Element => {
        
             this.Data.push(Element.data());
+  
       });
+
+
       this.Data.forEach(item => {
       
         if(item.schooluid === firebase.auth().currentUser.uid){
@@ -137,7 +140,10 @@ charts: any;
                  console.log('NewDrivingschool', this.NewData);  
               }
       })
+  
   }); 
+
+  
 //  this.openImage('', 'close');
   this.getRequests();
  
