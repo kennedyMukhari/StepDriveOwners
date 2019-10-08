@@ -4,6 +4,7 @@ import { Platform, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import * as firebase from 'firebase';
+import { FIREBASE_CONFIG } from '../environments/firebase_config';
 
 import { TabsService } from './core/tabs.service';
 
@@ -36,15 +37,17 @@ firbase_id:string='580007341136';
   
   {
 
+    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+      if (!user) {
+       this.router.navigate(['/onboarding']);
+       unsubscribe();
+      } else {
+       console.log('The user email is',user.email);
+       this.router.navigate(['main/the-map']);
+       unsubscribe();
+      }
+      });
 
-
-    this.initializeApp();
-    // let status bar overlay webview
-    // this.statusBar.overlaysWebView(true);
-    statusBar.styleBlackOpaque();
-    this.statusBar.styleLightContent();
-    // set status bar to white
-    this.statusBar.backgroundColorByHexString('#2E020C');
   }
 
 
@@ -76,131 +79,128 @@ firbase_id:string='580007341136';
 //     });
 //   }
 
-initializeApp() {
-  this.platform.ready().then(() => {
-    this.backButton()
-    this.statusBar.styleDefault();
+// initializeApp() {
+//   this.platform.ready().then(() => {
+//     this.backButton()
+//     this.statusBar.styleDefault();
 
    
 
 
-    if (this.platform.is('cordova')) {
-      this.setupPush();
-    }
-  });
-}
+//     if (this.platform.is('cordova')) {
+//       this.setupPush();
+//     }
+//   });
+// }
 
 
-  async backButton() {
-    this.platform.backButton.subscribeWithPriority(1, async () => {
-      console.log(this.router.url);
-      if (this.router.url == '/past-b') {
-      this.router.navigate(['main/profile']);
-      } else {
-        let alerter = await this.alertCtrl.create({
-          message: 'Do you want to exit the App?',
-          buttons: [{
-            text: 'No',
-            role: 'cancel'
-          },
-        {
-          text: 'Yes',
-          handler: ()=> {
-              navigator['app'].exitApp();
-          }
-        }]
-        })
-        alerter.present()
-      }
-  });
-  }
-  canActivate(route: ActivatedRouteSnapshot): boolean {
+//   async backButton() {
+//     this.platform.backButton.subscribeWithPriority(1, async () => {
+//       console.log(this.router.url);
+//       if (this.router.url == '/past-b') {
+//       this.router.navigate(['main/profile']);
+//       } else {
+//         let alerter = await this.alertCtrl.create({
+//           message: 'Do you want to exit the App?',
+//           buttons: [{
+//             text: 'No',
+//             role: 'cancel'
+//           },
+//         {
+//           text: 'Yes',
+//           handler: ()=> {
+//               navigator['app'].exitApp();
+//           }
+//         }]
+//         })
+//         alerter.present()
+//       }
+//   });
+//   }
 
-    console.log(route);
+//   canActivate(route: ActivatedRouteSnapshot): boolean {
 
-    let authInfo = {
-        authenticated: false
-    };
+//     console.log(route);
 
-    if (!authInfo.authenticated) {
-        this.router.navigate(['login']);
-        return false;
-    }
+//     let authInfo = {
+//         authenticated: false
+//     };
 
-    return true;
+//     if (!authInfo.authenticated) {
+//         this.router.navigate(['login']);
+//         return false;
+//     }
 
-}
-ngOnInit() {
+//     return true;
+
+// }
+
+// ngOnInit() {
   
-   this.initializeBackButtonCustomHandler();
+//    this.initializeBackButtonCustomHandler();
   
- }
- ionViewWillLeave() {
-  // Unregister the custom back button action for this page
-  this.unsubscribeBackEvent && this.unsubscribeBackEvent();
-}
-initializeBackButtonCustomHandler(): void {
-    
+//  }
 
+//  ionViewWillLeave() {
+//   // Unregister the custom back button action for this page
+//   this.unsubscribeBackEvent && this.unsubscribeBackEvent();
+// }
 
+// initializeBackButtonCustomHandler(): void {
 
-
-
-
-
-// this.unsubscribeBackEvent = this.platform.backButton.subscribeWithPriority(999999,  () => {
-//     // alert("back pressed home" + this.constructor.name);
+// // this.unsubscribeBackEvent = this.platform.backButton.subscribeWithPriority(999999,  () => {
+// //     // alert("back pressed home" + this.constructor.name);
    
-// });
-/* here priority 101 will be greater then 100 
-if we have registerBackButtonAction in app.component.ts */
-}
+// // });
+// /* here priority 101 will be greater then 100 
+// if we have registerBackButtonAction in app.component.ts */
+// }
 
-setupPush() {
-  // I recommend to put these into your environment.ts
-  this.oneSignal.startInit('d0d13732-1fec-4508-b72b-86eaa0c62aa4', '580007341136');
+// setupPush() {
+//   // I recommend to put these into your environment.ts
+//   this.oneSignal.startInit('d0d13732-1fec-4508-b72b-86eaa0c62aa4', '580007341136');
 
-  this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
+//   this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
 
-  // Notifcation was received in general
-  this.oneSignal.handleNotificationReceived().subscribe(data => {
-    let msg = data.payload.body;
-    let title = data.payload.title;
-    let additionalData = data.payload.additionalData;
-    this.showAlert(title, msg, additionalData.task);
-  });
+//   // Notifcation was received in general
+//   this.oneSignal.handleNotificationReceived().subscribe(data => {
+//     let msg = data.payload.body;
+//     let title = data.payload.title;
+//     let additionalData = data.payload.additionalData;
+//     this.showAlert(title, msg, additionalData.task);
+//   });
 
-  // Notification was really clicked/opened
-  this.oneSignal.handleNotificationOpened().subscribe(data => {
-    console.log(data)
-    // Just a note that the data is a different place here!
-    let additionalData = data.notification.payload.additionalData;
+//   // Notification was really clicked/opened
+//   this.oneSignal.handleNotificationOpened().subscribe(data => {
+//     console.log(data)
+//     // Just a note that the data is a different place here!
+//     let additionalData = data.notification.payload.additionalData;
 
-    this.showAlert('Notification opened', 'You already read this before', additionalData.task);
-  });
+//     this.showAlert('Notification opened', 'You already read this before', additionalData.task);
+//   });
 
-  this.oneSignal.endInit();
-}
+//   this.oneSignal.endInit();
+// }
 
-async showAlert(title, msg, task) {
-  const alert = await this.alertCtrl.create({
-    header: title,
-    subHeader: msg,
-    buttons: [
-      {
-        text: `Action: ${task}`,
-        handler: () => {
-          // E.g: Navigate to a specific screen
-        }
-      }
-    ]
-  })
-  alert.present();
-}
-@HostListener('document:readystatechange', ['$event'])
-onReadyStateChanged(event) {
-    if (event.target.readyState === 'complete') {
-        this.splashScreen.hide();
-    }
-}
+// async showAlert(title, msg, task) {
+//   const alert = await this.alertCtrl.create({
+//     header: title,
+//     subHeader: msg,
+//     buttons: [
+//       {
+//         text: `Action: ${task}`,
+//         handler: () => {
+//           // E.g: Navigate to a specific screen
+//         }
+//       }
+//     ]
+//   })
+//   alert.present();
+// }
+// @HostListener('document:readystatechange', ['$event'])
+// onReadyStateChanged(event) {
+//     if (event.target.readyState === 'complete') {
+//         this.splashScreen.hide();
+//     }
+// }
 }

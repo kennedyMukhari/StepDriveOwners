@@ -8,4 +8,5 @@ export class DataSavedService {
   constructor() { }
 
   SavedData = [];
+  DeclinedData = [];
 }

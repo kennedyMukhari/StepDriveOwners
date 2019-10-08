@@ -28,6 +28,8 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 
+
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -62,5 +64,7 @@ firebase.initializeApp(FIREBASE_CONFIG);
 })
 export class AppModule {
 
+
+  
 
 }
