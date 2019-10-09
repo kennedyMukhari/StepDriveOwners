@@ -14,11 +14,6 @@ import { Platform } from '@ionic/angular';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 
-
-
-
-
-
 declare var google;
 @Component({
   selector: 'app-the-map',
@@ -227,7 +222,6 @@ export class TheMapPage implements OnInit {
   
       let marker = new google.maps.Marker({
         map: this.map,
-        animation: google.maps.Animation.DROP,
         position: new google.maps.LatLng(lat, lng),
         icon: icon
       });
@@ -256,17 +250,7 @@ export class TheMapPage implements OnInit {
       { confirmed: 'accepted' }, { merge: true }
       );
 
-      this.data.SavedData.push(Customer)
-
-      // this.db.collection('users').onSnapshot(SnapShots => {
-      //   SnapShots.forEach(doc => {
-      //     if(doc.data().uid === Customer.doc.uid){
-      //       this.data.SavedData.push({Customer : Customer, image : doc.data().image});
-      //       console.log('Core service init', this.data.SavedData, i);
-      //     }
-      //   })
-      // })
-    
+      this.data.SavedData.push(Customer)  
     this.NewRequesteWithPictures.splice(i, 1);
     this.presentAlert();
   }
@@ -276,7 +260,10 @@ export class TheMapPage implements OnInit {
   // //   // this.add()
   // }
 
-  Decline(docid, i) {
+  Decline(Customer, docid, i) {
+
+    this.data.DeclinedData.push(Customer)  
+
     this.db.collection('bookings').doc(docid).set({ confirmed: 'rejected' }, { merge: true });
     this.NewRequesteWithPictures.splice(i, 1)
   }

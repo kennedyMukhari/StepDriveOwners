@@ -48,7 +48,7 @@ export class RegisterPage implements OnInit {
         () => {
           this.loading.dismiss().then(() => {
             // this.router.navigateByUrl('profile');
-            this.router.navigateByUrl('main/profile');
+            this.router.navigateByUrl('profile');
           });
         },
         error => {
@@ -66,7 +66,10 @@ export class RegisterPage implements OnInit {
     }
   }
 
+
+
   goToLogin() {
     this.router.navigate(['login']);
   }
+  
 }

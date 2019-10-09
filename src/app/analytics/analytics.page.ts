@@ -3,6 +3,7 @@ import * as firebase from 'firebase';
 import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import * as Chart from 'chart.js';
 import { Platform } from '@ionic/angular';
+import { DataSavedService } from '../../app/data-saved.service'
 
 @Component({
   selector: 'app-analytics',
@@ -46,9 +47,11 @@ charts: any;
      private platform: Platform,
      public renderer: Renderer2, 
      public elementref: ElementRef, 
+     public data : DataSavedService
      ) {
 
      
+
 
     this.db.collection('drivingschools').onSnapshot(snapshot => {
       this.NewDrivingschool = [];
@@ -106,7 +109,7 @@ charts: any;
 
   ionViewWillEnter() {
    
-
+    console.log("Rejected data", this.data.DeclinedData);
     this.mon = [];
     this.tue = [];
     this.wed = [];

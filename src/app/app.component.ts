@@ -4,6 +4,7 @@ import { Platform, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import * as firebase from 'firebase';
+import { FIREBASE_CONFIG } from '../environments/firebase_config';
 
 import { TabsService } from './core/tabs.service';
 
@@ -36,15 +37,17 @@ firbase_id:string='580007341136';
   
   {
 
+    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+      if (!user) {
+       this.router.navigate(['/onboarding']);
+       unsubscribe();
+      } else {
+       console.log('The user email is',user.email);
+       this.router.navigate(['main/the-map']);
+       unsubscribe();
+      }
+      });
 
-
-    this.initializeApp();
-    // let status bar overlay webview
-    // this.statusBar.overlaysWebView(true);
-    statusBar.styleBlackOpaque();
-    this.statusBar.styleLightContent();
-    // set status bar to white
-    this.statusBar.backgroundColorByHexString('#2E020C');
   }
 
 
@@ -114,6 +117,7 @@ initializeApp() {
       }
   });
   }
+
   canActivate(route: ActivatedRouteSnapshot): boolean {
 
     console.log(route);
@@ -130,23 +134,19 @@ initializeApp() {
     return true;
 
 }
+
 ngOnInit() {
   
    this.initializeBackButtonCustomHandler();
   
  }
+
  ionViewWillLeave() {
   // Unregister the custom back button action for this page
   this.unsubscribeBackEvent && this.unsubscribeBackEvent();
 }
+
 initializeBackButtonCustomHandler(): void {
-    
-
-
-
-
-
-
 
 // this.unsubscribeBackEvent = this.platform.backButton.subscribeWithPriority(999999,  () => {
 //     // alert("back pressed home" + this.constructor.name);

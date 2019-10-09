@@ -46,14 +46,23 @@
 ​
       <div class="input">
         <p>Address</p>
-        <input #autocomplete id="autocomplete" (ionFocus)="geolocate()" type="text" [(ngModel)]="businessdata.address">
+        <input #autocomplete  id="autocomplete"
+        placeholder="Enter your address"
+        (onFocus)="geolocate()" type="text" [(ngModel)]="businessdata.address">
       </div>
-          
-          <ion-list [hidden]="autocompleteItems.length == 0">
+
+      <!-- <div id="locationField">
+        <input id="autocomplete"
+               placeholder="Enter your address"
+               (onFocus)="geolocate()"
+               type="text"/>
+      </div>
+           -->
+          <!-- <ion-list [hidden]="autocompleteItems.length == 0">
             <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
               {{ item.description }}
             </ion-item>
-          </ion-list>
+          </ion-list> -->
 ​
 ​
       <form [formGroup]="loginForm">
@@ -225,11 +234,18 @@
           </div>
         </div>
 ​
-    <div class="dbtn">
-        <button (click)="createAccount(loginForm)">
-          Done
+    <div *ngIf="showButton" class="dbtn">
+        <button (click)="createMyAccount(loginForm)">
+          {{textInButton}}
         </button>
-      </div>
+    </div>
+
+    <div  *ngIf="showButton1" class="dbtn">
+      <button (click)="updateMyAccount(loginForm)">
+        {{textInButton}}
+      </button>
+  </div>
+
     </div>
 
 </div>
