@@ -13,8 +13,8 @@ import { Injectable } from '@angular/core';
 import { filter } from 'rxjs/operators';
 import { FormGroup, Validators,FormControl, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgZone } from '@angular/core';
-import { GooglePlaceDirective } from 'ngx-google-places-autocomplete/ngx-google-places-autocomplete.directive';
-import { Address } from 'ngx-google-places-autocomplete/objects/address';
+// import { GooglePlaceDirective } from 'ngx-google-places-autocomplete/ngx-google-places-autocomplete.directive';
+// import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { LoadingController } from '@ionic/angular';
 
 
@@ -35,7 +35,7 @@ export class ProfilePage implements OnInit {
 
   public unsubscribeBackEvent: any;
   @ViewChild('inputs', {static: true}) input:ElementRef;
-  @ViewChild("placesRef", {static: true}) placesRef : GooglePlaceDirective;
+  // @ViewChild("placesRef", {static: true}) placesRef : GooglePlaceDirective;
   autocomplete : any;
   MyAddress : string;
   town_1 : string;
@@ -258,11 +258,11 @@ options2={
 
 
 
-  public handleAddressChange(address: Address) {
-    // Do some stuff
-    console.log(address);
+//   public handleAddressChange(address: Address) {
+//     // Do some stuff
+//     console.log(address);
     
-}
+// }
   //========================================
 
 //=====================================
