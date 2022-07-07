@@ -60,7 +60,7 @@
     "ionic-swipe-all": "^2.0.0",
     "ionic4-rating": "^1.0.9",
     "ionic4-star-rating": "^1.1.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "ngx-google-places-autocomplete": "^2.0.4",
     "onesignal-cordova-plugin": "2.6.0",
     "rxjs": "~6.5.1",
